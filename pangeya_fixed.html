@@ -1065,6 +1065,78 @@
     .weather-btn:hover {
       transform: translateY(-2px);
     }
+
+    /* Comment section styles */
+    .comment-btn {
+      /* Use a solid teal color for high contrast on dark backgrounds */
+      background-color: #009688;
+      color: #ffffff;
+      border: none;
+      border-radius: 16px;
+      padding: 4px 12px;
+      margin-left: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      display: inline-block;
+      transition: background-color 0.2s ease;
+    }
+    .comment-btn:hover {
+      /* Slightly darker shade on hover */
+      background-color: #00796b;
+    }
+    .comment-section {
+      margin-top: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 8px;
+      background-color: #fafafa;
+    }
+    .comment-list {
+      max-height: 200px;
+      overflow-y: auto;
+      margin-bottom: 8px;
+    }
+    .comment-item {
+      padding: 4px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .comment-item:last-child {
+      border-bottom: none;
+    }
+    .comment-meta {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 2px;
+    }
+    .comment-textarea {
+      width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 6px;
+      resize: vertical;
+      min-height: 60px;
+      margin-bottom: 6px;
+    }
+    .submit-comment {
+      /* Match the primary accent gradient for the submit comment button */
+      background: linear-gradient(90deg, #8a6fb1, #c7b1e1);
+      color: #ffffff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.2s ease;
+    }
+    .submit-comment:hover {
+      background: linear-gradient(90deg, #7a5fa0, #bba1d4);
+    }
+
+    /* Ensure the comment button uses the primary theme color with white text and stands out. */
+    .comments {
+      background-color: var(--primary-color);
+      color: #ffffff;
+    }
   </style>
 </head>
 <body class="neon-theme newyear-mode">
@@ -1271,7 +1343,10 @@ Or pay via QR:</div>
       updateDoc,
       deleteDoc,
       getDoc,
-      setDoc
+  setDoc,
+  query,
+  orderBy,
+  serverTimestamp
     } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
     // Constants
@@ -1631,6 +1706,104 @@ function handleImageUpload() {
     // The old getAIFeedback function has been removed.  Per‑essay AI feedback is handled by getEssayAIFeedback().
 
     /**
+     * Fetch AI-generated feedback for a specific essay.  This function is
+     * called when the user clicks the "Get AI Feedback" chip on an essay
+     * card. Each feedback request consumes one chat credit but there is
+     * no per‑session limit on the number of feedback requests.  If the
+     * user has no chat credits remaining, an alert is shown and the
+     * request is not sent.  When the request is in flight, the
+     * feedback button is disabled and a loading message is displayed in
+     * the essay card.  Once a response is received from the server, the
+     * AI feedback section is populated and the button remains disabled.
+     *
+     * @param {string} docId Firestore document ID of the essay
+     * @param {Object} data The essay data containing at least `essay` and `name`
+     */
+    async function getEssayAIFeedback(docId, data) {
+      // Check available chat credits. If none remain, inform the user and exit.
+      let credits = getChatLimit();
+      if (credits <= 0) {
+        alert('You do not have any chat credits remaining to request AI feedback.');
+        return;
+      }
+      // Decrement the credit for this feedback request and update the display.
+      credits -= 1;
+      setChatLimit(credits);
+      updateChatCredit();
+      // Locate the button and feedback container for this essay
+      const aiBtn = document.getElementById('aiFeedbackBtn-' + docId);
+      const aiContainer = document.getElementById('aiFeedback-' + docId);
+      if (aiBtn) {
+        aiBtn.disabled = true;
+        aiBtn.textContent = 'Loading...';
+      }
+      if (aiContainer) {
+        aiContainer.classList.remove('hidden');
+        aiContainer.textContent = 'Fetching AI feedback...';
+      }
+      // Compose the request payload for the feedback endpoint
+      try {
+        const payload = {
+          essay: data.essay || '',
+          name: data.name || 'Unknown',
+          userId: getUserId(),
+          systemPrompt: SYSTEM_PROMPT
+        };
+        const response = await fetch(FEEDBACK_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        // Extract feedback text from the response; support multiple property names
+        let feedbackText = '';
+        if (result) {
+          if (typeof result === 'string') {
+            feedbackText = result;
+          } else if (result.feedback) {
+            feedbackText = result.feedback;
+          } else if (result.reply) {
+            feedbackText = result.reply;
+          } else if (result.comment) {
+            feedbackText = result.comment;
+          } else {
+            // Fallback: stringify entire response
+            feedbackText = JSON.stringify(result);
+          }
+        } else {
+          feedbackText = 'No feedback returned.';
+        }
+        // Format and display the feedback
+        if (aiContainer) {
+          // Escape HTML to avoid injection, then convert newlines to <br>
+          const safe = escapeHtml(feedbackText).replace(/\n/g, '<br>');
+          aiContainer.innerHTML = '<strong>AI Feedback:</strong><br>' + safe;
+        }
+        // Persist the AI feedback to Firestore so it is visible to all users
+        try {
+          await updateDoc(doc(db, 'essays', docId), { aiFeedback: feedbackText });
+        } catch (updateErr) {
+          console.error('Error saving AI feedback:', updateErr);
+        }
+      } catch (err) {
+        console.error('AI feedback error:', err);
+        if (aiContainer) {
+          aiContainer.textContent = 'Error retrieving AI feedback. Please try again later.';
+        }
+      } finally {
+        // Re-enable the feedback button so the user can request feedback again.
+        if (aiBtn) {
+          aiBtn.disabled = false;
+          aiBtn.textContent = 'Get AI Feedback';
+          // Once feedback has been retrieved, hide the button entirely.  This
+          // prevents multiple requests and cleans up the UI. If you wish to
+          // allow multiple feedback requests, remove the following line.
+          aiBtn.style.display = 'none';
+        }
+      }
+    }
+
+    /**
      * Safely convert various Firestore date representations into a Date
      * object. Supports Firestore Timestamp objects, numeric timestamps,
      * ISO strings or locale strings. If the value is invalid or missing,
@@ -1943,14 +2116,64 @@ function handleImageUpload() {
         aiBtn.textContent = 'Get AI Feedback';
         aiBtn.id = 'aiFeedbackBtn-' + docId;
         aiBtn.onclick = () => getEssayAIFeedback(docId, data);
+        // Hide AI feedback button if feedback already exists
+        if (data.aiFeedback && data.aiFeedback.trim() !== '') {
+          aiBtn.style.display = 'none';
+        }
         actions.appendChild(aiBtn);
         card.appendChild(actions);
-        // Placeholder for AI feedback.  Initially hidden; will be populated
-        // when the AI feedback is returned from the server.
+        // Placeholder for AI feedback.  Will show persisted feedback if available.
         const aiFbDiv = document.createElement('div');
-        aiFbDiv.className = 'ai-feedback hidden';
+        aiFbDiv.className = 'ai-feedback';
         aiFbDiv.id = 'aiFeedback-' + docId;
+        // If this essay already has AI feedback saved in Firestore, display it immediately.
+        if (data.aiFeedback && data.aiFeedback.trim() !== '') {
+          const safeAi = escapeHtml(data.aiFeedback).replace(/\n/g, '<br>');
+          aiFbDiv.innerHTML = '<strong>AI Feedback:</strong><br>' + safeAi;
+        } else {
+          // Hide the feedback container until feedback is fetched
+          aiFbDiv.classList.add('hidden');
+        }
         card.appendChild(aiFbDiv);
+
+        // Create comment button and comment section for this essay
+        const commentBtn = document.createElement('button');
+        commentBtn.id = 'commentBtn-' + docId;
+        commentBtn.textContent = 'Comment';
+        // Apply chip-btn and custom comment-btn classes for consistent styling
+        commentBtn.classList.add('chip-btn', 'comment-btn');
+        // Clicking the comment button toggles visibility of the comment panel
+        commentBtn.addEventListener('click', () => {
+          toggleCommentSection(docId);
+        });
+        card.appendChild(commentBtn);
+
+        // Create the comment container.  The ID uses the pattern "comment-<docId>" which
+        // is referenced by the helper functions (toggleCommentSection and
+        // addCommentToEssay) defined later in this file.  We hide it by
+        // default until the user toggles it open.
+        const commentDiv = document.createElement('div');
+        commentDiv.id = 'comment-' + docId;
+        commentDiv.style.display = 'none';
+        commentDiv.innerHTML = `
+          <div class="comment-section">
+            <div class="comment-list" id="commentList-${docId}"></div>
+            <textarea class="comment-textarea" id="commentInput-${docId}" placeholder="Write a comment..."></textarea>
+            <button class="submit-comment" id="postComment-${docId}">Post Comment</button>
+          </div>
+        `;
+        card.appendChild(commentDiv);
+        // Bind the post button to add the comment using our helper function
+        commentDiv.querySelector('#postComment-' + docId).addEventListener('click', () => {
+          addCommentToEssay(docId);
+        });
+        // Load comments for this essay. This listens to changes in Firestore
+        // and populates the comment list with existing comments. If Firestore
+        // isn't available, the function safely does nothing. Loading here
+        // ensures comments appear when the card is created.
+        if (typeof loadComments === 'function') {
+          loadComments(docId);
+        }
         // Card sticker element for New Year mode (gift image). This remains decorative.
         const cardSticker = document.createElement('img');
         cardSticker.src = 'data:image/png;base64,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';
@@ -2630,6 +2853,87 @@ function handleImageUpload() {
     window.highlightSelection = highlightSelection;
     window.underlineSelection = underlineSelection;
     window.strikeSelection = strikeSelection;
+
+    // Expose AI feedback helper so inline event handlers can call it
+    window.getEssayAIFeedback = getEssayAIFeedback;
+    // Expose comment handling functions
+    /**
+     * Toggle visibility of the per-essay comment panel.  When the user
+     * presses the "💬 Comments" button this function expands the comment
+     * area if it is hidden and collapses it if it is visible.
+     * @param {string} essayId The unique ID of the essay whose comments are being toggled.
+     */
+    window.toggleCommentSection = function toggleCommentSection(essayId) {
+      const container = document.getElementById(`comment-${essayId}`);
+      if (!container) return;
+      // Toggle between block and none. Default hidden if style is empty.
+      const isHidden = container.style.display === 'none' || container.style.display === '';
+      container.style.display = isHidden ? 'block' : 'none';
+    };
+
+    /**
+     * Append a new comment to the specified essay's comment list.  Reads the
+     * value from the associated textarea, appends a <p> element with the text,
+     * then clears the textarea.  Ignores empty comments.
+     * @param {string} essayId The unique ID of the essay being commented on.
+     */
+    window.addCommentToEssay = function addCommentToEssay(essayId) {
+      const inputEl = document.getElementById(`commentInput-${essayId}`);
+      if (!inputEl) return;
+      const commentText = inputEl.value.trim();
+      if (!commentText) return;
+      // find the comment container inside the comment panel
+      const panel = document.getElementById(`comment-${essayId}`);
+      if (!panel) return;
+      const commentsContainer = panel.querySelector('.comment-section');
+      const p = document.createElement('p');
+      p.textContent = commentText;
+      commentsContainer.appendChild(p);
+      // clear the textarea after posting
+      inputEl.value = '';
+      // ensure panel stays open after adding a comment
+      panel.style.display = 'block';
+    };
+
+  /**
+   * Load comments for a specific essay using Firestore, if available.
+   * This function sets up a real-time listener on the `comments` collection
+   * filtered by essayId and updates the corresponding comment list element
+   * whenever a change occurs.  If Firestore isn't initialized, this
+   * function catches the error and logs a warning instead of failing.
+   *
+   * @param {string} essayId The ID of the essay document.
+   */
+  function loadComments(essayId) {
+    try {
+      if (!db || !essayId) return;
+      const commentListEl = document.getElementById(`commentList-${essayId}`);
+      if (!commentListEl) return;
+      const commentsRef = db
+        .collection('comments')
+        .where('essayId', '==', essayId)
+        .orderBy('timestamp');
+      commentsRef.onSnapshot(
+        (snapshot) => {
+          // Clear existing comments
+          commentListEl.innerHTML = '';
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            const p = document.createElement('p');
+            p.textContent = `${data.userName || 'Anonymous'}: ${data.text}`;
+            commentListEl.appendChild(p);
+          });
+        },
+        (error) => {
+          console.error('Error loading comments:', error);
+        }
+      );
+    } catch (err) {
+      // Firestore might not be available in local development or offline,
+      // so do not throw.  Comments just won't persist.
+      console.warn('Unable to load comments (Firestore not available):', err);
+    }
+  }
 
     // Make section switching functions globally accessible so inline HTML
     // onclick handlers can invoke them.  Without these assignments the
