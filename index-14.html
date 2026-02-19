@@ -10,25 +10,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <!--
-    This file is based on the original Pangeya Essay Platform hosted on GitHub pages.
-    The markup, styling and scripts have been preserved so the core functionality
-    (writing, saving, editing and printing essays; teacher mode; theme switching)
-    continue to work. This edition preserves the Neon, Light and Dark themes
-    from the original. A New Year mode can also be toggled on/off. When active
-    it adds 3D decorations (stocking by the name field, tree/gift/Santa icons
-    on the buttons and essay cards) and a gentle snowfall effect near the top
-    of the page. A small fixed button in the bottom‑right corner allows users
-    to enable or disable the New Year mode without interfering with normal
-    operation or teacher features.
-
-    The Pangeya theme (green palette) from the original edition has been removed
-    in this version as per user request. All references to the Pangeya theme,
-    including styles, buttons and event handlers, have been stripped out to
-    simplify the theme logic.
-
-    Comment functionality has been removed in this version. All comment‑related
-    styles, UI elements and scripts have been deleted. The platform focuses
-    solely on writing and managing essays, feedback and AI interactions.
+    This version of the Pangeya Essay Platform has been cleaned up to remove
+    unused features (such as vocabulary and comment functionality) and to
+    streamline the code.  All references to the deprecated Pangeya theme
+    have been removed.  The remaining styles and scripts focus solely on
+    writing, saving, editing and downloading essays, as well as teacher
+    feedback and AI interaction.  Snow and rain effects are still available
+    via the weather toggle.
   -->
   <style>
     :root {
@@ -73,7 +61,7 @@
       It uses translucent backgrounds and applies a backdrop blur on the
       container to give the impression of frosted glass.  Note: the glass
       theme remains defined here for completeness, but there is no built‑in
-      button to activate it. If needed, you can add your own trigger.
+      button to activate it.  If needed, you can add your own trigger.
     */
     .glass-theme {
       --bg-gradient: linear-gradient(135deg, rgba(255,255,255,0.35), rgba(230,230,230,0.2));
@@ -455,6 +443,34 @@
       100% { opacity: 0.2; }
     }
 
+    /* Pixel hero container and canvas for the "Grace" particle text animation.
+       The container reserves vertical space below the page heading and ensures
+       responsiveness.  The canvas fills the container, allowing the
+       JavaScript animation to scale to the available width. */
+    .pixel-hero {
+      position: relative;
+      width: 100%;
+      /* Height is tuned to provide enough room for the text particles.
+         Adjust this value if the animation appears too cramped or too
+         spread out on small screens. */
+      height: 160px;
+      margin: 14px 0 20px;
+    }
+    .pixel-hero canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Reduce the height of the pixel animation on smaller screens to
+       maintain a balanced layout.  Without this rule the canvas may
+       dominate the hero area on very narrow viewports. */
+    @media (max-width: 640px) {
+      .pixel-hero {
+        height: 120px;
+      }
+    }
+
     /* AI feedback block styling inside essays */
     .ai-feedback {
       margin-top: 4px;
@@ -467,11 +483,6 @@
       white-space: pre-wrap;
       word-wrap: break-word;
     }
-
-    /* Pangeya theme overrides removed.
-       Previously there were green palette overrides for buttons and chips
-       associated with the Pangeya theme. Since the Pangeya theme has been
-       deprecated, these rules have been removed entirely. */
 
     .teacher-panel {
       display: none;
@@ -949,8 +960,7 @@
     }
 
     /* Remove all comment section styles (comment buttons, section, list etc.) */
-    /* The following styles were removed since comment features have been
-       deprecated. They are intentionally left empty to indicate removal. */
+    /* Comment features have been deprecated and all associated styles removed. */
 
   </style>
 </head>
@@ -960,6 +970,14 @@
     <div id="essaySection" class="inner">
       <h1>✨ Pangeya Essay Platform</h1>
       <div class="subtitle">Write, save and print essays. Teachers can leave feedback with a secret key.</div>
+      <!-- Pixel animation hero container for the word "Grace".  This canvas
+           will be sized via CSS and the accompanying script will draw
+           individual particles that assemble into the letters.  Placing
+           this element here ensures the animation sits neatly below the
+           heading without disturbing the rest of the layout. -->
+      <div class="pixel-hero" aria-hidden="true">
+        <canvas id="pixelCanvas"></canvas>
+      </div>
       <!-- Snow effect overlay (falls within header area) -->
       <div class="snow-container" aria-hidden="true">
         <div class="snowflake">❆</div>
@@ -992,7 +1010,7 @@
         <button class="theme-btn" id="lightTheme">Light</button>
         <button class="theme-btn" id="darkTheme">Dark</button>
         <!-- Weather toggle button: click to switch between snow and rain -->
-        <button class="weather-btn" id="weatherToggle" onclick="toggleWeather()" title="Toggle snow/rain">🌧</button>
+        <button class="weather-btn" id="weatherToggle" title="Toggle snow/rain">🌧</button>
       </div>
       <!-- Name input wrapped so the tree emoji can sit inside -->
       <label for="name">Your name</label>
@@ -1007,7 +1025,6 @@
       <!-- Primary actions with New Year stickers (tree, gift, Santa) -->
       <button class="btn btn-primary" id="submitBtn">Submit
         <span class="emoji-sticker">🎉</span>
-        <!-- Hidden fallback base64 sticker image suppressed -->
       </button>
       <button class="btn btn-secondary" id="pdfBtn">Download PDF
         <span class="emoji-sticker">🎁</span>
@@ -1141,10 +1158,10 @@ Or pay via QR:</div>
   </div>
   <!-- Include jsPDF from CDN for PDF export -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <!-- Main application script; imported modules from Firebase remain unchanged.  Additional
-       functions implement the new Glass theme, New Year decorations and toggle logic.
-       The Pangeya theme code and related event handlers have been removed.
-       Comment-related functions and UI have been removed from the script as well. -->
+  <!-- Main application script; this version has been cleaned to remove unused
+       features and to fix minor bugs such as references to the deprecated
+       Pangeya theme.  The script retains full functionality for essay
+       management, teacher mode, AI chat, and PDF export. -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
@@ -1157,10 +1174,8 @@ Or pay via QR:</div>
       updateDoc,
       deleteDoc,
       getDoc,
-  setDoc,
-  query,
-  orderBy,
-  serverTimestamp
+      setDoc,
+      serverTimestamp
     } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
     // Constants
@@ -1184,13 +1199,7 @@ Or pay via QR:</div>
     // from different fetches.
     let allEssays = [];
 
-    // Counter and global state for vocabulary requests. Similar to essays,
-    // these help avoid stale renders when multiple search/filter operations
-    // occur rapidly. Each call to renderVocab increments vocabRequestCounter
-    // and stores fetched items in allVocab.
-    // Vocabulary state has been removed; no counter or storage is required.
-
-    // Global state for chat messages.  chatHistory holds an array of
+    // Counter and global state for chat messages.  chatHistory holds an array of
     // messages exchanged with the AI.  Each message is an object with
     // a 'role' (either 'user' or 'assistant') and a 'content' string.
     let chatHistory = [];
@@ -1360,23 +1369,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
     }
 
     /**
-     * Show the chat section and hide the essay/vocab sections.  When switching
-     * to the chat, ensure the chat history is rendered and the scroll is
-     * positioned at the bottom.
-     */
-    function switchToChat() {
-      const essaySection = document.getElementById('essaySection');
-      const chatSection = document.getElementById('chatSection');
-      // Hide the essay area when switching to the chat
-      if (essaySection) essaySection.style.display = 'none';
-      // Show the chat and render the existing history
-      if (chatSection) {
-        chatSection.style.display = 'block';
-        renderChat();
-      }
-    }
-
-    /**
      * Toggle between snow and rain effects.
      * When the page is in snow mode (body has class newyear-mode), clicking
      * the weather toggle button switches to rain mode (adding rain-mode and
@@ -1394,6 +1386,23 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         body.classList.remove('newyear-mode');
         body.classList.add('rain-mode');
         if (toggleBtn) toggleBtn.textContent = '❄';
+      }
+    }
+
+    /**
+     * Show the chat section and hide the essay/vocab sections.  When switching
+     * to the chat, ensure the chat history is rendered and the scroll is
+     * positioned at the bottom.
+     */
+    function switchToChat() {
+      const essaySection = document.getElementById('essaySection');
+      const chatSection = document.getElementById('chatSection');
+      // Hide the essay area when switching to the chat
+      if (essaySection) essaySection.style.display = 'none';
+      // Show the chat and render the existing history
+      if (chatSection) {
+        chatSection.style.display = 'block';
+        renderChat();
       }
     }
 
@@ -1490,9 +1499,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       }
     }
 
-    // The platform previously supported image uploads in chat. This functionality
-    // has been removed to simplify the interface and improve performance.
-
     /**
      * Clear the current chat history.  Resets chatHistory and chatRequestCounter
      * and re-renders the chat container to remove all messages.
@@ -1503,8 +1509,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       renderChat();
       updateChatCredit();
     }
-
-    // The old getAIFeedback function has been removed.  Per‑essay AI feedback is handled by getEssayAIFeedback().
 
     /**
      * Fetch AI-generated feedback for a specific essay.  This function is
@@ -1683,13 +1687,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
     getAnalytics(app);
     const db = getFirestore(app);
     const essaysRef = collection(db, "essays");
-    // Reference to the vocabulary collection for storing words and definitions
-    // Vocabulary collection reference removed because vocabulary feature is deprecated.
-
-    // Reference to gift messages collection for storing per‑author sticker text
-    // Each document id corresponds to the essay author's name and stores a `message` field
-    // Example: { name: "John", message: "1-800" }
-    // Use helper functions below to get and set messages
 
     /**
      * Retrieve the custom gift message for a given author name. If no message is set,
@@ -1955,21 +1952,15 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         }
         aiFbDiv.appendChild(aiContent);
         card.appendChild(aiFbDiv);
-        // Card sticker element for New Year mode (gift image). This remains decorative.
-        // Removed heavy base64 card sticker to reduce file size.
-
         // Emoji sticker (🎁) to trigger showing the custom message
         const cardEmoji = document.createElement('span');
         cardEmoji.className = 'emoji-card-sticker';
         cardEmoji.textContent = '🎁';
         card.appendChild(cardEmoji);
-
         // Container for the custom gift message; we fetch the message for the author
         const giftMessageEl = document.createElement('div');
         giftMessageEl.className = 'gift-message';
-        // We'll populate below
         card.appendChild(giftMessageEl);
-
         // Fetch the gift message asynchronously
         const giftMsg = await getGiftMessage(data.name || '');
         if (giftMsg) {
@@ -1979,7 +1970,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         if (myRequestId !== essayRequestCounter) {
           return;
         }
-
         // Toggle showing/hiding the message when the emoji is clicked
         cardEmoji.addEventListener('click', (e) => {
           e.stopPropagation();
@@ -1995,7 +1985,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
             }
           }
         });
-
         container.appendChild(card);
       }
     }
@@ -2005,14 +1994,14 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
      * contents of the search input and calls renderEssays with the
      * provided query.  If the input is empty, all essays are shown.
      */
-        function searchEssays() {
-          const input = document.getElementById('essaySearch');
-          const query = input ? input.value.trim() : '';
-          // When the query is empty, show the full list of essays.  Otherwise
-          // filter by the query.  The second parameter is left as default
-          // (false) so that renderEssays shows all when empty.
-          renderEssays(query);
-        }
+    function searchEssays() {
+      const input = document.getElementById('essaySearch');
+      const query = input ? input.value.trim() : '';
+      // When the query is empty, show the full list of essays.  Otherwise
+      // filter by the query.  The second parameter is left as default
+      // (false) so that renderEssays shows all when empty.
+      renderEssays(query);
+    }
 
     /** Submit a new essay to Firestore */
     async function submitEssay() {
@@ -2142,11 +2131,11 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       if (!selectedText) return;
       let markParent = findTagParent(sel.anchorNode, ['mark'], editableParent) || findTagParent(sel.focusNode, ['mark'], editableParent);
       if (markParent) {
-        const text = markParent.textContent;
-        markParent.replaceWith(document.createTextNode(text));
+          const text = markParent.textContent;
+          markParent.replaceWith(document.createTextNode(text));
       } else {
-        const markHtml = `<mark>${selectedText}</mark>`;
-        document.execCommand('insertHTML', false, markHtml);
+          const markHtml = `<mark>${selectedText}</mark>`;
+          document.execCommand('insertHTML', false, markHtml);
       }
     }
     function underlineSelection() {
@@ -2216,27 +2205,20 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       // Remove any previously applied theme classes.  Glass theme is defined
       // but unused by default; if you add a glass theme toggle in the UI,
       // include 'glass-theme' here as well.
-      body.classList.remove('light-theme', 'dark-theme', 'pangeya-theme');
+      body.classList.remove('light-theme', 'dark-theme');
       // Reset active states on buttons
       document.getElementById('neonTheme').classList.remove('active');
       document.getElementById('lightTheme').classList.remove('active');
       document.getElementById('darkTheme').classList.remove('active');
-      // Duplicate theme buttons in vocabulary/chat sections do not exist in this
-      // version, but we defensively query them and remove their active class if present.
-      // On the current version there are no duplicate theme buttons in vocabulary/chat sections.
-      // The variables neonV, lightV and darkV referenced in the original implementation have been removed.
       if (theme === 'light') {
         body.classList.add('light-theme');
         document.getElementById('lightTheme').classList.add('active');
-        // There is only one set of theme buttons; no additional buttons to update.
       } else if (theme === 'dark') {
         body.classList.add('dark-theme');
         document.getElementById('darkTheme').classList.add('active');
-        // There is only one set of theme buttons; no additional buttons to update.
       } else {
         // Fallback to Neon theme as default
         document.getElementById('neonTheme').classList.add('active');
-        // There is only one set of theme buttons; no additional buttons to update.
       }
     }
 
@@ -2367,10 +2349,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
     document.getElementById('lightTheme').addEventListener('click', () => setTheme('light'));
     document.getElementById('darkTheme').addEventListener('click', () => setTheme('dark'));
 
-    // Pangeya theme button has been removed.  Previously there was a handler
-    // attached to the Pangeya button to select the green palette.  Since
-    // the Pangeya theme is deprecated, this code has been omitted.
-
     // Search input events: update essay list as the user types or clears the search
     const essaySearchInput = document.getElementById('essaySearch');
     if (essaySearchInput) {
@@ -2387,54 +2365,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       });
     }
 
-    // Snowfall is always enabled; removed New Year toggle logic
-
-    // Initial render
-    renderEssays();
-
-    // Vocabulary removed: no need to render vocabulary list
-
-    // =============================================
-    // Vocabulary module
-    // Functions and event bindings for the vocabulary section are defined below.
-
-    // Vocabulary section has been removed; switchToVocab is deprecated.
-
-    // Return to the essay section from the vocabulary section
-    function switchToEssays() {
-      const essaySection = document.getElementById('essaySection');
-      if (essaySection) {
-        essaySection.style.display = 'block';
-      }
-      // Hide chat section when returning to essays
-      const chatSection = document.getElementById('chatSection');
-      if (chatSection) {
-        chatSection.style.display = 'none';
-      }
-    }
-
-    // Vocabulary rendering function removed; returns immediately.
-    async function renderVocab() {
-      return;
-    }
-
-    // Vocabulary add function removed; no operation performed.
-    async function addVocab() {
-      return;
-    }
-
-    // Vocabulary search function removed.
-    function searchVocab() {
-      return;
-    }
-
-    // Vocabulary delete function removed.
-    async function deleteVocab() {
-      return;
-    }
-
-    // Vocabulary events removed.
-
     // Bind chat events
     document.getElementById('chatSendBtn')?.addEventListener('click', sendChatMessage);
     const chatInputEl = document.getElementById('chatInput');
@@ -2446,10 +2376,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         }
       });
     }
-    // There is no chat back button in this version; navigation is handled by the UI.
-    // Bind image upload button: triggers the hidden file input click
-    // Image upload functionality has been removed from the chat.  No button binding is necessary.
-    // The image input is no longer present; no change listener is needed.
     // Bind clear chat button
     const chatClearBtnEl = document.getElementById('chatClearBtn');
     if (chatClearBtnEl) {
@@ -2458,8 +2384,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         clearChat();
       });
     }
-
-    // Per-essay AI feedback buttons are added dynamically for each essay card; there is no global feedback button.
 
     // Initialize chat credits display
     updateChatCredit();
@@ -2480,19 +2404,234 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
     window.highlightSelection = highlightSelection;
     window.underlineSelection = underlineSelection;
     window.strikeSelection = strikeSelection;
-
     // Expose AI feedback helper so inline event handlers can call it
     window.getEssayAIFeedback = getEssayAIFeedback;
-    // Comment functions are removed; no need to expose them.
-
     // Expose section switching functions globally so inline HTML
     // onclick handlers can invoke them.
-    window.switchToEssays = switchToEssays;
+    window.switchToChat = switchToChat;
     // Expose the weather toggle so it can be called from the weather button
     window.toggleWeather = toggleWeather;
     // Expose PDF functions to ensure they are globally accessible in case inline attributes are used
     window.downloadPDF = downloadPDF;
     window.downloadEssayPDF = downloadEssayPDF;
+
+    // Initial render
+    renderEssays();
+
+    // Initialize weather toggle button text based on default mode
+    document.getElementById('weatherToggle').addEventListener('click', toggleWeather);
+  </script>
+
+  <!-- Particle text animation script.  The logic below implements a
+       particle‑based text effect directly within this HTML file.  It
+       renders the word "Grace" using hundreds of small square particles
+       that assemble from random positions into the target shape.  The
+       animation is responsive, recalculates on resize, and includes a
+       subtle mouse repelling effect.  Constants such as PARTICLE_GAP,
+       EASE and FRICTION can be tweaked to modify behaviour. -->
+  <script>
+    (() => {
+      // Wait for the DOM to be fully parsed before querying elements.
+      document.addEventListener('DOMContentLoaded', () => {
+        const heroContainer = document.querySelector('.pixel-hero');
+        const canvas = document.getElementById('pixelCanvas');
+        if (!heroContainer || !canvas) {
+          // The hero container or canvas is not present; abort initialization.
+          return;
+        }
+        const ctx = canvas.getContext('2d');
+
+        // Create an off‑screen canvas for drawing the text and sampling pixels.
+        const offCanvas = document.createElement('canvas');
+        const offCtx = offCanvas.getContext('2d');
+
+        // Array to hold all particle objects.
+        let particles = [];
+
+        // Mouse state for interactive repelling; values are set on mousemove.
+        const mouse = { x: null, y: null, radius: 80 };
+
+        // Tuning constants
+        const PARTICLE_GAP = 4; // distance between sampled pixels (affects particle count)
+        const EASE = 0.02;      // how quickly particles accelerate towards their destination
+        const FRICTION = 0.9;   // damping factor applied to velocities
+
+        /**
+         * Resize both the visible and off‑screen canvases to match the hero
+         * container dimensions.  Called on load and whenever the window is
+         * resized.  Also recalculates particles to maintain crisp text.
+         */
+        function resizeCanvas() {
+          const rect = heroContainer.getBoundingClientRect();
+          // Set canvas dimensions to match the container's width and height.
+          canvas.width = rect.width;
+          canvas.height = rect.height;
+          offCanvas.width = rect.width;
+          offCanvas.height = rect.height;
+          // Regenerate particles whenever the canvas size changes.
+          generateParticles();
+        }
+
+        /**
+         * Draw the target text onto the off‑screen canvas and sample its pixels
+         * to create particle objects for every visible pixel.  Each particle
+         * stores its destination coordinates, a random starting position and
+         * velocity, and a delay before it begins to move.
+         */
+        function generateParticles() {
+          particles = [];
+          const width = offCanvas.width;
+          const height = offCanvas.height;
+          // Clear the off‑screen canvas.
+          offCtx.clearRect(0, 0, width, height);
+          // Choose a font size relative to the canvas height.  The factor of
+          // 0.6 leaves vertical padding and helps the text fit on small screens.
+          const fontSize = height * 0.6;
+          offCtx.font = `${fontSize}px Poppins, sans-serif`;
+          offCtx.textAlign = 'center';
+          offCtx.textBaseline = 'middle';
+          // Use the CSS variable --accent for the text fill colour to tie the
+          // particle colours to the current theme.  Fallback to a magenta hue
+          // if the variable is not defined.
+          const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#a855f7';
+          offCtx.fillStyle = accent.trim();
+          const text = 'Grace';
+          offCtx.fillText(text, width / 2, height / 2);
+          // Extract pixel data from the off‑screen canvas.
+          const imgData = offCtx.getImageData(0, 0, width, height).data;
+          // Loop through pixels at intervals defined by PARTICLE_GAP.  For each
+          // non‑transparent pixel (alpha > threshold), create a particle whose
+          // destination is that pixel's x and y coordinate.
+          for (let y = 0; y < height; y += PARTICLE_GAP) {
+            for (let x = 0; x < width; x += PARTICLE_GAP) {
+              const index = (y * width + x) * 4;
+              // Only consider pixels with significant alpha.  This ensures we
+              // ignore background pixels.
+              if (imgData[index + 3] > 128) {
+                particles.push(new Particle(x, y, PARTICLE_GAP));
+              }
+            }
+          }
+        }
+
+        /**
+         * Particle constructor.  Each particle represents one pixel of the text.
+         * @param {number} destX  Target x coordinate for the particle
+         * @param {number} destY  Target y coordinate for the particle
+         * @param {number} size   Size of the drawn square
+         */
+        class Particle {
+          constructor(destX, destY, size) {
+            this.destX = destX;
+            this.destY = destY;
+            // Start at a random position scattered around the canvas.  Y is
+            // offset below the canvas to give the impression of particles
+            // "falling" into place.  X spans the full width.
+            this.x = Math.random() * canvas.width;
+            this.y = canvas.height + Math.random() * canvas.height;
+            this.size = size;
+            this.vx = 0;
+            this.vy = 0;
+            // Random delay (in frames) before the particle begins to move.
+            this.delay = Math.floor(Math.random() * 60);
+          }
+          /**
+           * Update the particle's position.  Applies easing towards the
+           * destination coordinates, friction to smooth the motion and a
+           * repelling force if the mouse is nearby.
+           */
+          update() {
+            if (this.delay > 0) {
+              // Decrement delay and skip motion until delay has elapsed.
+              this.delay--;
+              return;
+            }
+            // Compute acceleration towards the destination.
+            const dx = this.destX - this.x;
+            const dy = this.destY - this.y;
+            this.vx += dx * EASE;
+            this.vy += dy * EASE;
+            // Apply mouse repelling force if within radius.
+            if (mouse.x !== null && mouse.y !== null) {
+              const mx = this.x - mouse.x;
+              const my = this.y - mouse.y;
+              const dist = Math.hypot(mx, my);
+              if (dist < mouse.radius && dist > 0) {
+                const force = (mouse.radius - dist) / mouse.radius;
+                const angle = Math.atan2(my, mx);
+                // Multiply by a factor to increase the repelling strength.
+                this.vx += Math.cos(angle) * force * 2;
+                this.vy += Math.sin(angle) * force * 2;
+              }
+            }
+            // Apply friction to dampen velocity and smooth the motion.
+            this.vx *= FRICTION;
+            this.vy *= FRICTION;
+            this.x += this.vx;
+            this.y += this.vy;
+          }
+          /**
+           * Draw the particle as a small square on the main canvas.  The colour
+           * is derived from the current accent CSS variable to ensure it adapts
+           * to theme changes.
+           */
+          draw() {
+            // Re‑read the accent colour each frame in case the theme changes at
+            // runtime.  Trim whitespace from computed property.
+            const color = (getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#a855f7').trim();
+            ctx.fillStyle = color;
+            ctx.fillRect(this.x, this.y, this.size, this.size);
+          }
+        }
+
+        /**
+         * Animation loop.  Clears the canvas, updates each particle and draws
+         * them in their new positions.  Uses requestAnimationFrame for smooth
+         * updates at the browser's refresh rate.
+         */
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            p.update();
+            p.draw();
+          }
+          requestAnimationFrame(animate);
+        }
+
+        /**
+         * Capture mouse coordinates relative to the canvas when moving.  On
+         * mouseleave, reset the coordinates to null so that repelling forces
+         * cease.
+         */
+        function attachMouseHandlers() {
+          canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+          });
+          canvas.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+          });
+        }
+
+        // Initial setup: size canvases, generate particles and start the loop.
+        function init() {
+          resizeCanvas();
+          attachMouseHandlers();
+          animate();
+        }
+
+        // Handle window resize by updating canvas sizes and regenerating particles.
+        window.addEventListener('resize', () => {
+          resizeCanvas();
+        });
+
+        // Kick things off.
+        init();
+      });
+    })();
   </script>
 </body>
 </html>
