@@ -443,7 +443,7 @@
       100% { opacity: 0.2; }
     }
 
-    /* Pixel hero container and canvas for the "Grace" particle text animation.
+    /* Pixel hero container and canvas for the "minnos" particle text animation.
        The container reserves vertical space below the page heading and ensures
        responsiveness.  The canvas fills the container, allowing the
        JavaScript animation to scale to the available width. */
@@ -970,7 +970,7 @@
     <div id="essaySection" class="inner">
       <h1>✨ Pangeya Essay Platform</h1>
       <div class="subtitle">Write, save and print essays. Teachers can leave feedback with a secret key.</div>
-      <!-- Pixel animation hero container for the word "Grace".  This canvas
+      <!-- Pixel animation hero container for the word "minnos".  This canvas
            will be sized via CSS and the accompanying script will draw
            individual particles that assemble into the letters.  Placing
            this element here ensures the animation sits neatly below the
@@ -2424,7 +2424,7 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
 
   <!-- Particle text animation script.  The logic below implements a
        particle‑based text effect directly within this HTML file.  It
-       renders the word "Grace" using hundreds of small square particles
+       renders the word "minnos" using hundreds of small square particles
        that assemble from random positions into the target shape.  The
        animation is responsive, recalculates on resize, and includes a
        subtle mouse repelling effect.  Constants such as PARTICLE_GAP,
@@ -2495,7 +2495,7 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
           // if the variable is not defined.
           const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#a855f7';
           offCtx.fillStyle = accent.trim();
-          const text = 'Grace';
+          const text = 'minnos';
           offCtx.fillText(text, width / 2, height / 2);
           // Extract pixel data from the off‑screen canvas.
           const imgData = offCtx.getImageData(0, 0, width, height).data;
