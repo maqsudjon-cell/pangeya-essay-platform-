@@ -4,23 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pangeya Essay Platform</title>
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <!--
-    This version of the Pangeya Essay Platform has been cleaned up to remove
-    unused features (such as vocabulary and comment functionality) and to
-    streamline the code.  All references to the deprecated Pangeya theme
-    have been removed.  The remaining styles and scripts focus solely on
-    writing, saving, editing and downloading essays, as well as teacher
-    feedback and AI interaction.  Snow and rain effects are still available
-    via the weather toggle.
-  -->
   <style>
     :root {
-      /* base colours and sizing inherited from the original site */
       --bg-gradient: radial-gradient(circle at top left, #3b0764, #1e1b4b 40%, #020617 80%);
       --card-bg: rgba(15, 23, 42, 0.92);
       --accent: #a855f7;
@@ -41,7 +30,6 @@
       justify-content: center;
       padding: 20px;
     }
-    /* Light and dark themes mirror the original implementation */
     .light-theme {
       --bg-gradient: linear-gradient(135deg, #e0e7ff, #f5f3ff);
       --card-bg: #ffffff;
@@ -55,14 +43,6 @@
       --text-main: #e5e7eb;
       --text-muted: #9ca3af;
     }
-
-    /*
-      Glass theme – inspired by iOS style glass surfaces.
-      It uses translucent backgrounds and applies a backdrop blur on the
-      container to give the impression of frosted glass.  Note: the glass
-      theme remains defined here for completeness, but there is no built‑in
-      button to activate it.  If needed, you can add your own trigger.
-    */
     .glass-theme {
       --bg-gradient: linear-gradient(135deg, rgba(255,255,255,0.35), rgba(230,230,230,0.2));
       --card-bg: rgba(255, 255, 255, 0.2);
@@ -73,8 +53,6 @@
     .glass-theme .inner {
       backdrop-filter: blur(16px);
     }
-
-    /* Container styling preserved from original */
     .container {
       width: 100%;
       max-width: 900px;
@@ -132,7 +110,6 @@
       margin-bottom: 4px;
       margin-top: 6px;
     }
-    /* Input and textarea styling retained from original */
     input[type="text"], textarea {
       width: 100%;
       border-radius: 14px;
@@ -140,7 +117,7 @@
       background: rgba(15, 23, 42, 0.9);
       color: var(--text-main);
       padding: 10px 12px;
-      font-size: 14px;
+      font-size: 16px;
       outline: none;
       transition: border .15s ease, box-shadow .15s ease, background .15s ease;
     }
@@ -148,13 +125,6 @@
       min-height: 130px;
       resize: vertical;
     }
-
-    /* Make the vocabulary definition box smaller.  Users often paste multiple
-       vocab items into this box, so it should not take up as much vertical
-       space as the essay textarea.  The global textarea rule above sets a
-       fairly tall minimum height (130px).  We override it for the vocabulary
-       definition input so that it appears as a compact field, while still
-       allowing users to type or paste multiple lines if needed. */
     #definition {
       min-height: 80px;
     }
@@ -174,7 +144,7 @@
       margin-top: 10px;
       transition: transform .1s ease, box-shadow .1s ease, opacity .15s ease;
       color: white;
-      position: relative; /* to anchor stickers */
+      position: relative;
       overflow: hidden;
     }
     .btn-primary {
@@ -191,9 +161,6 @@
     }
     .btn:hover { transform: translateY(-1px); }
     .btn:active { transform: translateY(0); box-shadow: none; }
-
-    /* Search controls for essay list – provides a small name search and an AI
-       button.  These controls appear next to the All Essays heading. */
     .essay-search-controls {
       display: flex;
       gap: 6px;
@@ -208,7 +175,7 @@
       border: 1px solid var(--border-soft);
       background: var(--card-bg);
       color: var(--text-main);
-      font-size: 12px;
+      font-size: 14px;
     }
     .essay-search-controls input::placeholder {
       color: var(--text-muted);
@@ -228,10 +195,6 @@
     }
     .essay-search-controls button:hover { transform: translateY(-1px); }
     .essay-search-controls button:active { transform: translateY(0); }
-
-    /* Vocabulary-related styles removed as the vocabulary feature is deprecated. */
-
-    /* Chat section styling */
     .chat-messages {
       display: flex;
       flex-direction: column;
@@ -269,7 +232,7 @@
     .chat-input-area {
       display: flex;
       gap: 8px;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
     .chat-input-area textarea {
       flex: 1;
@@ -279,26 +242,24 @@
       background: var(--input-bg, rgba(15, 23, 42, 0.8));
       color: #e5e7eb;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      font-size: 14px;
+      font-size: 16px;
       min-height: 48px;
     }
-    /* Ensure the send button in the chat input area does not stretch to full width */
-    .chat-input-area button {
-      width: auto;
-      flex-shrink: 0;
-      white-space: nowrap;
+    .chat-input-area input {
+      flex: 1;
+      border: 1px solid var(--border-soft);
+      border-radius: 999px;
+      padding: 6px 12px;
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--text-main);
+      font-size: 16px;
+      outline: none;
     }
-
-    /* Styling for the chat image upload button.  This button allows the
-       user to select an image file from their device.  It uses the
-       accent gradient similar to other primary buttons but is sized to
-       its content. */
     .chat-image-btn {
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       color: #ffffff;
       border: none;
       border-radius: 999px;
-      /* Reduce padding and font size to make the icon appear smaller */
       padding: 6px 8px;
       font-size: 14px;
       cursor: pointer;
@@ -308,15 +269,11 @@
       transform: translateY(-1px);
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
     }
-
-    /* Styling for the clear chat button.  This button mirrors the style of
-       the image upload button but is used to reset the conversation. */
     .chat-clear-btn {
       background: linear-gradient(135deg, var(--accent), var(--accent2));
       color: #ffffff;
       border: none;
       border-radius: 999px;
-      /* Match the reduced sizing of the image button */
       padding: 6px 8px;
       font-size: 14px;
       cursor: pointer;
@@ -326,7 +283,6 @@
       transform: translateY(-1px);
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
     }
-    /* Ensure images within chat messages scale nicely and have rounded corners */
     .chat-message img {
       max-width: 100%;
       border-radius: 12px;
@@ -338,8 +294,6 @@
       margin-top: 4px;
       text-align: center;
     }
-
-    /* Modern chat UI styling */
     .chat-wrapper {
       background: rgba(255, 255, 255, 0.03);
       border-radius: 12px;
@@ -376,11 +330,6 @@
       padding: 10px;
       margin-bottom: 8px;
     }
-    .chat-input-area {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
     .chat-input-area input {
       flex: 1;
       border: 1px solid var(--border-soft);
@@ -388,7 +337,7 @@
       padding: 6px 12px;
       background: rgba(15, 23, 42, 0.8);
       color: var(--text-main);
-      font-size: 14px;
+      font-size: 16px;
       outline: none;
     }
     .send-btn {
@@ -442,17 +391,9 @@
       20% { opacity: 1; }
       100% { opacity: 0.2; }
     }
-
-    /* Pixel hero container and canvas for the "minnos" particle text animation.
-       The container reserves vertical space below the page heading and ensures
-       responsiveness.  The canvas fills the container, allowing the
-       JavaScript animation to scale to the available width. */
     .pixel-hero {
       position: relative;
       width: 100%;
-      /* Height is tuned to provide enough room for the text particles.
-         Adjust this value if the animation appears too cramped or too
-         spread out on small screens. */
       height: 160px;
       margin: 14px 0 20px;
     }
@@ -461,17 +402,11 @@
       width: 100%;
       height: 100%;
     }
-
-    /* Reduce the height of the pixel animation on smaller screens to
-       maintain a balanced layout.  Without this rule the canvas may
-       dominate the hero area on very narrow viewports. */
     @media (max-width: 640px) {
       .pixel-hero {
         height: 120px;
       }
     }
-
-    /* AI feedback block styling inside essays */
     .ai-feedback {
       margin-top: 4px;
       padding: 7px 8px;
@@ -483,7 +418,6 @@
       white-space: pre-wrap;
       word-wrap: break-word;
     }
-
     .teacher-panel {
       display: none;
       margin-top: 8px;
@@ -513,7 +447,7 @@
       border: 1px solid rgba(148, 163, 184, 0.35);
       margin-bottom: 8px;
       font-size: 13px;
-      position: relative; /* for sticker positioning */
+      position: relative;
     }
     .essay-header {
       display: flex;
@@ -532,7 +466,6 @@
       margin-top: 2px;
       color: var(--text-main);
     }
-    .word-count { /* inserted from script */ }
     .feedback {
       margin-top: 4px;
       padding: 7px 8px;
@@ -578,10 +511,8 @@
     .chip-edit { background: #22c55e; }
     .chip-delete { background: #ef4444; }
     .chip-feedback { background: #0ea5e9; }
-    /* Added style for per-essay PDF download button */
     .chip-download { background: #f59e0b; }
     .chip-btn:active { transform: translateY(1px); }
-    /* Toolbar styling for rich text editing */
     .toolbar {
       display: flex;
       gap: 8px;
@@ -627,7 +558,6 @@
       white-space: pre-wrap;
       word-wrap: break-word;
     }
-    /* Light theme adjustments for cards and feedback */
     .light-theme .essay-card {
       background: rgba(255, 255, 255, 0.95);
       border: 1px solid rgba(0, 0, 0, 0.12);
@@ -655,6 +585,7 @@
       background: #f9fafb;
       color: #111827;
       border: 1px solid rgba(0, 0, 0, 0.15);
+      font-size: 16px;
     }
     .light-theme input[type="text"]::placeholder,
     .light-theme textarea::placeholder {
@@ -681,11 +612,9 @@
       background: #ffffff;
       border-color: #818cf8;
     }
-    /* Highlight, underline and strike styling */
     mark, .user-highlight { background-color: #fef08a; color: #111827; }
     u, .underline-text { text-decoration: underline; }
     s, .strike-text { text-decoration: line-through; }
-    /* Modal styling retained */
     .modal {
       position: fixed;
       inset: 0;
@@ -751,8 +680,6 @@
       .modal-content { padding: 14px; }
       #editArea, #feedbackArea { min-height: 170px; }
     }
-    /* ================== New Year decorations ================== */
-    /* Wrapper around the name input so the stocking can be positioned nicely */
     .name-wrapper { position: relative; }
     .ny-icon {
       position: absolute;
@@ -764,29 +691,22 @@
       display: none;
       pointer-events: none;
     }
-    /* Show icons when New Year mode is on */
     body.newyear-mode .ny-icon { display: block; }
-    /* Add extra padding to the input when the icon is visible */
     body.newyear-mode .name-wrapper input[type="text"] { padding-right: 45px; }
-    /* Hide legacy image stickers */
     .btn .btn-sticker,
     body.newyear-mode .btn .btn-sticker,
     .essay-card .card-sticker,
     body.newyear-mode .essay-card .card-sticker {
       display: none !important;
     }
-
-    /* Additional rule to hide any image inside buttons and essay cards (fallback for stubborn base64 icons) */
     .btn img {
       display: none !important;
     }
     .essay-card .card-sticker {
       display: none !important;
     }
-    /* Emoji stickers for buttons */
     .btn .emoji-sticker {
       position: absolute;
-      /* Position the emoji inside the button to be fully visible */
       top: 50%;
       right: 12px;
       transform: translateY(-50%);
@@ -794,23 +714,17 @@
       line-height: 1;
       pointer-events: none;
     }
-    /* Emoji sticker for essay cards */
     .essay-card .emoji-card-sticker {
       position: absolute;
-      /* Position near bottom‑right corner but fully inside the card */
       bottom: 8px;
       right: 8px;
       font-size: 22px;
       line-height: 1;
-      /* Allow clicking/tapping on the emoji sticker */
       pointer-events: auto;
       cursor: pointer;
     }
-
-    /* Bubble that displays the custom gift message when the 🎁 sticker is clicked. */
     .gift-message {
       position: absolute;
-      /* Display above the sticker */
       bottom: 36px;
       right: 8px;
       background: var(--card-bg);
@@ -826,13 +740,11 @@
       pointer-events: none;
       z-index: 10;
     }
-    /* When visible, the gift message fades and scales into view. */
     .gift-message.show-gift-message {
       opacity: 1;
       transform: scale(1);
       pointer-events: auto;
     }
-    /* Optional pulse animation for emphasis */
     @keyframes gift-pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.05); }
@@ -841,8 +753,6 @@
     .gift-message.pulse {
       animation: gift-pulse 1s ease-in-out infinite;
     }
-
-    /* Styling for the gift message input inside the edit modal */
     .gift-message-edit {
       margin-top: 10px;
     }
@@ -862,201 +772,56 @@
       color: var(--text-main);
       outline: none;
     }
-    /* Snow container spans only the header region; pointer‑events none ensures typing is unaffected */
-    .snow-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 160px;
-      overflow: hidden;
-      pointer-events: none;
-      display: none;
-      z-index: 1;
-    }
-    body.newyear-mode .snow-container { display: block; }
-    .snowflake {
-      position: absolute;
-      top: -10px;
-      color: #ffffff;
-      opacity: 0.9;
-      user-select: none;
-      will-change: transform;
-    }
-    /* Define individual flakes with varying animation durations, delays and sizes */
-    @keyframes fall {
-      0% { transform: translateY(0) rotate(0deg); }
-      100% { transform: translateY(180px) rotate(360deg); }
-    }
-    .snowflake:nth-child(1) { left: 5%; font-size: 12px; animation: fall 7s linear infinite; animation-delay: 0s; }
-    .snowflake:nth-child(2) { left: 15%; font-size: 16px; animation: fall 10s linear infinite; animation-delay: 2s; }
-    .snowflake:nth-child(3) { left: 25%; font-size: 10px; animation: fall 8s linear infinite; animation-delay: 4s; }
-    .snowflake:nth-child(4) { left: 35%; font-size: 14px; animation: fall 9s linear infinite; animation-delay: 1s; }
-    .snowflake:nth-child(5) { left: 45%; font-size: 13px; animation: fall 6s linear infinite; animation-delay: 3s; }
-    .snowflake:nth-child(6) { left: 55%; font-size: 11px; animation: fall 8s linear infinite; animation-delay: 5s; }
-    .snowflake:nth-child(7) { left: 65%; font-size: 15px; animation: fall 10s linear infinite; animation-delay: 0.5s; }
-    .snowflake:nth-child(8) { left: 75%; font-size: 12px; animation: fall 7s linear infinite; animation-delay: 2.5s; }
-    .snowflake:nth-child(9) { left: 85%; font-size: 14px; animation: fall 9s linear infinite; animation-delay: 1.5s; }
-    .snowflake:nth-child(10) { left: 95%; font-size: 11px; animation: fall 8s linear infinite; animation-delay: 3.5s; }
-    /* Rain effect styles */
-    .rain-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 160px;
-      overflow: hidden;
-      pointer-events: none;
-      display: none;
-      z-index: 1;
-    }
-    /* Show raindrops when in rain-mode */
-    body.rain-mode .rain-container { display: block; }
-    .raindrop {
-      position: absolute;
-      top: -10px;
-      color: #ffffff;
-      opacity: 0.8;
-      user-select: none;
-      will-change: transform;
-      /* Use the same falling animation but without rotation */
-      animation: rain-fall linear infinite;
-    }
-    /* Define the rain drop fall animation */
-    @keyframes rain-fall {
-      0% { transform: translateY(0); opacity: 0.8; }
-      100% { transform: translateY(180px); opacity: 0.1; }
-    }
-    /* Assign positions and timings for individual drops */
-    .raindrop:nth-child(1) { left: 5%; font-size: 12px; animation-duration: 4s; animation-delay: 0s; }
-    .raindrop:nth-child(2) { left: 15%; font-size: 16px; animation-duration: 5s; animation-delay: 1s; }
-    .raindrop:nth-child(3) { left: 25%; font-size: 10px; animation-duration: 3s; animation-delay: 2s; }
-    .raindrop:nth-child(4) { left: 35%; font-size: 14px; animation-duration: 4.5s; animation-delay: 0.5s; }
-    .raindrop:nth-child(5) { left: 45%; font-size: 13px; animation-duration: 3.5s; animation-delay: 1.5s; }
-    .raindrop:nth-child(6) { left: 55%; font-size: 11px; animation-duration: 4s; animation-delay: 2.5s; }
-    .raindrop:nth-child(7) { left: 65%; font-size: 15px; animation-duration: 5s; animation-delay: 0.75s; }
-    .raindrop:nth-child(8) { left: 75%; font-size: 12px; animation-duration: 4s; animation-delay: 1.25s; }
-    .raindrop:nth-child(9) { left: 85%; font-size: 14px; animation-duration: 4.5s; animation-delay: 1.75s; }
-    .raindrop:nth-child(10) { left: 95%; font-size: 11px; animation-duration: 3.5s; animation-delay: 2.25s; }
-
-    /* Weather toggle button styling */
-    .weather-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(45deg, #8e2de2, #4a00e0);
-      border: none;
-      color: #fff;
-      font-size: 14px;
-      margin-left: 8px;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
-    }
-    .weather-btn:hover {
-      transform: translateY(-2px);
-    }
-
-    /* Remove all comment section styles (comment buttons, section, list etc.) */
-    /* Comment features have been deprecated and all associated styles removed. */
-
   </style>
 </head>
-<body class="neon-theme newyear-mode">
-  <!-- Vocabulary and Chat features have been removed -->
+<body class="neon-theme">
   <div class="container">
     <div id="essaySection" class="inner">
       <h1>✨ Pangeya Essay Platform</h1>
       <div class="subtitle">Write, save and print essays. Teachers can leave feedback with a secret key.</div>
-      <!-- Pixel animation hero container for the word "minnos".  This canvas
-           will be sized via CSS and the accompanying script will draw
-           individual particles that assemble into the letters.  Placing
-           this element here ensures the animation sits neatly below the
-           heading without disturbing the rest of the layout. -->
       <div class="pixel-hero" aria-hidden="true">
         <canvas id="pixelCanvas"></canvas>
       </div>
-      <!-- Snow effect overlay (falls within header area) -->
-      <div class="snow-container" aria-hidden="true">
-        <div class="snowflake">❆</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❆</div>
-        <div class="snowflake">❄</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❆</div>
-        <div class="snowflake">❅</div>
-        <div class="snowflake">❄</div>
-        <div class="snowflake">❆</div>
-        <div class="snowflake">❅</div>
-      </div>
-      <!-- Rain effect overlay (falls within header area) -->
-      <div class="rain-container" aria-hidden="true">
-        <div class="raindrop">💧</div>
-        <div class="raindrop">💧</div>
-        <div class="raindrop">💧</div>
-        <div class="raindrop">💧</div>
-        <div class="raindrop">💧</div>
-        <div class="raindrop">💧</div>
-        <div class="raindrop">💧</div>
-        <div class="raindrop">💧</div>
-        <div class="raindrop">💧</div>
-        <div class="raindrop">💧</div>
-      </div>
-      <!-- Theme switcher: Neon, Light and Dark -->
       <div class="theme-switcher">
         <button class="theme-btn active" id="neonTheme">Neon</button>
         <button class="theme-btn" id="lightTheme">Light</button>
         <button class="theme-btn" id="darkTheme">Dark</button>
-        <!-- Weather toggle button: click to switch between snow and rain -->
-        <button class="weather-btn" id="weatherToggle" title="Toggle snow/rain">🌧</button>
       </div>
-      <!-- Name input wrapped so the tree emoji can sit inside -->
       <label for="name">Your name</label>
       <div class="name-wrapper">
         <input id="name" type="text" placeholder="Enter your name" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-        <!-- Use an emoji for the name icon instead of an image -->
-        <span class="ny-icon">🎄</span>
+        <span class="ny-icon">🌸</span>
       </div>
-      <!-- Essay textarea -->
       <label for="essay">Write your essay</label>
       <textarea id="essay" placeholder="Write your essay..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
-      <!-- Primary actions with New Year stickers (tree, gift, Santa) -->
       <button class="btn btn-primary" id="submitBtn">Submit
-        <span class="emoji-sticker">🎉</span>
+        <span class="emoji-sticker">🌱</span>
       </button>
       <button class="btn btn-secondary" id="pdfBtn">Download PDF
-        <span class="emoji-sticker">🎁</span>
+        <span class="emoji-sticker">🌼</span>
       </button>
       <button class="btn btn-teacher" id="teacherToggle">Teacher Login
-        <span class="emoji-sticker">🎅</span>
+        <span class="emoji-sticker">🌻</span>
       </button>
-      <!-- Hidden teacher panel revealed when logging in -->
       <div class="teacher-panel" id="teacherPanel">
         <input id="teacherKey" type="text" placeholder="Enter teacher key" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
         <button class="btn btn-teacher btn-enter" id="teacherEnter">Enter</button>
       </div>
-      <!-- Essays list heading -->
       <div class="section-title">
-        <span class="icon">🎄</span>
+        <span class="icon">🌷</span>
         <span>All Essays</span>
       </div>
-    <!-- Search bar for finding essays by author name -->
-    <div class="essay-search-controls">
+      <div class="essay-search-controls">
         <input id="essaySearch" type="text" placeholder="Search essays...">
-    </div>
+      </div>
       <div class="essays-list" id="essaysList"></div>
-    </div> <!-- end of essaySection -->
-
-    <!-- Chat section -->
+    </div>
     <div id="chatSection" class="chat-wrapper">
       <div class="chat-header">
         <div class="chat-title">🤖 PangeyaAI</div>
         <div id="chatCredit" class="chat-credit-badge"></div>
       </div>
       <div id="chatMessages" class="chat-body"></div>
-      <!-- Typing animation shown while waiting for a reply -->
       <div id="typingIndicator" class="typing hidden"><span></span><span></span><span></span></div>
       <div class="chat-input-area">
         <input id="chatInput" type="text" placeholder="Ask PangeyaAI..." autocomplete="off">
@@ -1065,23 +830,16 @@
       </div>
       <div class="chat-disclaimer">Type "please" three times consecutively to receive 13 extra messages.</div>
     </div>
-
-    <!-- Vocabulary and Chat sections removed -->
   </div>
-  <!-- Snow now always falls; removed toggle button -->
-  <!-- Edit Essay Modal -->
   <div class="modal" id="editModal">
     <div class="modal-content">
       <h3>Edit essay</h3>
-      <!-- toolbar for text formatting -->
       <div class="toolbar">
         <button class="icon-btn" title="Highlight Text" onclick="highlightSelection()">🖍</button>
         <button class="icon-btn" title="Underline Text" onclick="underlineSelection()"><u>U</u></button>
         <button class="icon-btn" title="Strikethrough Text" onclick="strikeSelection()"><s>S</s></button>
       </div>
       <div id="editArea" class="edit-area" contenteditable="true" spellcheck="false" autocorrect="off" autocapitalize="off"></div>
-
-      <!-- Custom gift message input for the 🎁 sticker -->
       <div class="gift-message-edit">
         <label for="giftMessageInput">Gift sticker message</label>
         <input id="giftMessageInput" type="text" placeholder="Enter custom message or number">
@@ -1092,7 +850,6 @@
       </div>
     </div>
   </div>
-  <!-- Feedback Modal -->
   <div class="modal" id="feedbackModal">
     <div class="modal-content">
       <h3>Add / edit teacher feedback</h3>
@@ -1109,7 +866,6 @@
       </div>
     </div>
   </div>
-  <!-- About / Info Modal -->
   <div class="modal" id="infoModal">
     <div class="modal-content">
       <h3>Author Information</h3>
@@ -1135,7 +891,6 @@ Or pay via QR:</div>
       </div>
     </div>
   </div>
-  <!-- User Guide Modal -->
   <div class="modal" id="guideModal">
     <div class="modal-content">
       <h3>User Guide</h3>
@@ -1156,12 +911,7 @@ Or pay via QR:</div>
       </div>
     </div>
   </div>
-  <!-- Include jsPDF from CDN for PDF export -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <!-- Main application script; this version has been cleaned to remove unused
-       features and to fix minor bugs such as references to the deprecated
-       Pangeya theme.  The script retains full functionality for essay
-       management, teacher mode, AI chat, and PDF export. -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
@@ -1177,49 +927,16 @@ Or pay via QR:</div>
       setDoc,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-
-    // Constants
     const TEACHER_KEY = 'CTNLC';
     let teacherMode = false;
     let currentEditId = null;
     let currentFeedbackId = null;
-
-    // =====================================================================
-    // Global state and helpers for essay rendering
-    // ---------------------------------------------------------------------
-    // A counter to track the most recent essay fetch. Each call to
-    // renderEssays() increments this value. When an async fetch resolves,
-    // the render only proceeds if the captured requestId matches the global
-    // essayRequestCounter. This prevents stale data from overwriting
-    // newly fetched results when multiple renders are triggered in quick
-    // succession (for example, switching themes or performing searches).
     let essayRequestCounter = 0;
-    // Holds the latest full list of essays retrieved from Firestore.  All
-    // filtering operations operate on this array to avoid mixing results
-    // from different fetches.
     let allEssays = [];
-
-    // Counter and global state for chat messages.  chatHistory holds an array of
-    // messages exchanged with the AI.  Each message is an object with
-    // a 'role' (either 'user' or 'assistant') and a 'content' string.
     let chatHistory = [];
-    // Counter to guard against stale AI responses.  Each call to
-    // sendChatMessage() increments this value.  When an API response
-    // arrives, it only updates the UI if the captured request ID matches
-    // the latest chatRequestCounter.
     let chatRequestCounter = 0;
-    // The API key is not stored on the client.  All AI requests are proxied via
-    // backend endpoints where the key is securely managed.
-
-    // Endpoints for serverless functions hosted on Vercel.  The chat endpoint proxies
-    // user messages to OpenAI and returns a reply.  The essay feedback
-    // endpoint evaluates a single essay and returns band score and comments.
     const CHAT_ENDPOINT = 'https://pangeya-ai.vercel.app/api/chat';
     const FEEDBACK_ENDPOINT = 'https://pangeya-ai.vercel.app/api/essay-feedback';
-
-    // -----------------------------------------------------------------
-    // Local storage helpers for chat credits and feedback usage
-    // -----------------------------------------------------------------
     function getChatLimit() {
       const val = localStorage.getItem('pangeya_chat_limit');
       return val ? parseInt(val, 10) : 13;
@@ -1240,9 +957,6 @@ Or pay via QR:</div>
     function setFeedbackUsed(val) {
       localStorage.setItem('pangeya_feedback_used', val ? 'true' : 'false');
     }
-    // Generate or retrieve a unique identifier for this user.  This value is
-    // stored in localStorage and used by the backend to scope chat and
-    // essay feedback requests.  If not present, a new ID is generated.
     function getUserId() {
       let id = localStorage.getItem('pangeya_user_id');
       if (!id) {
@@ -1251,21 +965,12 @@ Or pay via QR:</div>
       }
       return id;
     }
-    // Display remaining chat credits to the user.
     function updateChatCredit() {
       const creditEl = document.getElementById('chatCredit');
       if (creditEl) {
         creditEl.textContent = 'Chat credits: ' + getChatLimit();
       }
     }
-
-    // System prompt defining PangeyaAI's persona and guidelines.  This
-    // prompt instructs the assistant to behave like an IELTS examiner and
-    // produce high‑quality essays according to official band descriptors
-    // while avoiding informal language or generic responses.  It also
-    // contains restrictions and capabilities specific to the PangeyaAI
-    // brand.  The prompt should remain unchanged to ensure consistent
-    // behavior across conversations.
     const SYSTEM_PROMPT = `You are PangeyaAI, a professional AI assistant designed specifically to help users prepare for the IELTS Academic and General Training Writing exams.
 
 Your primary responsibility is to assist users with IELTS Writing Task 1 and Task 2 by producing high-quality, band 7.0–9.0 level essays that strictly follow the official IELTS Band Descriptors:
@@ -1329,15 +1034,6 @@ When required, you may:
 Brand Identity
 
 You represent PangeyaAI, the intelligent core of a modern and reliable IELTS preparation platform. Every response must be accurate, structured, exam-oriented, and designed to help users achieve the highest possible IELTS score.`;
-
-    /**
-     * Render the chat messages into the chatMessages container.  Clears
-     * any existing content and builds message bubbles for each entry
-     * stored in chatHistory.  User messages are right‑aligned with an
-     * accent gradient, while assistant messages are left‑aligned with a
-     * muted background.  After rendering, the container scrolls to the
-     * bottom to show the latest message.
-     */
     function renderChat() {
       const container = document.getElementById('chatMessages');
       if (!container) return;
@@ -1346,83 +1042,40 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         const div = document.createElement('div');
         div.classList.add('chat-message');
         div.classList.add(msg.role === 'user' ? 'user' : 'assistant');
-        // If this message contains an image, display the image instead of text.
         if (msg.imageData) {
           const img = document.createElement('img');
           img.src = msg.imageData;
           img.alt = 'User image';
           div.appendChild(img);
-          // Optionally include any accompanying text below the image
           if (msg.content) {
             const p = document.createElement('p');
             p.textContent = msg.content;
             div.appendChild(p);
           }
         } else {
-          // Text message
           div.textContent = msg.content;
         }
         container.appendChild(div);
       });
-      // Scroll to bottom to show the latest messages
       container.scrollTop = container.scrollHeight;
     }
-
-    /**
-     * Toggle between snow and rain effects.
-     * When the page is in snow mode (body has class newyear-mode), clicking
-     * the weather toggle button switches to rain mode (adding rain-mode and
-     * removing newyear-mode) and updates the button icon to a snowflake so
-     * the user can switch back.  When in rain mode, it does the opposite.
-     */
-    function toggleWeather() {
-      const body = document.body;
-      const toggleBtn = document.getElementById('weatherToggle');
-      if (body.classList.contains('rain-mode')) {
-        body.classList.remove('rain-mode');
-        body.classList.add('newyear-mode');
-        if (toggleBtn) toggleBtn.textContent = '🌧';
-      } else {
-        body.classList.remove('newyear-mode');
-        body.classList.add('rain-mode');
-        if (toggleBtn) toggleBtn.textContent = '❄';
-      }
-    }
-
-    /**
-     * Show the chat section and hide the essay/vocab sections.  When switching
-     * to the chat, ensure the chat history is rendered and the scroll is
-     * positioned at the bottom.
-     */
     function switchToChat() {
       const essaySection = document.getElementById('essaySection');
       const chatSection = document.getElementById('chatSection');
-      // Hide the essay area when switching to the chat
       if (essaySection) essaySection.style.display = 'none';
-      // Show the chat and render the existing history
       if (chatSection) {
         chatSection.style.display = 'block';
         renderChat();
       }
     }
-
-    /**
-     * Send the current input from the chat box to the OpenAI API.
-     * Adds the user's message to chatHistory and renders it immediately.
-     * Then performs a POST request to the chat API.  When a response
-     * arrives, verifies that it is not stale (matches the current
-     * chatRequestCounter) before updating chatHistory and re‑rendering.
-     */
     async function sendChatMessage() {
       const input = document.getElementById('chatInput');
       if (!input) return;
       const text = (input.value || '').trim();
       if (!text) return;
       const lower = text.toLowerCase();
-      // Retrieve current credits and please count
       let credits = getChatLimit();
       let pleaseCount = getPleaseCount();
-      // If user has no credits and message isn't "please", inform them and exit
       if (credits <= 0 && lower !== 'please') {
         chatHistory.push({ role: 'assistant', content: 'No chat credits left. Type "please" three times consecutively to receive 13 extra messages.' });
         input.value = '';
@@ -1430,13 +1083,10 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         updateChatCredit();
         return;
       }
-      // Add user message to history
       chatHistory.push({ role: 'user', content: text });
       input.value = '';
       renderChat();
-      // Decrement a credit for every message (including "please")
       credits -= 1;
-      // Handle "please" logic
       if (lower === 'please') {
         pleaseCount += 1;
         if (pleaseCount >= 3) {
@@ -1448,24 +1098,17 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         setChatLimit(credits);
         setPleaseCount(pleaseCount);
         updateChatCredit();
-        // Do not send "please" to the AI
         return;
       } else {
-        // Reset please count for any other message
         pleaseCount = 0;
         setPleaseCount(0);
       }
-      // Update credits in storage
       setChatLimit(credits);
       updateChatCredit();
-      // Show typing indicator
       const typingEl = document.getElementById('typingIndicator');
       if (typingEl) typingEl.classList.remove('hidden');
-      // Increment request counter and capture id for this call
       const myChatRequestId = ++chatRequestCounter;
       try {
-        // Prepare the payload for the backend.  Send the system prompt and the
-        // current chat history (without images) so that the AI maintains context.
         const userMessages = chatHistory
           .filter(msg => !msg.imageData)
           .map(msg => ({ role: msg.role, content: msg.content }));
@@ -1498,44 +1141,21 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         if (typingEl) typingEl.classList.add('hidden');
       }
     }
-
-    /**
-     * Clear the current chat history.  Resets chatHistory and chatRequestCounter
-     * and re-renders the chat container to remove all messages.
-     */
     function clearChat() {
       chatHistory = [];
       chatRequestCounter = 0;
       renderChat();
       updateChatCredit();
     }
-
-    /**
-     * Fetch AI-generated feedback for a specific essay.  This function is
-     * called when the user clicks the "Get AI Feedback" chip on an essay
-     * card. Each feedback request consumes one chat credit but there is
-     * no per‑session limit on the number of feedback requests.  If the
-     * user has no chat credits remaining, an alert is shown and the
-     * request is not sent.  When the request is in flight, the
-     * feedback button is disabled and a loading message is displayed in
-     * the essay card.  Once a response is received from the server, the
-     * AI feedback section is populated and the button remains disabled.
-     *
-     * @param {string} docId Firestore document ID of the essay
-     * @param {Object} data The essay data containing at least `essay` and `name`
-     */
     async function getEssayAIFeedback(docId, data) {
-      // Check available chat credits. If none remain, inform the user and exit.
       let credits = getChatLimit();
       if (credits <= 0) {
         alert('You do not have any chat credits remaining to request AI feedback.');
         return;
       }
-      // Decrement the credit for this feedback request and update the display.
       credits -= 1;
       setChatLimit(credits);
       updateChatCredit();
-      // Locate the button and feedback container for this essay
       const aiBtn = document.getElementById('aiFeedbackBtn-' + docId);
       const aiContainer = document.getElementById('aiFeedback-' + docId);
       if (aiBtn) {
@@ -1546,7 +1166,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         aiContainer.classList.remove('hidden');
         aiContainer.textContent = 'Fetching AI feedback...';
       }
-      // Compose the request payload for the feedback endpoint
       try {
         const payload = {
           essay: data.essay || '',
@@ -1560,7 +1179,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
           body: JSON.stringify(payload)
         });
         const result = await response.json();
-        // Extract feedback text from the response; support multiple property names
         let feedbackText = '';
         if (result) {
           if (typeof result === 'string') {
@@ -1572,19 +1190,15 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
           } else if (result.comment) {
             feedbackText = result.comment;
           } else {
-            // Fallback: stringify entire response
             feedbackText = JSON.stringify(result);
           }
         } else {
           feedbackText = 'No feedback returned.';
         }
-        // Format and display the feedback
         if (aiContainer) {
-          // Escape HTML to avoid injection, then convert newlines to <br>
           const safe = escapeHtml(feedbackText).replace(/\n/g, '<br>');
           aiContainer.innerHTML = '<strong>AI Feedback:</strong><br>' + safe;
         }
-        // Persist the AI feedback to Firestore so it is visible to all users
         try {
           await updateDoc(doc(db, 'essays', docId), { aiFeedback: feedbackText });
         } catch (updateErr) {
@@ -1596,38 +1210,22 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
           aiContainer.textContent = 'Error retrieving AI feedback. Please try again later.';
         }
       } finally {
-        // Re-enable the feedback button so the user can request feedback again.
         if (aiBtn) {
           aiBtn.disabled = false;
           aiBtn.textContent = 'Get AI Feedback';
-          // Once feedback has been retrieved, hide the button entirely.  This
-          // prevents multiple requests and cleans up the UI. If you wish to
-          // allow multiple feedback requests, remove the following line.
           aiBtn.style.display = 'none';
         }
       }
     }
-
-    /**
-     * Safely convert various Firestore date representations into a Date
-     * object. Supports Firestore Timestamp objects, numeric timestamps,
-     * ISO strings or locale strings. If the value is invalid or missing,
-     * the Unix epoch (1970-01-01) is returned.
-     * @param {any} value
-     * @returns {Date}
-     */
     function toDateSafe(value) {
       try {
         if (!value) return new Date(0);
-        // Firestore Timestamp object
         if (typeof value === 'object' && value.seconds !== undefined) {
           return new Date(value.seconds * 1000);
         }
-        // Numeric timestamp (milliseconds)
         if (typeof value === 'number') {
           return new Date(value);
         }
-        // Attempt to parse string formats
         const parsed = Date.parse(value);
         if (!isNaN(parsed)) {
           return new Date(parsed);
@@ -1637,29 +1235,12 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       }
       return new Date(0);
     }
-
-    /**
-     * Strip HTML tags from a string.  This helper extracts the text content
-     * from markup so that search queries can match plain text inside
-     * essays without being affected by embedded HTML tags or formatting.
-     * @param {string} html The HTML string to strip
-     * @returns {string} Plain text
-     */
     function stripHtml(html) {
       if (!html) return '';
-      // Create a temporary DOM element and assign the HTML to its innerHTML.
       const tmp = document.createElement('div');
       tmp.innerHTML = html;
       return tmp.textContent || tmp.innerText || '';
     }
-
-    /**
-     * Format a Date into a consistent DD/MM/YYYY, HH:MM:SS string. This
-     * function centralises date formatting so that all dates displayed in
-     * the UI follow the same locale-independent format.
-     * @param {Date} date
-     * @returns {string}
-     */
     function formatDate(date) {
       const formatter = new Intl.DateTimeFormat('en-GB', {
         day: '2-digit',
@@ -1671,8 +1252,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       });
       return formatter.format(date);
     }
-
-    // Firebase configuration (copied from the original)
     const firebaseConfig = {
       apiKey: "AIzaSyBnmbg7CyLki-M1E4rxPevJ741yTykliDA",
       authDomain: "pangeya-essay.firebaseapp.com",
@@ -1682,18 +1261,10 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       appId: "1:783326121302:web:7d73c5110fb5682e5fdaf7",
       measurementId: "G-0L1X6WHT1E"
     };
-    // Initialize Firebase and Firestore
     const app = initializeApp(firebaseConfig);
     getAnalytics(app);
     const db = getFirestore(app);
     const essaysRef = collection(db, "essays");
-
-    /**
-     * Retrieve the custom gift message for a given author name. If no message is set,
-     * returns an empty string. Errors are silently caught and logged.
-     * @param {string} name
-     * @returns {Promise<string>}
-     */
     async function getGiftMessage(name) {
       if (!name) return '';
       try {
@@ -1709,13 +1280,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         return '';
       }
     }
-
-    /**
-     * Save or update the custom gift message for a given author name.  Uses merge
-     * to preserve other fields if present.  This function does not return a value.
-     * @param {string} name
-     * @param {string} message
-     */
     async function saveGiftMessage(name, message) {
       if (!name) return;
       try {
@@ -1724,33 +1288,17 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         console.error('Error saving gift message for', name, err);
       }
     }
-
-    // Track the author name currently being edited so we know which gift message to update
     let currentEditName = null;
-
-    /**
-     * Escape HTML special characters to prevent XSS when rendering content from
-     * Firestore.  This helper extracts the text content and escapes characters.
-     */
     function escapeHtml(text) {
       const div = document.createElement('div');
       div.textContent = text;
       return div.innerHTML;
     }
-
-    /**
-     * Render essays from Firestore into the list.  This function builds each
-     * essay card including word count and optional feedback.  Positioning is
-     * preserved from the original; we simply assign a class and rely on CSS for
-     * the New Year sticker on each card.  Comment features have been removed.
-     */
     async function renderEssays(queryName = '', showLatestOnly = false) {
       const container = document.getElementById('essaysList');
-      // Increment the request counter and capture this call's id.
       const myRequestId = ++essayRequestCounter;
       container.innerHTML = '';
       const snapshot = await getDocs(essaysRef);
-      // If a more recent request has been made, abort this render.
       if (myRequestId !== essayRequestCounter) {
         return;
       }
@@ -1764,72 +1312,25 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       snapshot.forEach(docSnap => {
         docsArray.push({ id: docSnap.id, data: docSnap.data() });
       });
-      // Update global allEssays state.
       allEssays = docsArray;
-      const parseDateString = (str) => {
-        if (!str) return 0;
-        const parts = str.split(',');
-        const datePart = parts[0].trim();
-        const timePart = parts[1] ? parts[1].trim() : '';
-        let day, month, year;
-        if (datePart.includes('.')) {
-          [day, month, year] = datePart.split('.');
-        } else if (datePart.includes('/')) {
-          const dp = datePart.split('/');
-          if (parseInt(dp[0], 10) > 12) {
-            [day, month, year] = dp;
-          } else {
-            [month, day, year] = dp;
-          }
-        } else if (datePart.includes('-')) {
-          const dp = datePart.split('-');
-          if (dp[0].length === 4) {
-            [year, month, day] = dp;
-          } else {
-            [month, day, year] = dp;
-          }
-        } else {
-          return 0;
-        }
-        let hours = 0, minutes = 0, seconds = 0;
-        if (timePart) {
-          const tp = timePart.split(':');
-          hours = parseInt(tp[0], 10) || 0;
-          minutes = parseInt(tp[1], 10) || 0;
-          seconds = parseInt(tp[2], 10) || 0;
-        }
-        const y = parseInt(year, 10);
-        const m = parseInt(month, 10) - 1;
-        const d = parseInt(day, 10);
-        return new Date(y, m, d, hours, minutes, seconds).getTime();
-      };
-      // Optionally filter by author name if a search query was provided.
       const qName = (queryName || '').toString().trim().toLowerCase();
       let filteredArray = allEssays;
       if (qName) {
-        // When a search query is provided, match it against the author's name
-        // and the plain text of the essay.  We strip HTML tags from the
-        // essay content so that search terms can match the visible text.
         filteredArray = allEssays.filter(item => {
           const nm = (item.data.name || '').toString().toLowerCase();
           const essayText = stripHtml(item.data.essay || '').toLowerCase();
           return nm.includes(qName) || essayText.includes(qName);
         });
       }
-      // Sort descending by timestamp/date using safe conversion
       filteredArray.sort((a, b) => {
         const tA = toDateSafe(a.data.timestamp ?? a.data.date).getTime();
         const tB = toDateSafe(b.data.timestamp ?? b.data.date).getTime();
         return tB - tA;
       });
-      // If no search query and we only want the most recent essay, slice the array
       if (!qName && showLatestOnly && filteredArray.length > 0) {
         filteredArray = [filteredArray[0]];
       }
       for (const item of filteredArray) {
-        // Abort if this render is stale.  If a newer renderEssays() call
-        // has updated essayRequestCounter, we stop building to prevent
-        // mixing old and new data.
         if (myRequestId !== essayRequestCounter) {
           return;
         }
@@ -1837,26 +1338,21 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         const docId = item.id;
         const card = document.createElement('div');
         card.className = 'essay-card';
-        // Header with name and date
         const header = document.createElement('div');
         header.className = 'essay-header';
         const nameSpan = document.createElement('span');
         nameSpan.className = 'essay-name';
-        // Prefix the author's name with a tree emoji so that a 🎄 appears before every name
-        nameSpan.textContent = (data.name ? `🎄 ${data.name}` : '🎄 Unknown');
+        nameSpan.textContent = (data.name ? `🌸 ${data.name}` : '🌸 Unknown');
         const dateSpan = document.createElement('span');
-        // Always compute and display the date using our helper functions.
         const displayDate = formatDate(toDateSafe(data.timestamp ?? data.date));
         dateSpan.textContent = displayDate;
         header.appendChild(nameSpan);
         header.appendChild(dateSpan);
-        // Essay text
         const textDiv = document.createElement('div');
         textDiv.className = 'essay-text';
         textDiv.innerHTML = data.essay || '';
         card.appendChild(header);
         card.appendChild(textDiv);
-        // Word count
         const rawText = textDiv.textContent || '';
         const wordsArray = rawText.trim().split(/\s+/).filter(word => word.length > 0);
         const wordCount = wordsArray.length;
@@ -1867,9 +1363,7 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         wordCountDiv.style.marginBottom = '4px';
         wordCountDiv.textContent = `Word count: ${wordCount}`;
         card.appendChild(wordCountDiv);
-        // Feedback block
         if (data.feedback) {
-          // Use a collapsible <details> element for teacher feedback so users can expand/collapse long feedback.
           const detailsEl = document.createElement('details');
           detailsEl.className = 'feedback feedback-details';
           const summaryEl = document.createElement('summary');
@@ -1892,7 +1386,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
           detailsEl.appendChild(contentDiv);
           card.appendChild(detailsEl);
         }
-        // Action buttons
         const actions = document.createElement('div');
         actions.className = 'essay-actions';
         const editBtn = document.createElement('button');
@@ -1912,65 +1405,50 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         actions.appendChild(editBtn);
         actions.appendChild(delBtn);
         actions.appendChild(fbBtn);
-        // Add AI feedback button for each essay.  Users can click this
-        // button to request AI feedback on that specific essay.  A unique
-        // id is assigned so the button can be disabled after use.
         const aiBtn = document.createElement('button');
         aiBtn.className = 'chip-btn chip-feedback';
         aiBtn.textContent = 'Get AI Feedback';
         aiBtn.id = 'aiFeedbackBtn-' + docId;
         aiBtn.onclick = () => getEssayAIFeedback(docId, data);
-        // Hide AI feedback button if feedback already exists
         if (data.aiFeedback && data.aiFeedback.trim() !== '') {
           aiBtn.style.display = 'none';
         }
         actions.appendChild(aiBtn);
-        // NEW: Add per-essay PDF download button
         const pdfBtn = document.createElement('button');
         pdfBtn.className = 'chip-btn chip-download';
         pdfBtn.textContent = 'Download PDF';
         pdfBtn.onclick = () => downloadEssayPDF(data);
         actions.appendChild(pdfBtn);
         card.appendChild(actions);
-        // Placeholder for AI feedback.  Use a collapsible details element so users can toggle visibility.
         const aiFbDiv = document.createElement('details');
         aiFbDiv.className = 'ai-feedback ai-feedback-details';
         aiFbDiv.id = 'aiFeedback-' + docId;
-        // Create summary as the clickable label
         const aiSummary = document.createElement('summary');
         aiSummary.textContent = 'AI Feedback';
         aiFbDiv.appendChild(aiSummary);
-        // Create content container for the AI feedback
         const aiContent = document.createElement('div');
-        // If this essay already has AI feedback saved in Firestore, display it immediately.
         if (data.aiFeedback && data.aiFeedback.trim() !== '') {
           const safeAi = escapeHtml(data.aiFeedback).replace(/\n/g, '<br>');
           aiContent.innerHTML = safeAi;
         } else {
-          // Hide the details element until feedback is fetched
           aiFbDiv.classList.add('hidden');
         }
         aiFbDiv.appendChild(aiContent);
         card.appendChild(aiFbDiv);
-        // Emoji sticker (🎁) to trigger showing the custom message
         const cardEmoji = document.createElement('span');
         cardEmoji.className = 'emoji-card-sticker';
-        cardEmoji.textContent = '🎁';
+        cardEmoji.textContent = '🌸';
         card.appendChild(cardEmoji);
-        // Container for the custom gift message; we fetch the message for the author
         const giftMessageEl = document.createElement('div');
         giftMessageEl.className = 'gift-message';
         card.appendChild(giftMessageEl);
-        // Fetch the gift message asynchronously
         const giftMsg = await getGiftMessage(data.name || '');
         if (giftMsg) {
           giftMessageEl.textContent = giftMsg;
         }
-        // After awaiting an async call, ensure this render is still current
         if (myRequestId !== essayRequestCounter) {
           return;
         }
-        // Toggle showing/hiding the message when the emoji is clicked
         cardEmoji.addEventListener('click', (e) => {
           e.stopPropagation();
           const visible = giftMessageEl.classList.contains('show-gift-message');
@@ -1978,7 +1456,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
             giftMessageEl.classList.remove('show-gift-message');
             giftMessageEl.classList.remove('pulse');
           } else {
-            // Only show if there is content; if empty string, nothing to show
             if (giftMessageEl.textContent && giftMessageEl.textContent.trim() !== '') {
               giftMessageEl.classList.add('show-gift-message');
               giftMessageEl.classList.add('pulse');
@@ -1988,22 +1465,11 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         container.appendChild(card);
       }
     }
-
-    /**
-     * Handle essay search initiated by the user.  This helper reads the
-     * contents of the search input and calls renderEssays with the
-     * provided query.  If the input is empty, all essays are shown.
-     */
     function searchEssays() {
       const input = document.getElementById('essaySearch');
       const query = input ? input.value.trim() : '';
-      // When the query is empty, show the full list of essays.  Otherwise
-      // filter by the query.  The second parameter is left as default
-      // (false) so that renderEssays shows all when empty.
       renderEssays(query);
     }
-
-    /** Submit a new essay to Firestore */
     async function submitEssay() {
       const nameInput = document.getElementById('name');
       const essayInput = document.getElementById('essay');
@@ -2013,7 +1479,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         alert('Please write an essay before submitting.');
         return;
       }
-      // Capture current time once to ensure date and timestamp match
       const now = new Date();
       await addDoc(essaysRef, {
         name: name || 'Unknown',
@@ -2027,14 +1492,11 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       nameInput.value = '';
       alert('Essay saved to the cloud.');
     }
-
-    // Edit modal handlers
     async function openEditModal(docId, data) {
       currentEditId = docId;
       currentEditName = data && data.name ? data.name : null;
       const editArea = document.getElementById('editArea');
       editArea.innerHTML = data.essay || '';
-      // Preload existing gift message for this author into the input
       const giftInput = document.getElementById('giftMessageInput');
       if (giftInput) {
         const msg = await getGiftMessage(currentEditName || '');
@@ -2049,21 +1511,15 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
     async function saveEdit() {
       if (!currentEditId) return;
       const updated = document.getElementById('editArea').innerHTML;
-      // Save the updated essay text
       await updateDoc(doc(db, 'essays', currentEditId), { essay: updated });
-      // Save the gift message if provided
       const giftInput = document.getElementById('giftMessageInput');
       if (giftInput && currentEditName) {
         const newMsg = giftInput.value.trim();
-        // Persist message across all essays by this author
         await saveGiftMessage(currentEditName, newMsg);
       }
-      // Re-render essays to update messages
       await renderEssays();
       closeEditModal();
     }
-
-    // Feedback modal handlers
     function openFeedbackModal(docId, data) {
       currentFeedbackId = docId;
       document.getElementById('feedbackArea').value = data.feedback || '';
@@ -2083,15 +1539,11 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       renderEssays();
       closeFeedbackModal();
     }
-
-    /** Delete an essay */
     async function deleteEssay(docId) {
       if (!confirm('Delete this essay?')) return;
       await deleteDoc(doc(db, 'essays', docId));
       renderEssays();
     }
-
-    // Rich text formatting commands for the edit and feedback modals
     function findTagParent(node, tagNames, editableParent) {
       while (node && node !== editableParent) {
         if (node.nodeType === 1) {
@@ -2131,11 +1583,11 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       if (!selectedText) return;
       let markParent = findTagParent(sel.anchorNode, ['mark'], editableParent) || findTagParent(sel.focusNode, ['mark'], editableParent);
       if (markParent) {
-          const text = markParent.textContent;
-          markParent.replaceWith(document.createTextNode(text));
+        const text = markParent.textContent;
+        markParent.replaceWith(document.createTextNode(text));
       } else {
-          const markHtml = `<mark>${selectedText}</mark>`;
-          document.execCommand('insertHTML', false, markHtml);
+        const markHtml = `<mark>${selectedText}</mark>`;
+        document.execCommand('insertHTML', false, markHtml);
       }
     }
     function underlineSelection() {
@@ -2170,8 +1622,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         document.execCommand('insertHTML', false, sHtml);
       }
     }
-
-    // Teacher panel toggling
     function toggleTeacherPanel() {
       const panel = document.getElementById('teacherPanel');
       panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
@@ -2192,21 +1642,9 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         alert('Wrong key.');
       }
     }
-
-    /**
-     * Theme switching – extended from the original to support multiple themes.
-     * The Neon theme is treated as default when none of the other themes are
-     * specified.  Active button styling is updated accordingly.  All
-     * references to the removed Pangeya theme have been stripped. If an
-     * unknown theme is passed, the Neon theme is selected.
-     */
     function setTheme(theme) {
       const body = document.body;
-      // Remove any previously applied theme classes.  Glass theme is defined
-      // but unused by default; if you add a glass theme toggle in the UI,
-      // include 'glass-theme' here as well.
       body.classList.remove('light-theme', 'dark-theme');
-      // Reset active states on buttons
       document.getElementById('neonTheme').classList.remove('active');
       document.getElementById('lightTheme').classList.remove('active');
       document.getElementById('darkTheme').classList.remove('active');
@@ -2217,14 +1655,9 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         body.classList.add('dark-theme');
         document.getElementById('darkTheme').classList.add('active');
       } else {
-        // Fallback to Neon theme as default
         document.getElementById('neonTheme').classList.add('active');
       }
     }
-
-    /**
-     * PDF download via jsPDF.  Retains the behaviour of the original site.
-     */
     async function downloadPDF() {
       const { jsPDF } = window.jspdf;
       const docPDF = new jsPDF({ unit: 'pt', format: 'a4' });
@@ -2250,7 +1683,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       docPDF.setFontSize(12);
       docPDF.setTextColor(0, 0, 0);
       docPDF.text('Name: ' + name, 40, 90);
-      // Use consistent date formatting in the exported PDF
       const nowPDF = new Date();
       docPDF.text('Date: ' + formatDate(nowPDF), 40, 110);
       docPDF.setFontSize(14);
@@ -2260,21 +1692,12 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       docPDF.text(lines, 40, 180);
       docPDF.save('pangeya-essay.pdf');
     }
-
-    /**
-     * Download a single essay as a PDF. Accepts an essay data object containing
-     * name, essay, and timestamp/date. This helper is used for the per-essay
-     * download buttons in the essay list.
-     * @param {Object} essayData
-     */
     async function downloadEssayPDF(essayData) {
       const { jsPDF } = window.jspdf;
       const docPDF = new jsPDF({ unit: 'pt', format: 'a4' });
-      // Determine name and fallback if needed
       let name = (essayData && essayData.name ? essayData.name.trim() : '') || 'Unknown';
       const essayHtml = (essayData && essayData.essay) ? essayData.essay : '';
       const essayText = stripHtml(essayHtml);
-      // Determine a date string from timestamp or date fields
       let dateObj;
       if (essayData && (essayData.timestamp !== undefined && essayData.timestamp !== null)) {
         dateObj = toDateSafe(essayData.timestamp);
@@ -2294,12 +1717,9 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       docPDF.text('Essay:', 40, 150);
       const lines = docPDF.splitTextToSize(essayText, 520);
       docPDF.text(lines, 40, 180);
-      // Build a safe filename
       const safeName = name.replace(/[^a-z0-9]+/gi, '_').toLowerCase() || 'essay';
       docPDF.save(safeName + '_essay.pdf');
     }
-
-    // Info and guide modals toggling
     function toggleInfoModal() {
       const infoModal = document.getElementById('infoModal');
       if (!infoModal) return;
@@ -2312,8 +1732,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       guideModal.style.display = guideModal.style.display === 'flex' ? 'none' : 'flex';
     }
     window.toggleGuideModal = toggleGuideModal;
-
-    // Keyboard shortcuts to open modals
     document.addEventListener('keydown', (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === ';') {
         e.preventDefault();
@@ -2328,7 +1746,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         return;
       }
     });
-    // Close modals when clicking outside content
     window.addEventListener('click', (e) => {
       const editM = document.getElementById('editModal');
       const fbM = document.getElementById('feedbackModal');
@@ -2339,8 +1756,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       if (e.target === infoM) toggleInfoModal();
       if (e.target === guideM) toggleGuideModal();
     });
-
-    // Event listeners for main controls
     document.getElementById('submitBtn').addEventListener('click', submitEssay);
     document.getElementById('pdfBtn').addEventListener('click', downloadPDF);
     document.getElementById('teacherToggle').addEventListener('click', toggleTeacherPanel);
@@ -2348,15 +1763,11 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
     document.getElementById('neonTheme').addEventListener('click', () => setTheme('neon'));
     document.getElementById('lightTheme').addEventListener('click', () => setTheme('light'));
     document.getElementById('darkTheme').addEventListener('click', () => setTheme('dark'));
-
-    // Search input events: update essay list as the user types or clears the search
     const essaySearchInput = document.getElementById('essaySearch');
     if (essaySearchInput) {
-      // Re-render essays on every input change (typing or clearing)
       essaySearchInput.addEventListener('input', () => {
         searchEssays();
       });
-      // Also allow pressing Enter to trigger the search explicitly
       essaySearchInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           e.preventDefault();
@@ -2364,8 +1775,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         }
       });
     }
-
-    // Bind chat events
     document.getElementById('chatSendBtn')?.addEventListener('click', sendChatMessage);
     const chatInputEl = document.getElementById('chatInput');
     if (chatInputEl) {
@@ -2376,7 +1785,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         }
       });
     }
-    // Bind clear chat button
     const chatClearBtnEl = document.getElementById('chatClearBtn');
     if (chatClearBtnEl) {
       chatClearBtnEl.addEventListener('click', (e) => {
@@ -2384,174 +1792,90 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         clearChat();
       });
     }
-
-    // Initialize chat credits display
     updateChatCredit();
-
-    // Hide legacy sticker images for buttons and cards in case CSS fails to override.
-    // We prefer using emoji-based stickers instead of the old base64 images.
     document.querySelectorAll('.btn-sticker, .card-sticker').forEach(el => {
       el.style.display = 'none';
     });
-    // Expose modal functions for inline handlers
     window.openEditModal = openEditModal;
     window.closeEditModal = closeEditModal;
     window.saveEdit = saveEdit;
     window.openFeedbackModal = openFeedbackModal;
     window.closeFeedbackModal = closeFeedbackModal;
     window.saveFeedback = saveFeedback;
-    // Expose formatting functions
     window.highlightSelection = highlightSelection;
     window.underlineSelection = underlineSelection;
     window.strikeSelection = strikeSelection;
-    // Expose AI feedback helper so inline event handlers can call it
     window.getEssayAIFeedback = getEssayAIFeedback;
-    // Expose section switching functions globally so inline HTML
-    // onclick handlers can invoke them.
     window.switchToChat = switchToChat;
-    // Expose the weather toggle so it can be called from the weather button
-    window.toggleWeather = toggleWeather;
-    // Expose PDF functions to ensure they are globally accessible in case inline attributes are used
-    window.downloadPDF = downloadPDF;
-    window.downloadEssayPDF = downloadEssayPDF;
-
-    // Initial render
     renderEssays();
-
-    // Initialize weather toggle button text based on default mode
-    document.getElementById('weatherToggle').addEventListener('click', toggleWeather);
   </script>
-
-  <!-- Particle text animation script.  The logic below implements a
-       particle‑based text effect directly within this HTML file.  It
-       renders the word "minnos" using hundreds of small square particles
-       that assemble from random positions into the target shape.  The
-       animation is responsive, recalculates on resize, and includes a
-       subtle mouse repelling effect.  Constants such as PARTICLE_GAP,
-       EASE and FRICTION can be tweaked to modify behaviour. -->
   <script>
     (() => {
-      // Wait for the DOM to be fully parsed before querying elements.
       document.addEventListener('DOMContentLoaded', () => {
         const heroContainer = document.querySelector('.pixel-hero');
         const canvas = document.getElementById('pixelCanvas');
         if (!heroContainer || !canvas) {
-          // The hero container or canvas is not present; abort initialization.
           return;
         }
         const ctx = canvas.getContext('2d');
-
-        // Create an off‑screen canvas for drawing the text and sampling pixels.
         const offCanvas = document.createElement('canvas');
         const offCtx = offCanvas.getContext('2d');
-
-        // Array to hold all particle objects.
         let particles = [];
-
-        // Mouse state for interactive repelling; values are set on mousemove.
         const mouse = { x: null, y: null, radius: 80 };
-
-        // Tuning constants
-        const PARTICLE_GAP = 4; // distance between sampled pixels (affects particle count)
-        const EASE = 0.02;      // how quickly particles accelerate towards their destination
-        const FRICTION = 0.9;   // damping factor applied to velocities
-
-        /**
-         * Resize both the visible and off‑screen canvases to match the hero
-         * container dimensions.  Called on load and whenever the window is
-         * resized.  Also recalculates particles to maintain crisp text.
-         */
+        const PARTICLE_GAP = 4;
+        const EASE = 0.02;
+        const FRICTION = 0.9;
         function resizeCanvas() {
           const rect = heroContainer.getBoundingClientRect();
-          // Set canvas dimensions to match the container's width and height.
           canvas.width = rect.width;
           canvas.height = rect.height;
           offCanvas.width = rect.width;
           offCanvas.height = rect.height;
-          // Regenerate particles whenever the canvas size changes.
           generateParticles();
         }
-
-        /**
-         * Draw the target text onto the off‑screen canvas and sample its pixels
-         * to create particle objects for every visible pixel.  Each particle
-         * stores its destination coordinates, a random starting position and
-         * velocity, and a delay before it begins to move.
-         */
         function generateParticles() {
           particles = [];
           const width = offCanvas.width;
           const height = offCanvas.height;
-          // Clear the off‑screen canvas.
           offCtx.clearRect(0, 0, width, height);
-          // Choose a font size relative to the canvas height.  The factor of
-          // 0.6 leaves vertical padding and helps the text fit on small screens.
           const fontSize = height * 0.6;
           offCtx.font = `${fontSize}px Poppins, sans-serif`;
           offCtx.textAlign = 'center';
           offCtx.textBaseline = 'middle';
-          // Use the CSS variable --accent for the text fill colour to tie the
-          // particle colours to the current theme.  Fallback to a magenta hue
-          // if the variable is not defined.
           const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#a855f7';
           offCtx.fillStyle = accent.trim();
           const text = 'minnos';
           offCtx.fillText(text, width / 2, height / 2);
-          // Extract pixel data from the off‑screen canvas.
           const imgData = offCtx.getImageData(0, 0, width, height).data;
-          // Loop through pixels at intervals defined by PARTICLE_GAP.  For each
-          // non‑transparent pixel (alpha > threshold), create a particle whose
-          // destination is that pixel's x and y coordinate.
           for (let y = 0; y < height; y += PARTICLE_GAP) {
             for (let x = 0; x < width; x += PARTICLE_GAP) {
               const index = (y * width + x) * 4;
-              // Only consider pixels with significant alpha.  This ensures we
-              // ignore background pixels.
               if (imgData[index + 3] > 128) {
                 particles.push(new Particle(x, y, PARTICLE_GAP));
               }
             }
           }
         }
-
-        /**
-         * Particle constructor.  Each particle represents one pixel of the text.
-         * @param {number} destX  Target x coordinate for the particle
-         * @param {number} destY  Target y coordinate for the particle
-         * @param {number} size   Size of the drawn square
-         */
         class Particle {
           constructor(destX, destY, size) {
             this.destX = destX;
             this.destY = destY;
-            // Start at a random position scattered around the canvas.  Y is
-            // offset below the canvas to give the impression of particles
-            // "falling" into place.  X spans the full width.
             this.x = Math.random() * canvas.width;
             this.y = canvas.height + Math.random() * canvas.height;
             this.size = size;
             this.vx = 0;
             this.vy = 0;
-            // Random delay (in frames) before the particle begins to move.
             this.delay = Math.floor(Math.random() * 60);
           }
-          /**
-           * Update the particle's position.  Applies easing towards the
-           * destination coordinates, friction to smooth the motion and a
-           * repelling force if the mouse is nearby.
-           */
           update() {
             if (this.delay > 0) {
-              // Decrement delay and skip motion until delay has elapsed.
               this.delay--;
               return;
             }
-            // Compute acceleration towards the destination.
             const dx = this.destX - this.x;
             const dy = this.destY - this.y;
             this.vx += dx * EASE;
             this.vy += dy * EASE;
-            // Apply mouse repelling force if within radius.
             if (mouse.x !== null && mouse.y !== null) {
               const mx = this.x - mouse.x;
               const my = this.y - mouse.y;
@@ -2559,36 +1883,21 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
               if (dist < mouse.radius && dist > 0) {
                 const force = (mouse.radius - dist) / mouse.radius;
                 const angle = Math.atan2(my, mx);
-                // Multiply by a factor to increase the repelling strength.
                 this.vx += Math.cos(angle) * force * 2;
                 this.vy += Math.sin(angle) * force * 2;
               }
             }
-            // Apply friction to dampen velocity and smooth the motion.
             this.vx *= FRICTION;
             this.vy *= FRICTION;
             this.x += this.vx;
             this.y += this.vy;
           }
-          /**
-           * Draw the particle as a small square on the main canvas.  The colour
-           * is derived from the current accent CSS variable to ensure it adapts
-           * to theme changes.
-           */
           draw() {
-            // Re‑read the accent colour each frame in case the theme changes at
-            // runtime.  Trim whitespace from computed property.
             const color = (getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#a855f7').trim();
             ctx.fillStyle = color;
             ctx.fillRect(this.x, this.y, this.size, this.size);
           }
         }
-
-        /**
-         * Animation loop.  Clears the canvas, updates each particle and draws
-         * them in their new positions.  Uses requestAnimationFrame for smooth
-         * updates at the browser's refresh rate.
-         */
         function animate() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           for (let i = 0; i < particles.length; i++) {
@@ -2598,12 +1907,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
           }
           requestAnimationFrame(animate);
         }
-
-        /**
-         * Capture mouse coordinates relative to the canvas when moving.  On
-         * mouseleave, reset the coordinates to null so that repelling forces
-         * cease.
-         */
         function attachMouseHandlers() {
           canvas.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
@@ -2615,20 +1918,14 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
             mouse.y = null;
           });
         }
-
-        // Initial setup: size canvases, generate particles and start the loop.
         function init() {
           resizeCanvas();
           attachMouseHandlers();
           animate();
         }
-
-        // Handle window resize by updating canvas sizes and regenerating particles.
         window.addEventListener('resize', () => {
           resizeCanvas();
         });
-
-        // Kick things off.
         init();
       });
     })();
