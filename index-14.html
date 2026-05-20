@@ -294,58 +294,13 @@
       margin-top: 4px;
       text-align: center;
     }
-
-    /* Floating Pangeya button */
-    #pangeyaFloatingBtn {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: linear-gradient(135deg, #7c3aed, #3b82f6);
-      color: white;
-      border: none;
-      border-radius: 999px;
-      padding: 14px 22px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    #pangeyaFloatingBtn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 28px rgba(0,0,0,0.45);
-    }
     .chat-wrapper {
-      max-width: 700px;
-      margin: 20px auto;
       background: rgba(255, 255, 255, 0.03);
       border-radius: 12px;
       padding: 16px;
+      margin-top: 20px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s ease;
     }
-    .chat-wrapper.collapsed .chat-body,
-    .chat-wrapper.collapsed .chat-input-area,
-    .chat-wrapper.collapsed .chat-disclaimer { display: none; }
-    .chat-wrapper.collapsed { padding: 8px 16px; }
-    .chat-toggle-btn {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 999px;
-      padding: 4px 14px;
-      font-size: 13px;
-      cursor: pointer;
-      transition: opacity 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .chat-toggle-btn:hover { opacity: 0.85; }
     .chat-header {
       display: flex;
       align-items: center;
@@ -861,7 +816,20 @@
       </div>
       <div class="essays-list" id="essaysList"></div>
     </div>
-    
+    <div id="chatSection" class="chat-wrapper">
+      <div class="chat-header">
+        <div class="chat-title">🤖 PangeyaAI</div>
+        <div id="chatCredit" class="chat-credit-badge"></div>
+      </div>
+      <div id="chatMessages" class="chat-body"></div>
+      <div id="typingIndicator" class="typing hidden"><span></span><span></span><span></span></div>
+      <div class="chat-input-area">
+        <input id="chatInput" type="text" placeholder="Ask PangeyaAI..." autocomplete="off">
+        <button id="chatSendBtn" class="send-btn" type="button">➤</button>
+        <button id="chatClearBtn" class="clear-btn" type="button">🗑</button>
+      </div>
+      <div class="chat-disclaimer">Type "please" three times consecutively to receive 13 extra messages.</div>
+    </div>
   </div>
   <div class="modal" id="editModal">
     <div class="modal-content">
@@ -943,25 +911,7 @@ Or pay via QR:</div>
       </div>
     </div>
   </div>
-  <button id="pangeyaFloatingBtn" onclick="toggleChat()">🤖 Pangeya</button>
-<div id="chatSection" class="chat-wrapper collapsed">
-      <div class="chat-header">
-        <div style="display:flex;align-items:center;gap:10px;width:100%;">
-          <div class="chat-title">🤖 Pangeya</div>
-          <button class="chat-toggle-btn" id="chatToggleBtn" onclick="toggleChat()">💬 Ask AI</button>
-          <div id="chatCredit" class="chat-credit-badge"></div>
-        </div>
-      </div>
-      <div id="chatMessages" class="chat-body"></div>
-      <div id="typingIndicator" class="typing hidden"><span></span><span></span><span></span></div>
-      <div class="chat-input-area">
-        <input id="chatInput" type="text" placeholder="Ask Pangeya..." autocomplete="off">
-        <button id="chatSendBtn" class="send-btn" type="button">➤</button>
-        <button id="chatClearBtn" class="clear-btn" type="button">🗑</button>
-      </div>
-      <div class="chat-disclaimer">Type "please" three times consecutively to receive 13 extra messages.</div>
-    </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
@@ -1015,23 +965,6 @@ Or pay via QR:</div>
       }
       return id;
     }
-    function toggleChat() {
-      const chatSection = document.getElementById('chatSection');
-      if (chatSection) {
-        chatSection.classList.toggle('collapsed');
-        const btn = document.getElementById('chatToggleBtn');
-        const floatBtn = document.getElementById('pangeyaFloatingBtn');
-        if (chatSection.classList.contains('collapsed')) {
-          if (btn) btn.textContent = '💬 Ask AI';
-          if (floatBtn) { floatBtn.textContent = '🤖  Pangeya'; floatBtn.style.display = 'flex'; }
-        } else {
-          if (btn) btn.textContent = '✕ Close';
-          if (floatBtn) floatBtn.style.display = 'none';
-          renderChat();
-        }
-      }
-    }
-    window.toggleChat = toggleChat;
     function updateChatCredit() {
       const creditEl = document.getElementById('chatCredit');
       if (creditEl) {
@@ -1812,12 +1745,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         toggleInfoModal();
         return;
       }
-      if ((e.ctrlKey || e.metaKey) && e.key === '.') {
-        e.preventDefault();
-        e.stopPropagation();
-        toggleChat();
-        return;
-      }
     });
     window.addEventListener('click', (e) => {
       const editM = document.getElementById('editModal');
@@ -2003,7 +1930,5 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       });
     })();
   </script>
-<!-- IELTS Hub: contact footer (tools opt out of the name modal) -->
-<script src="https://maqsudjon-cell.github.io/ielts-hub/js/footer.js" defer></script>
 </body>
 </html>
