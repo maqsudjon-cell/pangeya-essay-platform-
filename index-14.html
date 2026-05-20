@@ -295,7 +295,7 @@
       text-align: center;
     }
 
-    /* Floating PangeyaAI button */
+    /* Floating Pangeya button */
     #pangeyaFloatingBtn {
       position: fixed;
       bottom: 24px;
@@ -943,11 +943,11 @@ Or pay via QR:</div>
       </div>
     </div>
   </div>
-  <button id="pangeyaFloatingBtn" onclick="toggleChat()">🤖 PangeyaAI</button>
+  <button id="pangeyaFloatingBtn" onclick="toggleChat()">🤖 Pangeya</button>
 <div id="chatSection" class="chat-wrapper collapsed">
       <div class="chat-header">
         <div style="display:flex;align-items:center;gap:10px;width:100%;">
-          <div class="chat-title">🤖 PangeyaAI</div>
+          <div class="chat-title">🤖 Pangeya</div>
           <button class="chat-toggle-btn" id="chatToggleBtn" onclick="toggleChat()">💬 Ask AI</button>
           <div id="chatCredit" class="chat-credit-badge"></div>
         </div>
@@ -955,7 +955,7 @@ Or pay via QR:</div>
       <div id="chatMessages" class="chat-body"></div>
       <div id="typingIndicator" class="typing hidden"><span></span><span></span><span></span></div>
       <div class="chat-input-area">
-        <input id="chatInput" type="text" placeholder="Ask PangeyaAI..." autocomplete="off">
+        <input id="chatInput" type="text" placeholder="Ask Pangeya..." autocomplete="off">
         <button id="chatSendBtn" class="send-btn" type="button">➤</button>
         <button id="chatClearBtn" class="clear-btn" type="button">🗑</button>
       </div>
@@ -1023,7 +1023,7 @@ Or pay via QR:</div>
         const floatBtn = document.getElementById('pangeyaFloatingBtn');
         if (chatSection.classList.contains('collapsed')) {
           if (btn) btn.textContent = '💬 Ask AI';
-          if (floatBtn) { floatBtn.textContent = '🤖  PangeyaAI'; floatBtn.style.display = 'flex'; }
+          if (floatBtn) { floatBtn.textContent = '🤖  Pangeya'; floatBtn.style.display = 'flex'; }
         } else {
           if (btn) btn.textContent = '✕ Close';
           if (floatBtn) floatBtn.style.display = 'none';
