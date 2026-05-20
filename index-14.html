@@ -294,11 +294,37 @@
       margin-top: 4px;
       text-align: center;
     }
+
+    /* Floating PangeyaAI button */
+    #pangeyaFloatingBtn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: linear-gradient(135deg, #7c3aed, #3b82f6);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    #pangeyaFloatingBtn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+    }
     .chat-wrapper {
+      max-width: 700px;
+      margin: 20px auto;
       background: rgba(255, 255, 255, 0.03);
       border-radius: 12px;
       padding: 16px;
-      margin-top: 20px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       transition: all 0.3s ease;
     }
@@ -835,23 +861,7 @@
       </div>
       <div class="essays-list" id="essaysList"></div>
     </div>
-    <div id="chatSection" class="chat-wrapper collapsed">
-      <div class="chat-header">
-        <div style="display:flex;align-items:center;gap:10px;width:100%;">
-          <div class="chat-title">🤖 PangeyaAI</div>
-          <button class="chat-toggle-btn" id="chatToggleBtn" onclick="toggleChat()">💬 Ask AI</button>
-          <div id="chatCredit" class="chat-credit-badge"></div>
-        </div>
-      </div>
-      <div id="chatMessages" class="chat-body"></div>
-      <div id="typingIndicator" class="typing hidden"><span></span><span></span><span></span></div>
-      <div class="chat-input-area">
-        <input id="chatInput" type="text" placeholder="Ask PangeyaAI..." autocomplete="off">
-        <button id="chatSendBtn" class="send-btn" type="button">➤</button>
-        <button id="chatClearBtn" class="clear-btn" type="button">🗑</button>
-      </div>
-      <div class="chat-disclaimer">Type "please" three times consecutively to receive 13 extra messages.</div>
-    </div>
+    
   </div>
   <div class="modal" id="editModal">
     <div class="modal-content">
@@ -933,7 +943,25 @@ Or pay via QR:</div>
       </div>
     </div>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <button id="pangeyaFloatingBtn" onclick="toggleChat()">🤖 PangeyaAI</button>
+<div id="chatSection" class="chat-wrapper collapsed">
+      <div class="chat-header">
+        <div style="display:flex;align-items:center;gap:10px;width:100%;">
+          <div class="chat-title">🤖 PangeyaAI</div>
+          <button class="chat-toggle-btn" id="chatToggleBtn" onclick="toggleChat()">💬 Ask AI</button>
+          <div id="chatCredit" class="chat-credit-badge"></div>
+        </div>
+      </div>
+      <div id="chatMessages" class="chat-body"></div>
+      <div id="typingIndicator" class="typing hidden"><span></span><span></span><span></span></div>
+      <div class="chat-input-area">
+        <input id="chatInput" type="text" placeholder="Ask PangeyaAI..." autocomplete="off">
+        <button id="chatSendBtn" class="send-btn" type="button">➤</button>
+        <button id="chatClearBtn" class="clear-btn" type="button">🗑</button>
+      </div>
+      <div class="chat-disclaimer">Type "please" three times consecutively to receive 13 extra messages.</div>
+    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
@@ -992,14 +1020,13 @@ Or pay via QR:</div>
       if (chatSection) {
         chatSection.classList.toggle('collapsed');
         const btn = document.getElementById('chatToggleBtn');
-        if (btn) {
-          if (chatSection.classList.contains('collapsed')) {
-            btn.textContent = '💬 Ask AI';
-          } else {
-            btn.textContent = '✕ Close';
-          }
-        }
-        if (!chatSection.classList.contains('collapsed')) {
+        const floatBtn = document.getElementById('pangeyaFloatingBtn');
+        if (chatSection.classList.contains('collapsed')) {
+          if (btn) btn.textContent = '💬 Ask AI';
+          if (floatBtn) { floatBtn.textContent = '🤖  PangeyaAI'; floatBtn.style.display = 'flex'; }
+        } else {
+          if (btn) btn.textContent = '✕ Close';
+          if (floatBtn) floatBtn.style.display = 'none';
           renderChat();
         }
       }
