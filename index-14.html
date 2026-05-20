@@ -300,7 +300,26 @@
       padding: 16px;
       margin-top: 20px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
     }
+    .chat-wrapper.collapsed .chat-body,
+    .chat-wrapper.collapsed .chat-input-area,
+    .chat-wrapper.collapsed .chat-disclaimer { display: none; }
+    .chat-wrapper.collapsed { padding: 8px 16px; }
+    .chat-toggle-btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chat-toggle-btn:hover { opacity: 0.85; }
     .chat-header {
       display: flex;
       align-items: center;
@@ -816,10 +835,13 @@
       </div>
       <div class="essays-list" id="essaysList"></div>
     </div>
-    <div id="chatSection" class="chat-wrapper">
+    <div id="chatSection" class="chat-wrapper collapsed">
       <div class="chat-header">
-        <div class="chat-title">🤖 PangeyaAI</div>
-        <div id="chatCredit" class="chat-credit-badge"></div>
+        <div style="display:flex;align-items:center;gap:10px;width:100%;">
+          <div class="chat-title">🤖 PangeyaAI</div>
+          <button class="chat-toggle-btn" id="chatToggleBtn" onclick="toggleChat()">💬 Ask AI</button>
+          <div id="chatCredit" class="chat-credit-badge"></div>
+        </div>
       </div>
       <div id="chatMessages" class="chat-body"></div>
       <div id="typingIndicator" class="typing hidden"><span></span><span></span><span></span></div>
@@ -965,6 +987,24 @@ Or pay via QR:</div>
       }
       return id;
     }
+    function toggleChat() {
+      const chatSection = document.getElementById('chatSection');
+      if (chatSection) {
+        chatSection.classList.toggle('collapsed');
+        const btn = document.getElementById('chatToggleBtn');
+        if (btn) {
+          if (chatSection.classList.contains('collapsed')) {
+            btn.textContent = '💬 Ask AI';
+          } else {
+            btn.textContent = '✕ Close';
+          }
+        }
+        if (!chatSection.classList.contains('collapsed')) {
+          renderChat();
+        }
+      }
+    }
+    window.toggleChat = toggleChat;
     function updateChatCredit() {
       const creditEl = document.getElementById('chatCredit');
       if (creditEl) {
@@ -1743,6 +1783,12 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         e.preventDefault();
         e.stopPropagation();
         toggleInfoModal();
+        return;
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === '.') {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleChat();
         return;
       }
     });
