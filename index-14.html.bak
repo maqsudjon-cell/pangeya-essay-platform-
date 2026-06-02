@@ -1,0 +1,1934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pangeya Essay Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at top left, #3b0764, #1e1b4b 40%, #020617 80%);
+      --card-bg: rgba(15, 23, 42, 0.92);
+      --accent: #a855f7;
+      --accent2: #ec4899;
+      --accent3: #22c55e;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --border-soft: rgba(148, 163, 184, 0.3);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh;
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .light-theme {
+      --bg-gradient: linear-gradient(135deg, #e0e7ff, #f5f3ff);
+      --card-bg: #ffffff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --border-soft: rgba(148, 163, 184, 0.5);
+    }
+    .dark-theme {
+      --bg-gradient: radial-gradient(circle at top, #020617, #020617 40%, #000000 100%);
+      --card-bg: #020617;
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+    }
+    .glass-theme {
+      --bg-gradient: linear-gradient(135deg, rgba(255,255,255,0.35), rgba(230,230,230,0.2));
+      --card-bg: rgba(255, 255, 255, 0.2);
+      --text-main: #0f172a;
+      --text-muted: #334155;
+      --border-soft: rgba(15, 23, 42, 0.25);
+    }
+    .glass-theme .inner {
+      backdrop-filter: blur(16px);
+    }
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background: linear-gradient(145deg, rgba(88, 28, 135, 0.9), rgba(30, 64, 175, 0.9));
+      padding: 2px;
+      border-radius: 26px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.55);
+    }
+    .inner {
+      background: var(--card-bg);
+      border-radius: 24px;
+      padding: 20px 20px 18px;
+    }
+    @media (min-width: 768px) {
+      .inner { padding: 24px 26px 22px; }
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+    .theme-switcher {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .theme-btn {
+      flex: 1;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all .18s ease;
+    }
+    .theme-btn.active {
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      color: white;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+      margin-top: 6px;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid var(--border-soft);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      padding: 10px 12px;
+      font-size: 16px;
+      outline: none;
+      transition: border .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+    #definition {
+      min-height: 80px;
+    }
+    input[type="text"]:focus, textarea:focus {
+      border-color: #818cf8;
+      box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.7);
+      background: rgba(15, 23, 42, 1);
+    }
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 11px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: transform .1s ease, box-shadow .1s ease, opacity .15s ease;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      box-shadow: 0 10px 25px rgba(236, 72, 153, 0.4);
+    }
+    .btn-secondary {
+      background: linear-gradient(135deg, #38bdf8, #6366f1);
+      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.35);
+    }
+    .btn-teacher {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      box-shadow: 0 8px 20px rgba(34, 197, 94, 0.35);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); box-shadow: none; }
+    .essay-search-controls {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 6px;
+      justify-content: flex-end;
+    }
+    .essay-search-controls input {
+      flex: 1;
+      padding: 4px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border-soft);
+      background: var(--card-bg);
+      color: var(--text-main);
+      font-size: 14px;
+    }
+    .essay-search-controls input::placeholder {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .essay-search-controls button {
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 500;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: transform .1s ease;
+    }
+    .essay-search-controls button:hover { transform: translateY(-1px); }
+    .essay-search-controls button:active { transform: translateY(0); }
+    .chat-messages {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 400px;
+      min-height: 120px;
+      width: 100%;
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 10px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    .chat-message {
+      max-width: 90%;
+      padding: 8px 12px;
+      border-radius: 12px;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+    .chat-message.user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #ffffff;
+      border-radius: 12px 12px 0 12px;
+    }
+    .chat-message.assistant {
+      align-self: flex-start;
+      background: rgba(0, 0, 0, 0.2);
+      color: #e5e7eb;
+      border-radius: 12px 12px 12px 0;
+    }
+    .chat-input-area {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .chat-input-area textarea {
+      flex: 1;
+      resize: none;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: var(--input-bg, rgba(15, 23, 42, 0.8));
+      color: #e5e7eb;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 16px;
+      min-height: 48px;
+    }
+    .chat-input-area input {
+      flex: 1;
+      border: 1px solid var(--border-soft);
+      border-radius: 999px;
+      padding: 6px 12px;
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--text-main);
+      font-size: 16px;
+      outline: none;
+    }
+    .chat-image-btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #ffffff;
+      border: none;
+      border-radius: 999px;
+      padding: 6px 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform .1s ease, box-shadow .1s ease;
+    }
+    .chat-image-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    }
+    .chat-clear-btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #ffffff;
+      border: none;
+      border-radius: 999px;
+      padding: 6px 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform .1s ease, box-shadow .1s ease;
+    }
+    .chat-clear-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    }
+    .chat-message img {
+      max-width: 100%;
+      border-radius: 12px;
+      display: block;
+    }
+    .chat-disclaimer {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      text-align: center;
+    }
+    .chat-wrapper {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .chat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .chat-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chat-credit-badge {
+      font-size: 12px;
+      background: var(--accent);
+      color: #ffffff;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .chat-body {
+      max-height: 300px;
+      overflow-y: auto;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 8px;
+    }
+    .chat-input-area input {
+      flex: 1;
+      border: 1px solid var(--border-soft);
+      border-radius: 999px;
+      padding: 6px 12px;
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--text-main);
+      font-size: 16px;
+      outline: none;
+    }
+    .send-btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      border-radius: 999px;
+      color: #ffffff;
+      padding: 6px 14px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform .1s ease, box-shadow .1s ease;
+    }
+    .send-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    }
+    .clear-btn {
+      background: transparent;
+      border: 1px solid var(--border-soft);
+      border-radius: 999px;
+      color: var(--text-main);
+      padding: 6px 12px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background .1s ease, transform .1s ease;
+    }
+    .clear-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateY(-1px);
+    }
+    .typing {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+    .typing span {
+      display: block;
+      width: 6px;
+      height: 6px;
+      background: var(--text-muted);
+      border-radius: 50%;
+      animation: blink 1.2s infinite ease-in-out;
+    }
+    .typing span:nth-child(2) { animation-delay: .2s; }
+    .typing span:nth-child(3) { animation-delay: .4s; }
+    .hidden { display: none !important; }
+    @keyframes blink {
+      0% { opacity: 0.2; }
+      20% { opacity: 1; }
+      100% { opacity: 0.2; }
+    }
+    .pixel-hero {
+      position: relative;
+      width: 100%;
+      height: 160px;
+      margin: 14px 0 20px;
+    }
+    .pixel-hero canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    @media (max-width: 640px) {
+      .pixel-hero {
+        height: 120px;
+      }
+    }
+    .ai-feedback {
+      margin-top: 4px;
+      padding: 7px 8px;
+      background: rgba(56, 189, 248, 0.16);
+      border-left: 3px solid #38bdf8;
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--text-main);
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .teacher-panel {
+      display: none;
+      margin-top: 8px;
+    }
+    .teacher-panel input { margin-top: 6px; }
+    .teacher-panel .btn-enter { margin-top: 8px; }
+    .section-title {
+      margin-top: 18px;
+      margin-bottom: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .section-title span.icon { font-size: 17px; }
+    .essays-list {
+      margin-top: 4px;
+      max-height: 380px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+    .essay-card {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 18px;
+      padding: 10px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      margin-bottom: 8px;
+      font-size: 13px;
+      position: relative;
+    }
+    .essay-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 4px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .essay-name { font-weight: 500; }
+    .essay-text {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow-wrap: anywhere;
+      margin-bottom: 6px;
+      margin-top: 2px;
+      color: var(--text-main);
+    }
+    .feedback {
+      margin-top: 4px;
+      padding: 7px 8px;
+      background: rgba(22, 163, 74, 0.16);
+      border-left: 3px solid #22c55e;
+      border-radius: 10px;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .feedback .fb-check, .feedback .fb-cross {
+      display: block;
+      padding-left: 22px;
+      position: relative;
+      margin: 4px 0;
+    }
+    .feedback .fb-check::before {
+      content: '✔';
+      position: absolute;
+      left: 0;
+      color: #22c55e;
+    }
+    .feedback .fb-cross::before {
+      content: '✘';
+      position: absolute;
+      left: 0;
+      color: #ef4444;
+    }
+    .essay-actions {
+      margin-top: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .chip-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 11px;
+      cursor: pointer;
+      color: white;
+    }
+    .chip-edit { background: #22c55e; }
+    .chip-delete { background: #ef4444; }
+    .chip-feedback { background: #0ea5e9; }
+    .chip-download { background: #f59e0b; }
+    .chip-btn:active { transform: translateY(1px); }
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .icon-btn {
+      background: transparent;
+      border: 1px solid var(--border-soft);
+      border-radius: 4px;
+      padding: 4px 6px;
+      font-size: 13px;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+    .icon-btn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+    .edit-area {
+      min-height: 120px;
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 8px;
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      font-size: 13px;
+      background: var(--card-bg);
+      color: var(--text-main);
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      outline: none;
+    }
+    .feedback-essay {
+      max-height: 200px;
+      overflow-y: auto;
+      margin-bottom: 8px;
+      padding: 8px;
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      font-size: 12px;
+      background: var(--card-bg);
+      color: var(--text-main);
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .light-theme .essay-card {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+    }
+    .light-theme .essay-card .essay-text,
+    .light-theme .essay-card .feedback {
+      color: #111827;
+    }
+    .light-theme .feedback {
+      background: rgba(34, 197, 94, 0.16);
+      border-left: 3px solid #16a34a;
+    }
+    .light-theme .edit-area,
+    .light-theme .feedback-essay {
+      background: #f9fafb;
+      color: #111827;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+    }
+    .light-theme .icon-btn {
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      color: #111827;
+    }
+    .light-theme input[type="text"],
+    .light-theme textarea {
+      background: #f9fafb;
+      color: #111827;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      font-size: 16px;
+    }
+    .light-theme input[type="text"]::placeholder,
+    .light-theme textarea::placeholder {
+      color: #6b7280;
+    }
+    .light-theme input[type="text"]:focus,
+    .light-theme textarea:focus {
+      background: #ffffff;
+      border-color: #818cf8;
+      box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.7);
+    }
+    .light-theme .modal-content {
+      background: #ffffff;
+      color: #111827;
+    }
+    .light-theme #editArea,
+    .light-theme #feedbackArea {
+      background: #f9fafb;
+      color: #111827;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+    .light-theme #editArea:focus,
+    .light-theme #feedbackArea:focus {
+      background: #ffffff;
+      border-color: #818cf8;
+    }
+    mark, .user-highlight { background-color: #fef08a; color: #111827; }
+    u, .underline-text { text-decoration: underline; }
+    s, .strike-text { text-decoration: line-through; }
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      z-index: 999;
+    }
+    .modal-content {
+      width: 100%;
+      max-width: 720px;
+      background: #020617;
+      color: #e5e7eb;
+      border-radius: 18px;
+      padding: 16px 16px 14px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+    }
+    .modal-content h3 {
+      margin-bottom: 8px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    #editArea, #feedbackArea {
+      width: 100%;
+      min-height: 200px;
+      max-height: 60vh;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 14px;
+      resize: vertical;
+      outline: none;
+    }
+    #editArea:focus, #feedbackArea:focus {
+      border-color: #818cf8;
+      box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.7);
+    }
+    .modal-actions {
+      margin-top: 10px;
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .small-btn {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: none;
+      font-size: 12px;
+      cursor: pointer;
+      color: white;
+    }
+    .small-save { background: #22c55e; }
+    .small-cancel { background: #ef4444; }
+    @media (max-width: 480px) {
+      h1 { font-size: 18px; }
+      .subtitle { font-size: 11px; }
+      .essay-card { font-size: 12px; }
+      .modal-content { padding: 14px; }
+      #editArea, #feedbackArea { min-height: 170px; }
+    }
+    .name-wrapper { position: relative; }
+    .ny-icon {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      font-size: 22px;
+      line-height: 1;
+      display: none;
+      pointer-events: none;
+    }
+    body.newyear-mode .ny-icon { display: block; }
+    body.newyear-mode .name-wrapper input[type="text"] { padding-right: 45px; }
+    .btn .btn-sticker,
+    body.newyear-mode .btn .btn-sticker,
+    .essay-card .card-sticker,
+    body.newyear-mode .essay-card .card-sticker {
+      display: none !important;
+    }
+    .btn img {
+      display: none !important;
+    }
+    .essay-card .card-sticker {
+      display: none !important;
+    }
+    .btn .emoji-sticker {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      font-size: 24px;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .essay-card .emoji-card-sticker {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      font-size: 22px;
+      line-height: 1;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+    .gift-message {
+      position: absolute;
+      bottom: 36px;
+      right: 8px;
+      background: var(--card-bg);
+      color: var(--text-main);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      pointer-events: none;
+      z-index: 10;
+    }
+    .gift-message.show-gift-message {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+    @keyframes gift-pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    .gift-message.pulse {
+      animation: gift-pulse 1s ease-in-out infinite;
+    }
+    .gift-message-edit {
+      margin-top: 10px;
+    }
+    .gift-message-edit label {
+      display: block;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .gift-message-edit input {
+      width: 100%;
+      padding: 6px 8px;
+      font-size: 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: transparent;
+      color: var(--text-main);
+      outline: none;
+    }
+  </style>
+</head>
+<body class="neon-theme">
+  <div class="container">
+    <div id="essaySection" class="inner">
+      <h1>✨ Pangeya Essay Platform</h1>
+      <div class="subtitle">Write, save and print essays. Teachers can leave feedback with a secret key.</div>
+      <div class="pixel-hero" aria-hidden="true">
+        <canvas id="pixelCanvas"></canvas>
+      </div>
+      <div class="theme-switcher">
+        <button class="theme-btn active" id="neonTheme">Neon</button>
+        <button class="theme-btn" id="lightTheme">Light</button>
+        <button class="theme-btn" id="darkTheme">Dark</button>
+      </div>
+      <label for="name">Your name</label>
+      <div class="name-wrapper">
+        <input id="name" type="text" placeholder="Enter your name" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <span class="ny-icon">🌸</span>
+      </div>
+      <label for="essay">Write your essay</label>
+      <textarea id="essay" placeholder="Write your essay..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+      <button class="btn btn-primary" id="submitBtn">Submit
+        <span class="emoji-sticker">🌱</span>
+      </button>
+      <button class="btn btn-secondary" id="pdfBtn">Download PDF
+        <span class="emoji-sticker">🌼</span>
+      </button>
+      <button class="btn btn-teacher" id="teacherToggle">Teacher Login
+        <span class="emoji-sticker">🌻</span>
+      </button>
+      <div class="teacher-panel" id="teacherPanel">
+        <input id="teacherKey" type="text" placeholder="Enter teacher key" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <button class="btn btn-teacher btn-enter" id="teacherEnter">Enter</button>
+      </div>
+      <div class="section-title">
+        <span class="icon">🌷</span>
+        <span>All Essays</span>
+      </div>
+      <div class="essay-search-controls">
+        <input id="essaySearch" type="text" placeholder="Search essays...">
+      </div>
+      <div class="essays-list" id="essaysList"></div>
+    </div>
+    <div id="chatSection" class="chat-wrapper">
+      <div class="chat-header">
+        <div class="chat-title">🤖 PangeyaAI</div>
+        <div id="chatCredit" class="chat-credit-badge"></div>
+      </div>
+      <div id="chatMessages" class="chat-body"></div>
+      <div id="typingIndicator" class="typing hidden"><span></span><span></span><span></span></div>
+      <div class="chat-input-area">
+        <input id="chatInput" type="text" placeholder="Ask PangeyaAI..." autocomplete="off">
+        <button id="chatSendBtn" class="send-btn" type="button">➤</button>
+        <button id="chatClearBtn" class="clear-btn" type="button">🗑</button>
+      </div>
+      <div class="chat-disclaimer">Type "please" three times consecutively to receive 13 extra messages.</div>
+    </div>
+  </div>
+  <div class="modal" id="editModal">
+    <div class="modal-content">
+      <h3>Edit essay</h3>
+      <div class="toolbar">
+        <button class="icon-btn" title="Highlight Text" onclick="highlightSelection()">🖍</button>
+        <button class="icon-btn" title="Underline Text" onclick="underlineSelection()"><u>U</u></button>
+        <button class="icon-btn" title="Strikethrough Text" onclick="strikeSelection()"><s>S</s></button>
+      </div>
+      <div id="editArea" class="edit-area" contenteditable="true" spellcheck="false" autocorrect="off" autocapitalize="off"></div>
+      <div class="gift-message-edit">
+        <label for="giftMessageInput">Gift sticker message</label>
+        <input id="giftMessageInput" type="text" placeholder="Enter custom message or number">
+      </div>
+      <div class="modal-actions">
+        <button class="small-btn small-save" onclick="saveEdit()">Save</button>
+        <button class="small-btn small-cancel" onclick="closeEditModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="feedbackModal">
+    <div class="modal-content">
+      <h3>Add / edit teacher feedback</h3>
+      <div id="feedbackEssay" class="feedback-essay" contenteditable="true" spellcheck="false" autocorrect="off" autocapitalize="off"></div>
+      <div class="toolbar">
+        <button class="icon-btn" title="Highlight Text" onclick="highlightSelection()">🖍</button>
+        <button class="icon-btn" title="Underline Text" onclick="underlineSelection()"><u>U</u></button>
+        <button class="icon-btn" title="Strikethrough Text" onclick="strikeSelection()"><s>S</s></button>
+      </div>
+      <textarea id="feedbackArea" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+      <div class="modal-actions">
+        <button class="small-btn small-save" onclick="saveFeedback()">Save</button>
+        <button class="small-btn small-cancel" onclick="closeFeedbackModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="infoModal">
+    <div class="modal-content">
+      <h3>Author Information</h3>
+      <div style="font-size:14px; line-height:1.6; white-space:pre-wrap;">👤 Developed by: Maqsudjon Polatov
+Creator of:
+• Pangeya Essay Platform
+• Uzglidex Marketplace
+• 37P.AI automated tools
+• NubAI medical assistant
+• Matsumi music project
+
+📌 Support development
+If you would like to support future updates and improvements,
+you can send a donation to the following card:
+
+💳 9860 6004 0548 1208
+
+Or pay via QR:</div>
+      <img src="donation_qr.png" alt="Donation QR Code" class="donation-qr" onerror="this.style.display='none'">
+      <p style="font-size:13px; margin-top:12px; color:var(--text-muted);">Press <strong>Ctrl + `</strong> again to close this window.</p>
+      <div class="modal-actions">
+        <button class="small-btn small-cancel" onclick="toggleInfoModal()">Close</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="guideModal">
+    <div class="modal-content">
+      <h3>User Guide</h3>
+      <h4 style="margin-top:10px; font-size:15px;">For Students</h4>
+      <p style="font-size:13px; margin-bottom:8px;">1. Enter your name in the <em>Your name</em> field.</p>
+      <p style="font-size:13px; margin-bottom:8px;">2. Write your essay in the <em>Write your essay</em> box.</p>
+      <p style="font-size:13px; margin-bottom:8px;">3. Click <strong>Submit</strong> to save your essay to the cloud.</p>
+      <p style="font-size:13px; margin-bottom:8px;">4. You can edit your essay by clicking the <strong>Edit</strong> button next to it.</p>
+      <p style="font-size:13px; margin-bottom:8px;">5. To download your essay as a PDF, click <strong>Download PDF</strong>.</p>
+      <h4 style="margin-top:14px; font-size:15px;">For Teachers</h4>
+      <p style="font-size:13px; margin-bottom:8px;">1. Enter the secret teacher key in the <em>Teacher Key</em> field and click <strong>Enter</strong> to access teacher mode.</p>
+      <p style="font-size:13px; margin-bottom:8px;">2. Once in teacher mode, you can edit any essay, highlight important sections, underline useful phrases, or strike through errors.</p>
+      <p style="font-size:13px; margin-bottom:8px;">3. You can also add or edit feedback by clicking <strong>Add/Edit Feedback</strong> next to an essay.</p>
+      <p style="font-size:13px; margin-bottom:8px;">4. The teacher key is confidential. If you need the key, please contact <strong>Maqsudjon Polatov</strong> personally to request it.</p>
+      <p style="font-size:13px; margin-bottom:8px;">Press <strong>Ctrl + ;</strong> again to close this window and return to the platform.</p>
+      <div class="modal-actions">
+        <button class="small-btn small-cancel" onclick="toggleGuideModal()">Close</button>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      doc,
+      updateDoc,
+      deleteDoc,
+      getDoc,
+      setDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+    const TEACHER_KEY = 'CTNLC';
+    let teacherMode = false;
+    let currentEditId = null;
+    let currentFeedbackId = null;
+    let essayRequestCounter = 0;
+    let allEssays = [];
+    let chatHistory = [];
+    let chatRequestCounter = 0;
+    const CHAT_ENDPOINT = 'https://pangeya-ai.vercel.app/api/chat';
+    const FEEDBACK_ENDPOINT = 'https://pangeya-ai.vercel.app/api/essay-feedback';
+    function getChatLimit() {
+      const val = localStorage.getItem('pangeya_chat_limit');
+      return val ? parseInt(val, 10) : 13;
+    }
+    function setChatLimit(val) {
+      localStorage.setItem('pangeya_chat_limit', String(val));
+    }
+    function getPleaseCount() {
+      const val = localStorage.getItem('pangeya_please_count');
+      return val ? parseInt(val, 10) : 0;
+    }
+    function setPleaseCount(val) {
+      localStorage.setItem('pangeya_please_count', String(val));
+    }
+    function getFeedbackUsed() {
+      return localStorage.getItem('pangeya_feedback_used') === 'true';
+    }
+    function setFeedbackUsed(val) {
+      localStorage.setItem('pangeya_feedback_used', val ? 'true' : 'false');
+    }
+    function getUserId() {
+      let id = localStorage.getItem('pangeya_user_id');
+      if (!id) {
+        id = 'user-' + Math.random().toString(36).substring(2, 10);
+        localStorage.setItem('pangeya_user_id', id);
+      }
+      return id;
+    }
+    function updateChatCredit() {
+      const creditEl = document.getElementById('chatCredit');
+      if (creditEl) {
+        creditEl.textContent = 'Chat credits: ' + getChatLimit();
+      }
+    }
+    const SYSTEM_PROMPT = `You are PangeyaAI, a professional AI assistant designed specifically to help users prepare for the IELTS Academic and General Training Writing exams.
+
+Your primary responsibility is to assist users with IELTS Writing Task 1 and Task 2 by producing high-quality, band 7.0–9.0 level essays that strictly follow the official IELTS Band Descriptors:
+• Task Response / Task Achievement
+• Coherence and Cohesion
+• Lexical Resource
+• Grammatical Range and Accuracy
+
+You must always think and respond from the perspective of an IELTS examiner.
+
+⸻
+
+Writing Standards (Mandatory)
+• Use formal, academic English only
+• Follow a clear and logical paragraph structure:
+  • Introduction
+  • Body Paragraph 1
+  • Body Paragraph 2
+  • (Conclusion where appropriate)
+• Apply strong topic sentences, clear explanations, and relevant examples
+• Maintain logical flow using appropriate cohesive devices (e.g. however, moreover, in contrast, as a result)
+• Use a wide range of complex and compound sentence structures, including:
+  • Relative clauses
+  • Conditionals
+  • Passive voice
+  • Concession structures (although, despite, in spite of)
+
+⸻
+
+Lexical Requirements
+• Use IELTS-appropriate topic vocabulary
+• Apply natural collocations and precise word choices
+• Avoid repetition and unnatural or overly memorized expressions
+• Maintain clarity and academic tone at all times
+
+⸻
+
+Strict Restrictions
+• Do NOT provide short, generic, or underdeveloped answers
+• Do NOT go off topic or include irrelevant ideas
+• Do NOT mention being an AI or language model
+• Do NOT produce low-band (Band 5–6) structures or language
+• Do NOT use informal language or contractions
+
+⸻
+
+Additional Capabilities
+
+When required, you may:
+• Evaluate essays and estimate an IELTS band score
+• Explain strengths and weaknesses clearly
+• Rewrite or improve essays to a higher band level
+• Adapt writing to different task types:
+  • Opinion (Agree/Disagree)
+  • Discussion
+  • Problem–Solution
+  • Advantages–Disadvantages
+
+⸻
+
+Brand Identity
+
+You represent PangeyaAI, the intelligent core of a modern and reliable IELTS preparation platform. Every response must be accurate, structured, exam-oriented, and designed to help users achieve the highest possible IELTS score.`;
+    function renderChat() {
+      const container = document.getElementById('chatMessages');
+      if (!container) return;
+      container.innerHTML = '';
+      chatHistory.forEach(msg => {
+        const div = document.createElement('div');
+        div.classList.add('chat-message');
+        div.classList.add(msg.role === 'user' ? 'user' : 'assistant');
+        if (msg.imageData) {
+          const img = document.createElement('img');
+          img.src = msg.imageData;
+          img.alt = 'User image';
+          div.appendChild(img);
+          if (msg.content) {
+            const p = document.createElement('p');
+            p.textContent = msg.content;
+            div.appendChild(p);
+          }
+        } else {
+          div.textContent = msg.content;
+        }
+        container.appendChild(div);
+      });
+      container.scrollTop = container.scrollHeight;
+    }
+    function switchToChat() {
+      const essaySection = document.getElementById('essaySection');
+      const chatSection = document.getElementById('chatSection');
+      if (essaySection) essaySection.style.display = 'none';
+      if (chatSection) {
+        chatSection.style.display = 'block';
+        renderChat();
+      }
+    }
+    async function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      if (!input) return;
+      const text = (input.value || '').trim();
+      if (!text) return;
+      const lower = text.toLowerCase();
+      let credits = getChatLimit();
+      let pleaseCount = getPleaseCount();
+      if (credits <= 0 && lower !== 'please') {
+        chatHistory.push({ role: 'assistant', content: 'No chat credits left. Type "please" three times consecutively to receive 13 extra messages.' });
+        input.value = '';
+        renderChat();
+        updateChatCredit();
+        return;
+      }
+      chatHistory.push({ role: 'user', content: text });
+      input.value = '';
+      renderChat();
+      credits -= 1;
+      if (lower === 'please') {
+        pleaseCount += 1;
+        if (pleaseCount >= 3) {
+          credits += 13;
+          pleaseCount = 0;
+          chatHistory.push({ role: 'assistant', content: 'You have been granted 13 extra chat credits. Remaining credits: ' + credits });
+          renderChat();
+        }
+        setChatLimit(credits);
+        setPleaseCount(pleaseCount);
+        updateChatCredit();
+        return;
+      } else {
+        pleaseCount = 0;
+        setPleaseCount(0);
+      }
+      setChatLimit(credits);
+      updateChatCredit();
+      const typingEl = document.getElementById('typingIndicator');
+      if (typingEl) typingEl.classList.remove('hidden');
+      const myChatRequestId = ++chatRequestCounter;
+      try {
+        const userMessages = chatHistory
+          .filter(msg => !msg.imageData)
+          .map(msg => ({ role: msg.role, content: msg.content }));
+        const payload = {
+          message: text,
+          chatHistory: userMessages,
+          systemPrompt: SYSTEM_PROMPT,
+          model: chatHistory.some(m => m.imageData) ? 'gpt-4o' : 'gpt-3.5-turbo',
+          userId: getUserId()
+        };
+        const response = await fetch(CHAT_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (myChatRequestId !== chatRequestCounter) return;
+        const data = await response.json();
+        const assistantMsg = data && data.reply
+          ? data.reply.trim()
+          : (data && data.error ? data.error : 'Sorry, I could not get a response.');
+        chatHistory.push({ role: 'assistant', content: assistantMsg });
+        renderChat();
+      } catch (err) {
+        console.error('Chat error:', err);
+        if (myChatRequestId === chatRequestCounter) {
+          chatHistory.push({ role: 'assistant', content: 'Sorry, there was an error communicating with the AI.' });
+          renderChat();
+        }
+      } finally {
+        if (typingEl) typingEl.classList.add('hidden');
+      }
+    }
+    function clearChat() {
+      chatHistory = [];
+      chatRequestCounter = 0;
+      renderChat();
+      updateChatCredit();
+    }
+    async function getEssayAIFeedback(docId, data) {
+      let credits = getChatLimit();
+      if (credits <= 0) {
+        alert('You do not have any chat credits remaining to request AI feedback.');
+        return;
+      }
+      credits -= 1;
+      setChatLimit(credits);
+      updateChatCredit();
+      const aiBtn = document.getElementById('aiFeedbackBtn-' + docId);
+      const aiContainer = document.getElementById('aiFeedback-' + docId);
+      if (aiBtn) {
+        aiBtn.disabled = true;
+        aiBtn.textContent = 'Loading...';
+      }
+      if (aiContainer) {
+        aiContainer.classList.remove('hidden');
+        aiContainer.textContent = 'Fetching AI feedback...';
+      }
+      try {
+        const payload = {
+          essay: data.essay || '',
+          name: data.name || 'Unknown',
+          userId: getUserId(),
+          systemPrompt: SYSTEM_PROMPT
+        };
+        const response = await fetch(FEEDBACK_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        let feedbackText = '';
+        if (result) {
+          if (typeof result === 'string') {
+            feedbackText = result;
+          } else if (result.feedback) {
+            feedbackText = result.feedback;
+          } else if (result.reply) {
+            feedbackText = result.reply;
+          } else if (result.comment) {
+            feedbackText = result.comment;
+          } else {
+            feedbackText = JSON.stringify(result);
+          }
+        } else {
+          feedbackText = 'No feedback returned.';
+        }
+        if (aiContainer) {
+          const safe = escapeHtml(feedbackText).replace(/\n/g, '<br>');
+          aiContainer.innerHTML = '<strong>AI Feedback:</strong><br>' + safe;
+        }
+        try {
+          await updateDoc(doc(db, 'essays', docId), { aiFeedback: feedbackText });
+        } catch (updateErr) {
+          console.error('Error saving AI feedback:', updateErr);
+        }
+      } catch (err) {
+        console.error('AI feedback error:', err);
+        if (aiContainer) {
+          aiContainer.textContent = 'Error retrieving AI feedback. Please try again later.';
+        }
+      } finally {
+        if (aiBtn) {
+          aiBtn.disabled = false;
+          aiBtn.textContent = 'Get AI Feedback';
+          aiBtn.style.display = 'none';
+        }
+      }
+    }
+    function toDateSafe(value) {
+      try {
+        if (!value) return new Date(0);
+        if (typeof value === 'object' && value.seconds !== undefined) {
+          return new Date(value.seconds * 1000);
+        }
+        if (typeof value === 'number') {
+          return new Date(value);
+        }
+        const parsed = Date.parse(value);
+        if (!isNaN(parsed)) {
+          return new Date(parsed);
+        }
+      } catch (err) {
+        console.warn('toDateSafe error for value', value, err);
+      }
+      return new Date(0);
+    }
+    function stripHtml(html) {
+      if (!html) return '';
+      const tmp = document.createElement('div');
+      tmp.innerHTML = html;
+      return tmp.textContent || tmp.innerText || '';
+    }
+    function formatDate(date) {
+      const formatter = new Intl.DateTimeFormat('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      return formatter.format(date);
+    }
+    const firebaseConfig = {
+      apiKey: "AIzaSyBnmbg7CyLki-M1E4rxPevJ741yTykliDA",
+      authDomain: "pangeya-essay.firebaseapp.com",
+      projectId: "pangeya-essay",
+      storageBucket: "pangeya-essay.appspot.com",
+      messagingSenderId: "783326121302",
+      appId: "1:783326121302:web:7d73c5110fb5682e5fdaf7",
+      measurementId: "G-0L1X6WHT1E"
+    };
+    const app = initializeApp(firebaseConfig);
+    getAnalytics(app);
+    const db = getFirestore(app);
+    const essaysRef = collection(db, "essays");
+    async function getGiftMessage(name) {
+      if (!name) return '';
+      try {
+        const docRef = doc(db, 'giftMessages', name);
+        const snap = await getDoc(docRef);
+        if (snap.exists()) {
+          const data = snap.data();
+          return data && data.message ? data.message : '';
+        }
+        return '';
+      } catch (err) {
+        console.error('Error fetching gift message for', name, err);
+        return '';
+      }
+    }
+    async function saveGiftMessage(name, message) {
+      if (!name) return;
+      try {
+        await setDoc(doc(db, 'giftMessages', name), { message: message }, { merge: true });
+      } catch (err) {
+        console.error('Error saving gift message for', name, err);
+      }
+    }
+    let currentEditName = null;
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+    async function renderEssays(queryName = '', showLatestOnly = false) {
+      const container = document.getElementById('essaysList');
+      const myRequestId = ++essayRequestCounter;
+      container.innerHTML = '';
+      const snapshot = await getDocs(essaysRef);
+      if (myRequestId !== essayRequestCounter) {
+        return;
+      }
+      if (snapshot.empty) {
+        container.innerHTML =
+          '<div style="font-size:12px;color:var(--text-muted);padding:2px 2px 6px;">No essays yet. Write and submit your first essay!</div>';
+        allEssays = [];
+        return;
+      }
+      const docsArray = [];
+      snapshot.forEach(docSnap => {
+        docsArray.push({ id: docSnap.id, data: docSnap.data() });
+      });
+      allEssays = docsArray;
+      const qName = (queryName || '').toString().trim().toLowerCase();
+      let filteredArray = allEssays;
+      if (qName) {
+        filteredArray = allEssays.filter(item => {
+          const nm = (item.data.name || '').toString().toLowerCase();
+          const essayText = stripHtml(item.data.essay || '').toLowerCase();
+          return nm.includes(qName) || essayText.includes(qName);
+        });
+      }
+      filteredArray.sort((a, b) => {
+        const tA = toDateSafe(a.data.timestamp ?? a.data.date).getTime();
+        const tB = toDateSafe(b.data.timestamp ?? b.data.date).getTime();
+        return tB - tA;
+      });
+      if (!qName && showLatestOnly && filteredArray.length > 0) {
+        filteredArray = [filteredArray[0]];
+      }
+      for (const item of filteredArray) {
+        if (myRequestId !== essayRequestCounter) {
+          return;
+        }
+        const data = item.data;
+        const docId = item.id;
+        const card = document.createElement('div');
+        card.className = 'essay-card';
+        const header = document.createElement('div');
+        header.className = 'essay-header';
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'essay-name';
+        nameSpan.textContent = (data.name ? `🌸 ${data.name}` : '🌸 Unknown');
+        const dateSpan = document.createElement('span');
+        const displayDate = formatDate(toDateSafe(data.timestamp ?? data.date));
+        dateSpan.textContent = displayDate;
+        header.appendChild(nameSpan);
+        header.appendChild(dateSpan);
+        const textDiv = document.createElement('div');
+        textDiv.className = 'essay-text';
+        textDiv.innerHTML = data.essay || '';
+        card.appendChild(header);
+        card.appendChild(textDiv);
+        const rawText = textDiv.textContent || '';
+        const wordsArray = rawText.trim().split(/\s+/).filter(word => word.length > 0);
+        const wordCount = wordsArray.length;
+        const wordCountDiv = document.createElement('div');
+        wordCountDiv.className = 'word-count';
+        wordCountDiv.style.fontSize = '12px';
+        wordCountDiv.style.color = 'var(--text-muted)';
+        wordCountDiv.style.marginBottom = '4px';
+        wordCountDiv.textContent = `Word count: ${wordCount}`;
+        card.appendChild(wordCountDiv);
+        if (data.feedback) {
+          const detailsEl = document.createElement('details');
+          detailsEl.className = 'feedback feedback-details';
+          const summaryEl = document.createElement('summary');
+          summaryEl.textContent = 'Teacher Feedback';
+          detailsEl.appendChild(summaryEl);
+          const lines = data.feedback.split('\n');
+          const formattedLines = lines.map(line => {
+            const trimmed = line.trim();
+            if (trimmed.startsWith('✔')) {
+              const content = trimmed.substring(1).trim();
+              return '<span class="fb-check">' + escapeHtml(content) + '</span>';
+            } else if (trimmed.startsWith('✘')) {
+              const content = trimmed.substring(1).trim();
+              return '<span class="fb-cross">' + escapeHtml(content) + '</span>';
+            }
+            return escapeHtml(line);
+          });
+          const contentDiv = document.createElement('div');
+          contentDiv.innerHTML = formattedLines.join('<br>');
+          detailsEl.appendChild(contentDiv);
+          card.appendChild(detailsEl);
+        }
+        const actions = document.createElement('div');
+        actions.className = 'essay-actions';
+        const editBtn = document.createElement('button');
+        editBtn.className = 'chip-btn chip-edit';
+        editBtn.textContent = 'Edit';
+        editBtn.onclick = () => openEditModal(docId, data);
+        const delBtn = document.createElement('button');
+        delBtn.className = 'chip-btn chip-delete';
+        delBtn.textContent = 'Delete';
+        delBtn.onclick = () => deleteEssay(docId);
+        delBtn.style.display = teacherMode ? 'inline-block' : 'none';
+        const fbBtn = document.createElement('button');
+        fbBtn.className = 'chip-btn chip-feedback';
+        fbBtn.textContent = 'Add/Edit Feedback';
+        fbBtn.style.display = teacherMode ? 'inline-block' : 'none';
+        fbBtn.onclick = () => openFeedbackModal(docId, data);
+        actions.appendChild(editBtn);
+        actions.appendChild(delBtn);
+        actions.appendChild(fbBtn);
+        const aiBtn = document.createElement('button');
+        aiBtn.className = 'chip-btn chip-feedback';
+        aiBtn.textContent = 'Get AI Feedback';
+        aiBtn.id = 'aiFeedbackBtn-' + docId;
+        aiBtn.onclick = () => getEssayAIFeedback(docId, data);
+        if (data.aiFeedback && data.aiFeedback.trim() !== '') {
+          aiBtn.style.display = 'none';
+        }
+        actions.appendChild(aiBtn);
+        const pdfBtn = document.createElement('button');
+        pdfBtn.className = 'chip-btn chip-download';
+        pdfBtn.textContent = 'Download PDF';
+        pdfBtn.onclick = () => downloadEssayPDF(data);
+        actions.appendChild(pdfBtn);
+        card.appendChild(actions);
+        const aiFbDiv = document.createElement('details');
+        aiFbDiv.className = 'ai-feedback ai-feedback-details';
+        aiFbDiv.id = 'aiFeedback-' + docId;
+        const aiSummary = document.createElement('summary');
+        aiSummary.textContent = 'AI Feedback';
+        aiFbDiv.appendChild(aiSummary);
+        const aiContent = document.createElement('div');
+        if (data.aiFeedback && data.aiFeedback.trim() !== '') {
+          const safeAi = escapeHtml(data.aiFeedback).replace(/\n/g, '<br>');
+          aiContent.innerHTML = safeAi;
+        } else {
+          aiFbDiv.classList.add('hidden');
+        }
+        aiFbDiv.appendChild(aiContent);
+        card.appendChild(aiFbDiv);
+        const cardEmoji = document.createElement('span');
+        cardEmoji.className = 'emoji-card-sticker';
+        cardEmoji.textContent = '🌸';
+        card.appendChild(cardEmoji);
+        const giftMessageEl = document.createElement('div');
+        giftMessageEl.className = 'gift-message';
+        card.appendChild(giftMessageEl);
+        const giftMsg = await getGiftMessage(data.name || '');
+        if (giftMsg) {
+          giftMessageEl.textContent = giftMsg;
+        }
+        if (myRequestId !== essayRequestCounter) {
+          return;
+        }
+        cardEmoji.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const visible = giftMessageEl.classList.contains('show-gift-message');
+          if (visible) {
+            giftMessageEl.classList.remove('show-gift-message');
+            giftMessageEl.classList.remove('pulse');
+          } else {
+            if (giftMessageEl.textContent && giftMessageEl.textContent.trim() !== '') {
+              giftMessageEl.classList.add('show-gift-message');
+              giftMessageEl.classList.add('pulse');
+            }
+          }
+        });
+        container.appendChild(card);
+      }
+    }
+    function searchEssays() {
+      const input = document.getElementById('essaySearch');
+      const query = input ? input.value.trim() : '';
+      renderEssays(query);
+    }
+    async function submitEssay() {
+      const nameInput = document.getElementById('name');
+      const essayInput = document.getElementById('essay');
+      const name = nameInput.value.trim();
+      const essay = essayInput.value.trim();
+      if (!essay) {
+        alert('Please write an essay before submitting.');
+        return;
+      }
+      const now = new Date();
+      await addDoc(essaysRef, {
+        name: name || 'Unknown',
+        essay: essay,
+        date: formatDate(now),
+        timestamp: now.getTime(),
+        feedback: ''
+      });
+      renderEssays();
+      essayInput.value = '';
+      nameInput.value = '';
+      alert('Essay saved to the cloud.');
+    }
+    async function openEditModal(docId, data) {
+      currentEditId = docId;
+      currentEditName = data && data.name ? data.name : null;
+      const editArea = document.getElementById('editArea');
+      editArea.innerHTML = data.essay || '';
+      const giftInput = document.getElementById('giftMessageInput');
+      if (giftInput) {
+        const msg = await getGiftMessage(currentEditName || '');
+        giftInput.value = msg || '';
+      }
+      document.getElementById('editModal').style.display = 'flex';
+    }
+    function closeEditModal() {
+      document.getElementById('editModal').style.display = 'none';
+      currentEditId = null;
+    }
+    async function saveEdit() {
+      if (!currentEditId) return;
+      const updated = document.getElementById('editArea').innerHTML;
+      await updateDoc(doc(db, 'essays', currentEditId), { essay: updated });
+      const giftInput = document.getElementById('giftMessageInput');
+      if (giftInput && currentEditName) {
+        const newMsg = giftInput.value.trim();
+        await saveGiftMessage(currentEditName, newMsg);
+      }
+      await renderEssays();
+      closeEditModal();
+    }
+    function openFeedbackModal(docId, data) {
+      currentFeedbackId = docId;
+      document.getElementById('feedbackArea').value = data.feedback || '';
+      const essayDiv = document.getElementById('feedbackEssay');
+      essayDiv.innerHTML = data.essay || '';
+      document.getElementById('feedbackModal').style.display = 'flex';
+    }
+    function closeFeedbackModal() {
+      document.getElementById('feedbackModal').style.display = 'none';
+      currentFeedbackId = null;
+    }
+    async function saveFeedback() {
+      if (!currentFeedbackId) return;
+      const updated = document.getElementById('feedbackArea').value;
+      const essayUpdated = document.getElementById('feedbackEssay').innerHTML;
+      await updateDoc(doc(db, 'essays', currentFeedbackId), { feedback: updated, essay: essayUpdated });
+      renderEssays();
+      closeFeedbackModal();
+    }
+    async function deleteEssay(docId) {
+      if (!confirm('Delete this essay?')) return;
+      await deleteDoc(doc(db, 'essays', docId));
+      renderEssays();
+    }
+    function findTagParent(node, tagNames, editableParent) {
+      while (node && node !== editableParent) {
+        if (node.nodeType === 1) {
+          const nodeName = node.nodeName.toLowerCase();
+          if (tagNames.includes(nodeName)) {
+            return node;
+          }
+          if (node.classList) {
+            if (tagNames.includes('mark') && node.classList.contains('user-highlight')) return node;
+            if (tagNames.includes('u') && node.classList.contains('underline-text')) return node;
+            if (tagNames.includes('s') && node.classList.contains('strike-text')) return node;
+          }
+        }
+        node = node.parentNode;
+      }
+      return null;
+    }
+    function getEditableParent(sel) {
+      if (!sel.rangeCount) return null;
+      const range = sel.getRangeAt(0);
+      let containerNode = range.commonAncestorContainer;
+      let editableParent = null;
+      if (containerNode.nodeType === 1) {
+        editableParent = containerNode.closest('[contenteditable="true"]');
+      } else {
+        editableParent = containerNode.parentElement ? containerNode.parentElement.closest('[contenteditable="true"]') : null;
+      }
+      if (!editableParent || (editableParent.id !== 'editArea' && editableParent.id !== 'feedbackEssay')) return null;
+      return editableParent;
+    }
+    function highlightSelection() {
+      const sel = window.getSelection();
+      const editableParent = getEditableParent(sel);
+      if (!editableParent) return;
+      editableParent.focus();
+      const selectedText = sel.toString();
+      if (!selectedText) return;
+      let markParent = findTagParent(sel.anchorNode, ['mark'], editableParent) || findTagParent(sel.focusNode, ['mark'], editableParent);
+      if (markParent) {
+        const text = markParent.textContent;
+        markParent.replaceWith(document.createTextNode(text));
+      } else {
+        const markHtml = `<mark>${selectedText}</mark>`;
+        document.execCommand('insertHTML', false, markHtml);
+      }
+    }
+    function underlineSelection() {
+      const sel = window.getSelection();
+      const editableParent = getEditableParent(sel);
+      if (!editableParent) return;
+      editableParent.focus();
+      const selectedText = sel.toString();
+      if (!selectedText) return;
+      let underlineParent = findTagParent(sel.anchorNode, ['u'], editableParent) || findTagParent(sel.focusNode, ['u'], editableParent);
+      if (underlineParent) {
+        const text = underlineParent.textContent;
+        underlineParent.replaceWith(document.createTextNode(text));
+      } else {
+        const uHtml = `<u>${selectedText}</u>`;
+        document.execCommand('insertHTML', false, uHtml);
+      }
+    }
+    function strikeSelection() {
+      const sel = window.getSelection();
+      const editableParent = getEditableParent(sel);
+      if (!editableParent) return;
+      editableParent.focus();
+      const selectedText = sel.toString();
+      if (!selectedText) return;
+      let strikeParent = findTagParent(sel.anchorNode, ['s'], editableParent) || findTagParent(sel.focusNode, ['s'], editableParent);
+      if (strikeParent) {
+        const text = strikeParent.textContent;
+        strikeParent.replaceWith(document.createTextNode(text));
+      } else {
+        const sHtml = `<s>${selectedText}</s>`;
+        document.execCommand('insertHTML', false, sHtml);
+      }
+    }
+    function toggleTeacherPanel() {
+      const panel = document.getElementById('teacherPanel');
+      panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+    }
+    function enterTeacherMode() {
+      const key = document.getElementById('teacherKey').value.trim();
+      if (!key) {
+        alert('Enter teacher key.');
+        return;
+      }
+      if (key === TEACHER_KEY) {
+        teacherMode = true;
+        alert('Teacher mode enabled.');
+        document.getElementById('teacherKey').value = '';
+        document.getElementById('teacherPanel').style.display = 'none';
+        renderEssays();
+      } else {
+        alert('Wrong key.');
+      }
+    }
+    function setTheme(theme) {
+      const body = document.body;
+      body.classList.remove('light-theme', 'dark-theme');
+      document.getElementById('neonTheme').classList.remove('active');
+      document.getElementById('lightTheme').classList.remove('active');
+      document.getElementById('darkTheme').classList.remove('active');
+      if (theme === 'light') {
+        body.classList.add('light-theme');
+        document.getElementById('lightTheme').classList.add('active');
+      } else if (theme === 'dark') {
+        body.classList.add('dark-theme');
+        document.getElementById('darkTheme').classList.add('active');
+      } else {
+        document.getElementById('neonTheme').classList.add('active');
+      }
+    }
+    async function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const docPDF = new jsPDF({ unit: 'pt', format: 'a4' });
+      let name = document.getElementById('name').value.trim();
+      let essay = document.getElementById('essay').value.trim();
+      if (!name || !essay) {
+        const snapshot = await getDocs(essaysRef);
+        const docsList = snapshot.docs;
+        if (docsList.length) {
+          const last = docsList[docsList.length - 1].data();
+          if (!name) name = last.name || 'Unknown';
+          if (!essay) essay = last.essay || '';
+        }
+      }
+      if (!essay) {
+        alert('There is no essay text to export.');
+        return;
+      }
+      if (!name) name = 'Unknown';
+      docPDF.setFontSize(22);
+      docPDF.setTextColor(140, 0, 255);
+      docPDF.text('Pangeya Essay Report', 40, 50);
+      docPDF.setFontSize(12);
+      docPDF.setTextColor(0, 0, 0);
+      docPDF.text('Name: ' + name, 40, 90);
+      const nowPDF = new Date();
+      docPDF.text('Date: ' + formatDate(nowPDF), 40, 110);
+      docPDF.setFontSize(14);
+      docPDF.setTextColor(30, 30, 30);
+      docPDF.text('Essay:', 40, 150);
+      const lines = docPDF.splitTextToSize(essay, 520);
+      docPDF.text(lines, 40, 180);
+      docPDF.save('pangeya-essay.pdf');
+    }
+    async function downloadEssayPDF(essayData) {
+      const { jsPDF } = window.jspdf;
+      const docPDF = new jsPDF({ unit: 'pt', format: 'a4' });
+      let name = (essayData && essayData.name ? essayData.name.trim() : '') || 'Unknown';
+      const essayHtml = (essayData && essayData.essay) ? essayData.essay : '';
+      const essayText = stripHtml(essayHtml);
+      let dateObj;
+      if (essayData && (essayData.timestamp !== undefined && essayData.timestamp !== null)) {
+        dateObj = toDateSafe(essayData.timestamp);
+      } else {
+        dateObj = toDateSafe(essayData && essayData.date ? essayData.date : null);
+      }
+      const dateStr = formatDate(dateObj);
+      docPDF.setFontSize(22);
+      docPDF.setTextColor(140, 0, 255);
+      docPDF.text('Pangeya Essay Report', 40, 50);
+      docPDF.setFontSize(12);
+      docPDF.setTextColor(0, 0, 0);
+      docPDF.text('Name: ' + name, 40, 90);
+      docPDF.text('Date: ' + dateStr, 40, 110);
+      docPDF.setFontSize(14);
+      docPDF.setTextColor(30, 30, 30);
+      docPDF.text('Essay:', 40, 150);
+      const lines = docPDF.splitTextToSize(essayText, 520);
+      docPDF.text(lines, 40, 180);
+      const safeName = name.replace(/[^a-z0-9]+/gi, '_').toLowerCase() || 'essay';
+      docPDF.save(safeName + '_essay.pdf');
+    }
+    function toggleInfoModal() {
+      const infoModal = document.getElementById('infoModal');
+      if (!infoModal) return;
+      infoModal.style.display = infoModal.style.display === 'flex' ? 'none' : 'flex';
+    }
+    window.toggleInfoModal = toggleInfoModal;
+    function toggleGuideModal() {
+      const guideModal = document.getElementById('guideModal');
+      if (!guideModal) return;
+      guideModal.style.display = guideModal.style.display === 'flex' ? 'none' : 'flex';
+    }
+    window.toggleGuideModal = toggleGuideModal;
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === ';') {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleGuideModal();
+        return;
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === '`') {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleInfoModal();
+        return;
+      }
+    });
+    window.addEventListener('click', (e) => {
+      const editM = document.getElementById('editModal');
+      const fbM = document.getElementById('feedbackModal');
+      if (e.target === editM) closeEditModal();
+      if (e.target === fbM) closeFeedbackModal();
+      const infoM = document.getElementById('infoModal');
+      const guideM = document.getElementById('guideModal');
+      if (e.target === infoM) toggleInfoModal();
+      if (e.target === guideM) toggleGuideModal();
+    });
+    document.getElementById('submitBtn').addEventListener('click', submitEssay);
+    document.getElementById('pdfBtn').addEventListener('click', downloadPDF);
+    document.getElementById('teacherToggle').addEventListener('click', toggleTeacherPanel);
+    document.getElementById('teacherEnter').addEventListener('click', enterTeacherMode);
+    document.getElementById('neonTheme').addEventListener('click', () => setTheme('neon'));
+    document.getElementById('lightTheme').addEventListener('click', () => setTheme('light'));
+    document.getElementById('darkTheme').addEventListener('click', () => setTheme('dark'));
+    const essaySearchInput = document.getElementById('essaySearch');
+    if (essaySearchInput) {
+      essaySearchInput.addEventListener('input', () => {
+        searchEssays();
+      });
+      essaySearchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          searchEssays();
+        }
+      });
+    }
+    document.getElementById('chatSendBtn')?.addEventListener('click', sendChatMessage);
+    const chatInputEl = document.getElementById('chatInput');
+    if (chatInputEl) {
+      chatInputEl.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendChatMessage();
+        }
+      });
+    }
+    const chatClearBtnEl = document.getElementById('chatClearBtn');
+    if (chatClearBtnEl) {
+      chatClearBtnEl.addEventListener('click', (e) => {
+        e.preventDefault();
+        clearChat();
+      });
+    }
+    updateChatCredit();
+    document.querySelectorAll('.btn-sticker, .card-sticker').forEach(el => {
+      el.style.display = 'none';
+    });
+    window.openEditModal = openEditModal;
+    window.closeEditModal = closeEditModal;
+    window.saveEdit = saveEdit;
+    window.openFeedbackModal = openFeedbackModal;
+    window.closeFeedbackModal = closeFeedbackModal;
+    window.saveFeedback = saveFeedback;
+    window.highlightSelection = highlightSelection;
+    window.underlineSelection = underlineSelection;
+    window.strikeSelection = strikeSelection;
+    window.getEssayAIFeedback = getEssayAIFeedback;
+    window.switchToChat = switchToChat;
+    renderEssays();
+  </script>
+  <script>
+    (() => {
+      document.addEventListener('DOMContentLoaded', () => {
+        const heroContainer = document.querySelector('.pixel-hero');
+        const canvas = document.getElementById('pixelCanvas');
+        if (!heroContainer || !canvas) {
+          return;
+        }
+        const ctx = canvas.getContext('2d');
+        const offCanvas = document.createElement('canvas');
+        const offCtx = offCanvas.getContext('2d');
+        let particles = [];
+        const mouse = { x: null, y: null, radius: 80 };
+        const PARTICLE_GAP = 4;
+        const EASE = 0.02;
+        const FRICTION = 0.9;
+        function resizeCanvas() {
+          const rect = heroContainer.getBoundingClientRect();
+          canvas.width = rect.width;
+          canvas.height = rect.height;
+          offCanvas.width = rect.width;
+          offCanvas.height = rect.height;
+          generateParticles();
+        }
+        function generateParticles() {
+          particles = [];
+          const width = offCanvas.width;
+          const height = offCanvas.height;
+          offCtx.clearRect(0, 0, width, height);
+          const fontSize = height * 0.6;
+          offCtx.font = `${fontSize}px Poppins, sans-serif`;
+          offCtx.textAlign = 'center';
+          offCtx.textBaseline = 'middle';
+          const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#a855f7';
+          offCtx.fillStyle = accent.trim();
+          const text = 'minnos';
+          offCtx.fillText(text, width / 2, height / 2);
+          const imgData = offCtx.getImageData(0, 0, width, height).data;
+          for (let y = 0; y < height; y += PARTICLE_GAP) {
+            for (let x = 0; x < width; x += PARTICLE_GAP) {
+              const index = (y * width + x) * 4;
+              if (imgData[index + 3] > 128) {
+                particles.push(new Particle(x, y, PARTICLE_GAP));
+              }
+            }
+          }
+        }
+        class Particle {
+          constructor(destX, destY, size) {
+            this.destX = destX;
+            this.destY = destY;
+            this.x = Math.random() * canvas.width;
+            this.y = canvas.height + Math.random() * canvas.height;
+            this.size = size;
+            this.vx = 0;
+            this.vy = 0;
+            this.delay = Math.floor(Math.random() * 60);
+          }
+          update() {
+            if (this.delay > 0) {
+              this.delay--;
+              return;
+            }
+            const dx = this.destX - this.x;
+            const dy = this.destY - this.y;
+            this.vx += dx * EASE;
+            this.vy += dy * EASE;
+            if (mouse.x !== null && mouse.y !== null) {
+              const mx = this.x - mouse.x;
+              const my = this.y - mouse.y;
+              const dist = Math.hypot(mx, my);
+              if (dist < mouse.radius && dist > 0) {
+                const force = (mouse.radius - dist) / mouse.radius;
+                const angle = Math.atan2(my, mx);
+                this.vx += Math.cos(angle) * force * 2;
+                this.vy += Math.sin(angle) * force * 2;
+              }
+            }
+            this.vx *= FRICTION;
+            this.vy *= FRICTION;
+            this.x += this.vx;
+            this.y += this.vy;
+          }
+          draw() {
+            const color = (getComputedStyle(document.documentElement).getPropertyValue('--accent') || '#a855f7').trim();
+            ctx.fillStyle = color;
+            ctx.fillRect(this.x, this.y, this.size, this.size);
+          }
+        }
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            p.update();
+            p.draw();
+          }
+          requestAnimationFrame(animate);
+        }
+        function attachMouseHandlers() {
+          canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+          });
+          canvas.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+          });
+        }
+        function init() {
+          resizeCanvas();
+          attachMouseHandlers();
+          animate();
+        }
+        window.addEventListener('resize', () => {
+          resizeCanvas();
+        });
+        init();
+      });
+    })();
+  </script>
+</body>
+</html>
