@@ -775,6 +775,23 @@
   </style>
 </head>
 <body class="neon-theme">
+<!-- pangea8 loader -->
+<div id="pg-loader" role="status" aria-label="Loading pangea8"><svg viewBox="0 0 200 200" aria-hidden="true"><g class="pg-spark"><line class="pg-ray" style="--i:0" x1="130" y1="100" x2="178" y2="100"/><line class="pg-ray" style="--i:1" x1="121.2" y1="121.2" x2="155.2" y2="155.2"/><line class="pg-ray" style="--i:2" x1="100" y1="130" x2="100" y2="178"/><line class="pg-ray" style="--i:3" x1="78.8" y1="121.2" x2="44.8" y2="155.2"/><line class="pg-ray" style="--i:4" x1="70" y1="100" x2="22" y2="100"/><line class="pg-ray" style="--i:5" x1="78.8" y1="78.8" x2="44.8" y2="44.8"/><line class="pg-ray" style="--i:6" x1="100" y1="70" x2="100" y2="22"/><line class="pg-ray" style="--i:7" x1="121.2" y1="78.8" x2="155.2" y2="44.8"/></g></svg><div class="pg-word">pangea<b>8</b></div></div>
+<style>
+#pg-loader{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;align-content:center;gap:22px;background:var(--bg,#fff);transition:opacity .5s ease,visibility .5s ease}
+#pg-loader.pg-hide{opacity:0;visibility:hidden;pointer-events:none}
+#pg-loader svg{width:96px;height:96px;overflow:visible}
+#pg-loader .pg-spark{transform-box:view-box;transform-origin:100px 100px;animation:pgLspin 2.4s linear infinite}
+#pg-loader .pg-ray{stroke:#34E0A1;stroke-width:13;stroke-linecap:round;filter:drop-shadow(0 0 3px rgba(52,224,161,.55)) drop-shadow(0 0 9px rgba(52,224,161,.3));transform-box:view-box;transform-origin:100px 100px;animation:pgLtw 2.4s ease-in-out infinite;animation-delay:calc(var(--i) * -0.3s)}
+#pg-loader .pg-word{font-family:'Inter',system-ui,-apple-system,sans-serif;font-weight:600;font-size:19px;letter-spacing:.5px;color:var(--text-primary,#1a1a1a)}
+#pg-loader .pg-word b{color:#15c98c}
+@keyframes pgLspin{to{transform:rotate(360deg)}}
+@keyframes pgLtw{0%,100%{transform:scale(.74);stroke:#2bd49a;filter:drop-shadow(0 0 3px rgba(52,224,161,.55)) drop-shadow(0 0 9px rgba(52,224,161,.3))}50%{transform:scale(1);stroke:#34E0A1;filter:drop-shadow(0 0 5px #34E0A1) drop-shadow(0 0 14px rgba(52,224,161,.5))}}
+@media(prefers-reduced-motion:reduce){#pg-loader .pg-spark,#pg-loader .pg-ray{animation:none}#pg-loader .pg-ray{transform:scale(.92)}}
+</style>
+<script>(function(){var el=document.getElementById('pg-loader');if(!el)return;var t=Date.now(),M=600,h=0;function hide(){if(h)return;h=1;var w=Math.max(0,M-(Date.now()-t));setTimeout(function(){el.classList.add('pg-hide');setTimeout(function(){el.style.display='none'},500)},w)}if(document.readyState==='complete')hide();else window.addEventListener('load',hide);setTimeout(hide,8000);window.pangeaLoader={show:function(){h=0;el.style.display='grid';el.style.visibility='visible';el.classList.remove('pg-hide');t=Date.now()},hide:hide}})();</script>
+<!-- /pangea8 loader -->
+
   <div class="container">
     <div id="essaySection" class="inner">
       <h1>✨ Pangeya Essay Platform</h1>
