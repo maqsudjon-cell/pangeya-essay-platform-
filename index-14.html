@@ -2030,6 +2030,13 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       if (!qName && showLatestOnly && filteredArray.length > 0) {
         filteredArray = [filteredArray[0]];
       }
+      // show a clear message when a search matches nothing
+      if (qName && filteredArray.length === 0) {
+        container.innerHTML =
+          '<div style="font-size:12px;color:var(--text-muted);padding:6px 2px;">No essays match “' +
+          escapeHtml(queryName.trim()) + '”. Try a different name or keyword.</div>';
+        return;
+      }
       for (const item of filteredArray) {
         if (myRequestId !== essayRequestCounter) {
           return;
