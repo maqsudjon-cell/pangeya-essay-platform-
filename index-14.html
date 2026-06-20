@@ -459,6 +459,14 @@
       color: var(--text-muted);
     }
     .essay-name { font-weight: 500; }
+    /* meta row: word-count + feedback chips */
+    .essay-meta{ display:flex; gap:6px; flex-wrap:wrap; margin:1px 0 7px; }
+    .ec-chip{ font-size:10.5px; font-weight:700; letter-spacing:.02em; padding:2px 8px; border-radius:999px;
+      border:1px solid transparent; white-space:nowrap; }
+    .ec-chip.ok{ color:#22c55e; background:rgba(34,197,94,.12); border-color:rgba(34,197,94,.3); }
+    .ec-chip.low{ color:#fbbf24; background:rgba(251,191,36,.12); border-color:rgba(251,191,36,.3); }
+    .ec-chip.fb{ color:var(--accent); background:color-mix(in srgb, var(--accent) 14%, transparent);
+      border-color:color-mix(in srgb, var(--accent) 32%, transparent); }
     .essay-text {
       white-space: pre-wrap;
       word-wrap: break-word;
@@ -467,6 +475,16 @@
       margin-top: 2px;
       color: var(--text-main);
     }
+    /* collapse long essays */
+    .essay-text.clamped{
+      display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical;
+      overflow:hidden; position:relative;
+    }
+    .ec-more{
+      background:none; border:none; cursor:pointer; padding:2px 0 4px;
+      font-size:11.5px; font-weight:700; color:var(--accent); transition:.15s;
+    }
+    .ec-more:hover{ opacity:.75; }
     .feedback {
       margin-top: 4px;
       padding: 7px 8px;
@@ -1166,21 +1184,30 @@
     .studio-words{ display:flex; align-items:center; gap:9px; }
     .sw-ring{ width:34px; height:34px; transform:rotate(-90deg); flex:none; }
     .sw-track{ fill:none; stroke: color-mix(in srgb, var(--text-main) 12%, transparent); stroke-width:3; }
-    .sw-fill{ fill:none; stroke:url(#swGrad); stroke-width:3; stroke-linecap:round; transition:stroke-dashoffset .35s ease; }
-    .studio-words.done .sw-fill{ stroke:#22c55e !important; }
+    .sw-fill{ fill:none; stroke:url(#swGrad); stroke-width:3; stroke-linecap:round; transition:stroke-dashoffset .35s ease, stroke .3s ease; }
     .sw-count{ font-size:12px; color:var(--text-muted); white-space:nowrap; }
-    .sw-count b{ color:var(--text-main); font-size:14px; font-weight:700; }
+    .sw-count b{ color:var(--text-main); font-size:17px; font-weight:800; transition:color .25s ease; font-variant-numeric:tabular-nums; }
+    .sw-remain{ display:block; font-size:10.5px; font-weight:600; letter-spacing:.02em; margin-top:1px; transition:color .25s ease; }
+    /* under target → amber, near (80%+) → brighter, reached → green */
+    .studio-words.under .sw-count b{ color:#fbbf24; }
+    .studio-words.under .sw-fill{ stroke:#fbbf24 !important; }
+    .studio-words.under .sw-remain{ color:#fbbf24; }
+    .studio-words.near .sw-count b{ color:#fcd34d; }
+    .studio-words.near .sw-fill{ stroke:#fcd34d !important; }
+    .studio-words.near .sw-remain{ color:#fcd34d; }
+    .studio-words.done .sw-fill{ stroke:#22c55e !important; }
     .studio-words.done .sw-count b{ color:#22c55e; }
+    .studio-words.done .sw-remain{ color:#22c55e; }
 
     .studio-foot{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin:8px 2px 2px; }
     .autosave{ display:inline-flex; align-items:center; gap:7px; font-size:11.5px; color:var(--text-muted); }
     .as-dot{ width:7px; height:7px; border-radius:50%; background:var(--text-muted); transition:.2s; }
     .autosave.saved .as-dot{ background:#22c55e; box-shadow:0 0 8px rgba(34,197,94,.7); }
-    .studio-hint-btn{
+    .studio-hint-btn, .focus-btn{
       border:1px solid var(--border-soft); background: color-mix(in srgb, var(--text-main) 5%, transparent);
       color:var(--text-main); font-size:11.5px; font-weight:600; padding:6px 12px; border-radius:999px; cursor:pointer; transition:.16s;
     }
-    .studio-hint-btn:hover{ border-color: color-mix(in srgb, var(--accent) 50%, transparent); color:var(--accent); }
+    .studio-hint-btn:hover, .focus-btn:hover{ border-color: color-mix(in srgb, var(--accent) 50%, transparent); color:var(--accent); }
     .studio-hint{
       margin:8px 0 2px; padding:13px 15px; border-radius:14px; font-size:13px; line-height:1.65; color:var(--text-main);
       background: color-mix(in srgb, var(--accent) 9%, transparent);
@@ -1189,6 +1216,35 @@
       animation: pgMsgIn .3s cubic-bezier(.2,.7,.2,1) both;
     }
     .studio-hint b{ color:var(--accent); }
+
+    /* timer: pulse in the final minute */
+    @keyframes timerPulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(248,113,113,.5);} 50%{ box-shadow:0 0 0 6px rgba(248,113,113,0);} }
+    .studio-timer.critical{ animation:timerPulse 1s ease-in-out infinite; }
+    .studio-timer.critical .st-time{ color:#f87171; }
+
+    /* ---- FOCUS MODE ---- */
+    body.focus-mode .pixel-hero,
+    body.focus-mode .studio-foot,
+    body.focus-mode #pdfBtn,
+    body.focus-mode #teacherToggle,
+    body.focus-mode #teacherPanel,
+    body.focus-mode .section-title,
+    body.focus-mode .essay-search-controls,
+    body.focus-mode #essaysList,
+    body.focus-mode .pg-chat-dock,
+    body.focus-mode .theme-switch,
+    body.focus-mode .studio-sub{ display:none !important; }
+    body.focus-mode .studio-card{ max-width:880px; }
+    body.focus-mode #essay{ min-height:60vh; font-size:17px; line-height:1.85; }
+    body.focus-mode #submitBtn{ margin-top:14px; }
+    .focus-exit{
+      position:fixed; top:16px; right:16px; z-index:3000; display:none;
+      border:1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+      background:var(--card-bg); color:var(--accent); font-size:12px; font-weight:700;
+      padding:9px 16px; border-radius:999px; cursor:pointer;
+      box-shadow:0 10px 30px -8px rgba(0,0,0,.5);
+    }
+    body.focus-mode .focus-exit{ display:inline-flex; align-items:center; gap:7px; }
 
     /* timer time-up toast */
     .pg-toast{
@@ -1390,14 +1446,19 @@
             <circle class="sw-fill" id="swFill" cx="18" cy="18" r="15.5"/>
           </svg>
           <span class="sw-count"><b id="wordCountNum">0</b><span id="wordTarget">/250</span> words</span>
+          <span class="sw-remain" id="wordRemain"></span>
         </div>
       </div>
       <textarea id="essay" placeholder="Write your essay..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
       <div class="studio-foot">
         <span class="autosave" id="autosaveInd"><span class="as-dot"></span> <span id="autosaveTxt">Auto-save on</span></span>
-        <button class="studio-hint-btn" id="studioHintBtn" type="button">💡 Structure</button>
+        <div style="display:flex;gap:8px">
+          <button class="focus-btn" id="focusBtn" type="button">⊡ Focus</button>
+          <button class="studio-hint-btn" id="studioHintBtn" type="button">💡 Structure</button>
+        </div>
       </div>
       <div class="studio-hint hidden" id="studioHint"></div>
+      <button class="focus-exit" id="focusExit" type="button">✕ Exit focus</button>
       <button class="btn btn-primary" id="submitBtn">Submit
         <span class="emoji-sticker">🌱</span>
       </button>
@@ -1990,18 +2051,41 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         const textDiv = document.createElement('div');
         textDiv.className = 'essay-text';
         textDiv.innerHTML = data.essay || '';
+        // compute word count first (used for the badge)
+        const rawText = (textDiv.textContent || '').trim();
+        const wordCount = rawText ? rawText.split(/\s+/).filter(w => w.length > 0).length : 0;
+        // a quick "meta row" under the header: word-count chip + feedback chip
+        const meta = document.createElement('div');
+        meta.className = 'essay-meta';
+        const wcChip = document.createElement('span');
+        // 250 is the IELTS Task 2 minimum; flag essays that fall short
+        const enough = wordCount >= 250;
+        wcChip.className = 'ec-chip ' + (enough ? 'ok' : 'low');
+        wcChip.textContent = `${wordCount} words`;
+        meta.appendChild(wcChip);
+        if (data.feedback) {
+          const fbChip = document.createElement('span');
+          fbChip.className = 'ec-chip fb';
+          fbChip.textContent = '● feedback';
+          meta.appendChild(fbChip);
+        }
         card.appendChild(header);
+        card.appendChild(meta);
         card.appendChild(textDiv);
-        const rawText = textDiv.textContent || '';
-        const wordsArray = rawText.trim().split(/\s+/).filter(word => word.length > 0);
-        const wordCount = wordsArray.length;
-        const wordCountDiv = document.createElement('div');
-        wordCountDiv.className = 'word-count';
-        wordCountDiv.style.fontSize = '12px';
-        wordCountDiv.style.color = 'var(--text-muted)';
-        wordCountDiv.style.marginBottom = '4px';
-        wordCountDiv.textContent = `Word count: ${wordCount}`;
-        card.appendChild(wordCountDiv);
+        // collapse long essays so the list stays scannable
+        const LONG = 90; // words
+        if (wordCount > LONG) {
+          textDiv.classList.add('clamped');
+          const moreBtn = document.createElement('button');
+          moreBtn.className = 'ec-more';
+          moreBtn.type = 'button';
+          moreBtn.textContent = 'Read more ↓';
+          moreBtn.addEventListener('click', () => {
+            const open = textDiv.classList.toggle('clamped') === false;
+            moreBtn.textContent = open ? 'Show less ↑' : 'Read more ↓';
+          });
+          card.appendChild(moreBtn);
+        }
         if (data.feedback) {
           const detailsEl = document.createElement('details');
           detailsEl.className = 'feedback feedback-details';
@@ -2153,7 +2237,7 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       renderEssays('', false, true);
       essayInput.value = '';
       nameInput.value = '';
-      alert('Essay saved to the cloud.');
+      if(window.pgToast){ window.pgToast('🌸 Essay saved to the cloud'); } else { alert('Essay saved to the cloud.'); }
     }
     async function openEditModal(docId, data) {
       currentEditId = docId;
@@ -2630,7 +2714,21 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         var pct = Math.min(1, target ? w/target : 0);
         fill.style.strokeDashoffset = C * (1 - pct);
       }
-      var wrap = $('studioWords'); if(wrap) wrap.classList.toggle('done', target>0 && w>=target);
+      var wrap = $('studioWords');
+      var reached = target>0 && w>=target;
+      var near = target>0 && !reached && w>=target*0.8;
+      if(wrap){
+        wrap.classList.toggle('done', reached);
+        wrap.classList.toggle('near', near);
+        wrap.classList.toggle('under', target>0 && w>0 && w<target*0.8);
+      }
+      // remaining-words hint so writers know exactly how far to go
+      var hint = $('wordRemain');
+      if(hint){
+        if(!w){ hint.textContent=''; }
+        else if(reached){ hint.textContent='✓ target met'; }
+        else { hint.textContent=(target-w)+' to go'; }
+      }
     }
 
     /* ---- autosave (localStorage draft) ---- */
@@ -2668,9 +2766,26 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
     /* ---- timer ---- */
     var total = 40*60, remain = total, tick = null, running = false;
     function fmt(s){ var m=Math.floor(s/60), ss=s%60; return (m<10?'0':'')+m+':'+(ss<10?'0':'')+ss; }
+    // short beep via WebAudio (no asset needed)
+    function beep(freq, ms){
+      try{
+        var Ctx = window.AudioContext || window.webkitAudioContext; if(!Ctx) return;
+        var ac = beep._ac || (beep._ac = new Ctx());
+        var o = ac.createOscillator(), g = ac.createGain();
+        o.type='sine'; o.frequency.value=freq||880;
+        g.gain.setValueAtTime(.0001, ac.currentTime);
+        g.gain.exponentialRampToValueAtTime(.25, ac.currentTime+.01);
+        g.gain.exponentialRampToValueAtTime(.0001, ac.currentTime+(ms||180)/1000);
+        o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime+(ms||180)/1000+.02);
+      }catch(e){}
+    }
     function paint(){
       var e=$('stTime'); if(e) e.textContent=fmt(Math.max(0,remain));
-      var t=$('studioTimer'); if(t){ t.classList.toggle('warn', remain<=300 && remain>0); t.classList.toggle('done', remain<=0); }
+      var t=$('studioTimer'); if(t){
+        t.classList.toggle('warn', remain<=300 && remain>60);
+        t.classList.toggle('critical', remain<=60 && remain>0);
+        t.classList.toggle('done', remain<=0);
+      }
     }
     function startPause(){
       var s=$('stStart'), tm=$('studioTimer');
@@ -2679,7 +2794,13 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       running=true; if(s) s.textContent='⏸'; if(tm) tm.classList.add('running');
       tick=setInterval(function(){
         remain--; paint();
-        if(remain<=0){ clearInterval(tick); running=false; if(s) s.textContent='▶'; if(tm) tm.classList.remove('running'); toast("⏰ Time's up — wrap up your essay!"); }
+        // gentle ticks in the last 10 seconds
+        if(remain<=10 && remain>0){ beep(660, 90); }
+        if(remain<=0){
+          clearInterval(tick); running=false; if(s) s.textContent='▶'; if(tm) tm.classList.remove('running');
+          beep(440, 200); setTimeout(function(){beep(330,320);}, 230);
+          toast("⏰ Time's up — wrap up your essay!");
+        }
       },1000);
     }
     function resetTimer(min){
@@ -2687,7 +2808,7 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       if(typeof min==='number') total=min*60;
       remain=total;
       var s=$('stStart'); if(s) s.textContent='▶';
-      var t=$('studioTimer'); if(t) t.classList.remove('running','warn','done');
+      var t=$('studioTimer'); if(t) t.classList.remove('running','warn','done','critical');
       paint();
     }
     var startBtn=$('stStart'); if(startBtn) startBtn.addEventListener('click', startPause);
@@ -2707,6 +2828,15 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
     var hb=$('studioHintBtn');
     if(hb) hb.addEventListener('click', function(){ var h=$('studioHint'); if(h) h.classList.toggle('hidden'); });
 
+    /* ---- focus mode ---- */
+    function setFocus(on){
+      document.body.classList.toggle('focus-mode', on);
+      if(on){ var ta=$('essay'); if(ta) ta.focus(); }
+    }
+    var fb=$('focusBtn'); if(fb) fb.addEventListener('click', function(){ setFocus(true); });
+    var fx=$('focusExit'); if(fx) fx.addEventListener('click', function(){ setFocus(false); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && document.body.classList.contains('focus-mode')) setFocus(false); });
+
     /* ---- tiny toast ---- */
     function toast(msg){
       var el=document.getElementById('pgToast');
@@ -2714,6 +2844,7 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       el.textContent=msg; el.classList.add('show');
       clearTimeout(el._t); el._t=setTimeout(function(){ el.classList.remove('show'); }, 4500);
     }
+    window.pgToast = toast;
 
     /* init */
     setTarget('t2'); setHint(); paint(); countWords();
