@@ -1916,25 +1916,47 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       div.textContent = text;
       return div.innerHTML;
     }
-    async function renderEssays(queryName = '', showLatestOnly = false) {
+    let essaysLoaded = false;
+    async function renderEssays(queryName = '', showLatestOnly = false, forceReload = false) {
       const container = document.getElementById('essaysList');
       const myRequestId = ++essayRequestCounter;
-      container.innerHTML = '';
-      const snapshot = await getDocs(essaysRef);
-      if (myRequestId !== essayRequestCounter) {
-        return;
+      // Only hit Firebase when we have no cache yet or a reload is requested.
+      // Searching/filtering reuses the already-loaded essays (instant, no network).
+      if (forceReload || !essaysLoaded) {
+        if (!essaysLoaded) {
+          container.innerHTML =
+            '<div style="font-size:12px;color:var(--text-muted);padding:2px 2px 6px;">Loading essays…</div>';
+        }
+        let snapshot;
+        try {
+          snapshot = await getDocs(essaysRef);
+        } catch (e) {
+          container.innerHTML =
+            '<div style="font-size:12px;color:var(--text-muted);padding:2px 2px 6px;">Could not load essays. Check your connection and refresh.</div>';
+          return;
+        }
+        if (myRequestId !== essayRequestCounter) {
+          return;
+        }
+        const docsArray = [];
+        snapshot.forEach(docSnap => {
+          docsArray.push({ id: docSnap.id, data: docSnap.data() });
+        });
+        // sort once at load time (newest first) so renders are cheap afterwards
+        docsArray.sort((a, b) => {
+          const tA = toDateSafe(a.data.timestamp ?? a.data.date).getTime();
+          const tB = toDateSafe(b.data.timestamp ?? b.data.date).getTime();
+          return tB - tA;
+        });
+        allEssays = docsArray;
+        essaysLoaded = true;
       }
-      if (snapshot.empty) {
+      container.innerHTML = '';
+      if (!allEssays.length) {
         container.innerHTML =
           '<div style="font-size:12px;color:var(--text-muted);padding:2px 2px 6px;">No essays yet. Write and submit your first essay!</div>';
-        allEssays = [];
         return;
       }
-      const docsArray = [];
-      snapshot.forEach(docSnap => {
-        docsArray.push({ id: docSnap.id, data: docSnap.data() });
-      });
-      allEssays = docsArray;
       const qName = (queryName || '').toString().trim().toLowerCase();
       let filteredArray = allEssays;
       if (qName) {
@@ -1944,11 +1966,6 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
           return nm.includes(qName) || essayText.includes(qName);
         });
       }
-      filteredArray.sort((a, b) => {
-        const tA = toDateSafe(a.data.timestamp ?? a.data.date).getTime();
-        const tB = toDateSafe(b.data.timestamp ?? b.data.date).getTime();
-        return tB - tA;
-      });
       if (!qName && showLatestOnly && filteredArray.length > 0) {
         filteredArray = [filteredArray[0]];
       }
@@ -2133,7 +2150,7 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         timestamp: now.getTime(),
         feedback: ''
       });
-      renderEssays();
+      renderEssays('', false, true);
       essayInput.value = '';
       nameInput.value = '';
       alert('Essay saved to the cloud.');
@@ -2163,7 +2180,7 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
         const newMsg = giftInput.value.trim();
         await saveGiftMessage(currentEditName, newMsg);
       }
-      await renderEssays();
+      await renderEssays('', false, true);
       closeEditModal();
     }
     function openFeedbackModal(docId, data) {
@@ -2182,13 +2199,13 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
       const updated = document.getElementById('feedbackArea').value;
       const essayUpdated = document.getElementById('feedbackEssay').innerHTML;
       await updateDoc(doc(db, 'essays', currentFeedbackId), { feedback: updated, essay: essayUpdated });
-      renderEssays();
+      renderEssays('', false, true);
       closeFeedbackModal();
     }
     async function deleteEssay(docId) {
       if (!confirm('Delete this essay?')) return;
       await deleteDoc(doc(db, 'essays', docId));
-      renderEssays();
+      renderEssays('', false, true);
     }
     function findTagParent(node, tagNames, editableParent) {
       while (node && node !== editableParent) {
@@ -2427,12 +2444,15 @@ You represent PangeyaAI, the intelligent core of a modern and reliable IELTS pre
     document.getElementById('darkTheme').addEventListener('click', () => setTheme('dark'));
     const essaySearchInput = document.getElementById('essaySearch');
     if (essaySearchInput) {
+      let searchTimer = null;
       essaySearchInput.addEventListener('input', () => {
-        searchEssays();
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => { searchEssays(); }, 120);
       });
       essaySearchInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           e.preventDefault();
+          clearTimeout(searchTimer);
           searchEssays();
         }
       });
