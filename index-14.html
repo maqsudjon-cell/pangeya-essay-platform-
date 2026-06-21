@@ -903,10 +903,12 @@ function buildCard(docId,data){
   pdfB.addEventListener('click',()=>downloadEssayPDF(data));
   acts.appendChild(pdfB);
 
+  // EDIT — available to everyone so students can fix their own essay
+  const edB=document.createElement('button'); edB.className='ec-act'; edB.textContent='✎ EDIT';
+  edB.addEventListener('click',()=>openEditModal(docId,data));
+  acts.appendChild(edB);
+
   if(teacherMode){
-    const edB=document.createElement('button'); edB.className='ec-act'; edB.textContent='✎ EDIT';
-    edB.addEventListener('click',()=>openEditModal(docId,data));
-    acts.appendChild(edB);
     const fbB=document.createElement('button'); fbB.className='ec-act'; fbB.textContent='✦ FEEDBACK';
     fbB.addEventListener('click',()=>openFeedbackModal(docId,data));
     acts.appendChild(fbB);
