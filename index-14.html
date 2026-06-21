@@ -628,7 +628,7 @@ body.focus .focus-exit{display:inline-flex;align-items:center;gap:7px}
       <button class="fmt-btn" id="editUnder" type="button"><u>U</u></button>
     </div>
     <div class="edit-area" id="editArea" contenteditable="true" spellcheck="false" data-gramm="false"></div>
-    <div class="modal-sub" id="giftWrap" style="display:none">GIFT MESSAGE (TEACHER)</div>
+    <div class="modal-sub" id="giftWrap" style="display:none">GIFT MESSAGE</div>
     <textarea id="giftMessageInput" style="display:none" placeholder="Leave an encouraging note…"></textarea>
     <button class="btn btn-primary" id="editSave">SAVE CHANGES →</button>
   </div></div>
@@ -954,10 +954,9 @@ async function openEditModal(docId,data){
   currentEditId=docId; currentEditName=data&&data.name?data.name:null;
   $('editArea').innerHTML=data.essay||'';
   const gw=$('giftWrap'), gi=$('giftMessageInput');
-  if(teacherMode){
-    gw.style.display='block'; gi.style.display='block';
-    gi.value=await getGiftMessage(currentEditName||'');
-  } else { gw.style.display='none'; gi.style.display='none'; }
+  // gift message available to everyone (students can leave/edit a note too)
+  gw.style.display='block'; gi.style.display='block';
+  gi.value=await getGiftMessage(currentEditName||'');
   $('editModal').classList.add('show');
 }
 function closeEditModal(){ $('editModal').classList.remove('show'); currentEditId=null; currentEditName=null; }
@@ -965,7 +964,7 @@ async function saveEdit(){
   if(!currentEditId) return;
   const updated=$('editArea').innerHTML;
   const gi=$('giftMessageInput');
-  if(gi && currentEditName && teacherMode) await saveGiftMessage(currentEditName,gi.value.trim());
+  if(gi && currentEditName) await saveGiftMessage(currentEditName,gi.value.trim());
   try{ await updateDoc(doc(db,'essays',currentEditId),{essay:updated}); await renderEssays('',false,true); }catch(e){ toast('Update failed.'); }
   closeEditModal();
 }
