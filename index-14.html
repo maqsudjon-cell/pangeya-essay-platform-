@@ -1077,7 +1077,7 @@ async function sendChatMessage(){
   const reqId=++chatRequestCounter;
   try{
     const userMessages=chatHistory.filter(m=>!m.imageData).map(m=>({role:m.role,content:m.content}));
-    const payload={ message:text, chatHistory:userMessages, systemPrompt:SYSTEM_PROMPT, model:'gpt-3.5-turbo', userId:getUserId() };
+    const payload={ message:text, chatHistory:userMessages, systemPrompt:SYSTEM_PROMPT, model:'gpt-4o-mini', stream:true, userId:getUserId() };
     const r=await fetch(CHAT_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     if(reqId!==chatRequestCounter) return;
     if(!r.ok){
@@ -1086,11 +1086,41 @@ async function sendChatMessage(){
       chatHistory.push({role:'assistant',content:'The AI service returned an error (status '+r.status+'). '+(r.status===429?'Rate limit reached — wait a moment and try again.':r.status>=500?'The server is having trouble. Please try again shortly.':'Please try again.')});
       renderChat(); return;
     }
+    const ctype=(r.headers.get('content-type')||'');
+    if(r.body&&r.body.getReader&&ctype.indexOf('text/event-stream')>=0){
+      // streaming: render tokens as they arrive — feels near-instant
+      if(typing) typing.classList.add('hidden');
+      chatHistory.push({role:'assistant',content:''});
+      renderChat();
+      const cc=$('chatMsgs');
+      const bubs=cc?cc.querySelectorAll('.chat-msg.assistant'):[];
+      const bubble=bubs.length?bubs[bubs.length-1]:null;
+      const reader=r.body.getReader(), dec=new TextDecoder();
+      let buffer='', acc='', streamErr='';
+      while(true){
+        const {value,done}=await reader.read();
+        if(done) break;
+        if(reqId!==chatRequestCounter){ try{reader.cancel();}catch(_){ } if(chatHistory.length&&chatHistory[chatHistory.length-1].role==='assistant'&&!chatHistory[chatHistory.length-1].content) chatHistory.pop(); return; }
+        buffer+=dec.decode(value,{stream:true});
+        let nl;
+        while((nl=buffer.indexOf('\n\n'))>=0){
+          const line=buffer.slice(0,nl).replace(/^data:\s?/,'').trim(); buffer=buffer.slice(nl+2);
+          if(!line) continue;
+          if(line==='[DONE]'){ buffer=''; break; }
+          try{ const j=JSON.parse(line); if(j.delta){ acc+=j.delta; if(bubble){ bubble.textContent=acc; if(cc) cc.scrollTop=cc.scrollHeight; } } else if(j.error){ streamErr=j.error; } }catch(_){ }
+        }
+      }
+      const finalMsg=acc.trim()||streamErr||'Sorry, I could not get a response.';
+      chatHistory[chatHistory.length-1].content=finalMsg;
+      if(acc.trim()){ credits-=1; setChatLimit(credits); updateChatCredit(); }
+      renderChat();
+      return;
+    }
+    // non-streaming fallback (also covers an older backend)
     let data;
     try{ data=await r.json(); }
     catch(parseErr){ console.error('Chat JSON parse error',parseErr); chatHistory.push({role:'assistant',content:'The AI sent an unexpected response. Please try again.'}); renderChat(); return; }
     const msg=(data&&data.reply)?data.reply.trim():(data&&data.error?data.error:'Sorry, I could not get a response.');
-    // only spend a credit when we actually got a reply back
     credits-=1; setChatLimit(credits); updateChatCredit();
     chatHistory.push({role:'assistant',content:msg}); renderChat();
   }catch(e){
