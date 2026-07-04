@@ -10,7 +10,7 @@
      the light/dark choice carries across the hub, calculator and this lab. */
   (function(){try{var s=localStorage.getItem('theme');var t=s||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();
 </script>
-<title>Pangeya — IELTS Writing Lab</title>
+<title>pangea8 — IELTS Writing Lab</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000000'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23ffffff' stroke-width='2.4'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23D71921'/%3E%3Ccircle cx='32' cy='7.5' r='1.7' fill='%23ffffff'/%3E%3Ccircle cx='56.5' cy='32' r='1.7' fill='%23ffffff'/%3E%3Ccircle cx='32' cy='56.5' r='1.7' fill='%23ffffff'/%3E%3Ccircle cx='7.5' cy='32' r='1.7' fill='%23ffffff'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000000'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23ffffff' stroke-width='2.4'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23D71921'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,8 +19,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 /* ============================================================
-   PANGEYA · NOTHING-INSPIRED IELTS WRITING LAB
-   monochrome · dot-matrix · red accent · hi-tech
+   pangea8 · IELTS WRITING LAB
+   pangea8 site theme — stone / green · Inter + Space Grotesk
    ============================================================ */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -456,7 +456,7 @@ body.focus .focus-exit{display:inline-flex;align-items:center;gap:7px}
 <!-- loader -->
 <div id="loader"><div class="load-wrap">
   <div class="load-grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-  <div class="load-dots">PANGEYA · LOADING</div>
+  <div class="load-dots">pangea8 · LOADING</div>
 </div></div>
 
 <canvas id="fx"></canvas>
@@ -468,7 +468,7 @@ body.focus .focus-exit{display:inline-flex;align-items:center;gap:7px}
   <div class="topbar">
     <div class="brand">
       <div class="brand-mark"></div>
-      <div class="brand-name">PANGEYA<b>/</b>LAB</div>
+      <div class="brand-name">pangea8<b>/</b>LAB</div>
     </div>
     <div class="topbar-right">
       <span class="tb-clock" id="clock">--:--:--</span>
@@ -584,14 +584,14 @@ body.focus .focus-exit{display:inline-flex;align-items:center;gap:7px}
 
   <!-- footer -->
   <div class="foot">
-    <div class="foot-word">PANGEYA</div>
+    <div class="foot-word">pangea8</div>
     <div class="foot-meta">PANGEA8 · IELTS WRITING LAB · TASHKENT</div>
   </div>
 
 </div><!-- /shell -->
 
 <!-- FLOATING AI: button + panel (accessible from anywhere) -->
-<button class="ai-fab" id="aiFab" aria-label="Open Pangeya AI">
+<button class="ai-fab" id="aiFab" aria-label="Open pangea8 AI">
   <span class="ai-fab-ic">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5Z"/></svg>
   </span>
@@ -605,7 +605,7 @@ body.focus .focus-exit{display:inline-flex;align-items:center;gap:7px}
   <div class="chat-head" id="chatHead">
     <div class="chat-avatar"></div>
     <div class="chat-id">
-      <h4>PANGEYA AI</h4>
+      <h4>pangea8 AI</h4>
       <p><span class="live">●</span> IELTS WRITING EXAMINER</p>
     </div>
     <button class="ai-panel-close" id="aiPanelClose" aria-label="Close">✕</button>
@@ -677,7 +677,7 @@ body.focus .focus-exit{display:inline-flex;align-items:center;gap:7px}
       <p style="margin-bottom:12px"><b style="color:var(--text);font-family:var(--mono);font-size:12px">03 ·</b> Use <b>⊡ Focus</b> for a distraction-free exam view (Esc exits). Tap <b>▤ Structure</b> for a quick template.</p>
       <p style="margin-bottom:12px"><b style="color:var(--text);font-family:var(--mono);font-size:12px">04 ·</b> <b>Submit to cloud</b> to save your essay to the Archive. You'll need the writing passcode the first time.</p>
       <p style="margin-bottom:12px"><b style="color:var(--text);font-family:var(--mono);font-size:12px">05 ·</b> In the Archive, open any essay to request <b>AI feedback</b> and an estimated band score, or download it as a PDF.</p>
-      <p><b style="color:var(--text);font-family:var(--mono);font-size:12px">06 ·</b> Ask <b>Pangeya AI</b> anything about IELTS writing — structure, vocabulary, sample answers.</p>
+      <p><b style="color:var(--text);font-family:var(--mono);font-size:12px">06 ·</b> Ask <b>pangea8 AI</b> anything about IELTS writing — structure, vocabulary, sample answers.</p>
     </div>
   </div></div>
 </div>
@@ -711,7 +711,7 @@ const ACCESS_KEY = 'pangeya_write_unlocked';
 const CHAT_ENDPOINT = 'https://pangeya-ai.vercel.app/api/chat';
 const FEEDBACK_ENDPOINT = 'https://pangeya-ai.vercel.app/api/essay-feedback';
 
-const SYSTEM_PROMPT = `You are PangeyaAI, a professional AI assistant designed specifically to help users prepare for the IELTS Academic and General Training Writing exams.
+const SYSTEM_PROMPT = `You are pangea8 AI, a professional AI assistant designed specifically to help users prepare for the IELTS Academic and General Training Writing exams.
 
 Your primary responsibility is to assist users with IELTS Writing Task 1 and Task 2 by producing high-quality, band 7.0–9.0 level essays that strictly follow the official IELTS Band Descriptors:
 • Task Response / Task Achievement
@@ -741,7 +741,7 @@ Additional Capabilities
 • Rewrite or improve essays to a higher band level
 
 Brand Identity
-You represent PangeyaAI, the intelligent core of a modern and reliable IELTS preparation platform. Every response must be accurate, structured, exam-oriented, and designed to help users achieve the highest possible IELTS score.`;
+You represent pangea8 AI, the intelligent core of a modern and reliable IELTS preparation platform. Every response must be accurate, structured, exam-oriented, and designed to help users achieve the highest possible IELTS score.`;
 
 /* ---------- state ---------- */
 let teacherMode = false;
@@ -1144,103 +1144,162 @@ async function sendChatMessage(){
 }
 function clearChat(){ chatHistory=[]; renderChat(); }
 
-/* ---------- PDF ---------- */
-// Brand mark drawn with vectors so it reads well in colour AND greyscale.
+/* ---------- PDF (premium branded report) ---------- */
+// pangea8 brand mark — vector so it prints crisp in colour AND greyscale.
 function drawLogo(d, x, y, r){
-  // outer ring (black — prints solid in greyscale)
   d.setDrawColor(10,10,10); d.setLineWidth(r*0.13);
   d.circle(x, y, r, 'S');
-  // inner dot (Nothing red — becomes a clear dark dot in greyscale)
   d.setFillColor(4,120,87);
   d.circle(x, y, r*0.34, 'F');
-  // four cardinal pixels (the dot-matrix cue)
   d.setFillColor(10,10,10);
   const p=r*0.085;
   d.circle(x, y-r, p, 'F'); d.circle(x, y+r, p, 'F');
   d.circle(x-r, y, p, 'F'); d.circle(x+r, y, p, 'F');
 }
-function makePDF(name,essay,feedback){
+// Wordmark: "pangea" in ink + "8" in brand green.
+function drawWordmark(d, x, y, size){
+  d.setFont('helvetica','bold'); d.setFontSize(size);
+  d.setTextColor(17,17,17); d.text('pangea', x, y);
+  const w=d.getTextWidth('pangea');
+  d.setTextColor(4,120,87); d.text('8', x+w, y);
+}
+// Lazy QR (scan → pangea8.com) for brand awareness. Fails soft → null.
+let _qrLibP=null;
+function ensureQRLib(){
+  if(window.qrcode) return Promise.resolve(window.qrcode);
+  if(_qrLibP) return _qrLibP;
+  _qrLibP=new Promise(function(res){
+    const s=document.createElement('script');
+    s.src='https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js';
+    s.onload=function(){ res(window.qrcode||null); };
+    s.onerror=function(){ res(null); };
+    document.head.appendChild(s);
+  });
+  return _qrLibP;
+}
+async function buildQR(text){
+  try{ const q=await ensureQRLib(); if(!q) return null; const qr=q(0,'M'); qr.addData(text); qr.make(); return qr; }
+  catch(e){ return null; }
+}
+function drawQR(d, qr, x, y, size){
+  const n=qr.getModuleCount(), cell=size/n;
+  d.setFillColor(14,14,14);
+  for(let row=0;row<n;row++) for(let col=0;col<n;col++){
+    if(qr.isDark(row,col)) d.rect(x+col*cell, y+row*cell, cell+0.3, cell+0.3, 'F');
+  }
+}
+function curTaskLabel(){
+  const b=document.querySelector('.task-btn.active');
+  return (b && /1/.test(b.textContent)) ? 'Task 1' : 'Task 2';
+}
+function makePDF(name,essay,feedback,taskLabel,qr){
   const { jsPDF }=window.jspdf;
   const d=new jsPDF({unit:'pt',format:'a4'});
   const PW=d.internal.pageSize.getWidth();   // ~595
   const PH=d.internal.pageSize.getHeight();  // ~842
-  const M=48;                                // margin
+  const M=46;                                // margin
   const clean=stripHtml(essay||'');
   const words=clean.trim()?clean.trim().split(/\s+/).filter(w=>w.length>0).length:0;
+  const taskName=taskLabel||'Task 2';
+  const target=/1/.test(taskName)?150:250;
+  const cs=(v)=>{ if(d.setCharSpace) d.setCharSpace(v); };
 
   function header(){
-    // top hairline + brand
-    drawLogo(d, M+11, 52, 11);
-    d.setFont('helvetica','bold'); d.setFontSize(15); d.setTextColor(10,10,10);
-    d.text('PANGEYA', M+30, 50);
-    d.setFont('courier','normal'); d.setFontSize(8); d.setTextColor(4,120,87);
-    d.text('/ IELTS WRITING LAB', M+109, 50);
-    d.setDrawColor(4,120,87); d.setLineWidth(1.4);
-    d.line(M, 68, PW-M, 68);
-    // faint matrix dots along the rule (subtle, greyscale-safe)
-    d.setFillColor(200,200,200);
-    for(let i=0;i<26;i++){ d.circle(M+8+i*((PW-2*M-16)/25), 74, 0.7, 'F'); }
+    drawLogo(d, M+10, 46, 10);
+    drawWordmark(d, M+26, 51, 15);
+    d.setFont('helvetica','normal'); d.setFontSize(8.5); d.setTextColor(125,125,125);
+    d.text('IELTS WRITING LAB', PW-M, 43, {align:'right'});
+    d.setFont('helvetica','bold'); d.setFontSize(9); d.setTextColor(4,120,87);
+    d.text('pangea8.com', PW-M, 55, {align:'right'});
+    d.setDrawColor(4,120,87); d.setLineWidth(1.6); d.line(M, 66, PW-M, 66);
+    d.setDrawColor(226,226,226); d.setLineWidth(0.6); d.line(M, 69.4, PW-M, 69.4);
   }
   function footer(pageNo){
-    d.setDrawColor(220,220,220); d.setLineWidth(0.8);
-    d.line(M, PH-44, PW-M, PH-44);
-    drawLogo(d, M+7, PH-30, 7);
-    d.setFont('courier','normal'); d.setFontSize(7.5); d.setTextColor(120,120,120);
-    d.text('PANGEYA · PANGEA8 · TASHKENT', M+20, PH-27);
-    d.text('PAGE '+pageNo, PW-M-40, PH-27);
+    d.setDrawColor(228,228,228); d.setLineWidth(0.7);
+    d.line(M, PH-40, PW-M, PH-40);
+    drawLogo(d, M+6, PH-24.5, 6);
+    d.setFont('helvetica','normal'); d.setFontSize(8); d.setTextColor(120,120,120);
+    d.text('Free IELTS practice — 100+ tests · pangea8.com · Telegram @pangea8', M+18, PH-22);
+    d.setTextColor(150,150,150);
+    d.text('Page '+pageNo, PW-M, PH-22, {align:'right'});
   }
 
   header();
+  let y=96;
 
-  // candidate card
-  let y=98;
-  d.setFillColor(245,245,245); d.setDrawColor(225,225,225); d.setLineWidth(0.8);
-  d.roundedRect(M, y, PW-2*M, 56, 4, 4, 'FD');
-  // red left accent bar
-  d.setFillColor(4,120,87); d.rect(M, y, 3, 56, 'F');
-  d.setFont('courier','normal'); d.setFontSize(8); d.setTextColor(140,140,140);
-  d.text('CANDIDATE', M+16, y+19);
-  d.text('DATE', M+250, y+19);
-  d.text('WORDS', M+250, y+43);
-  d.setFont('helvetica','bold'); d.setFontSize(13); d.setTextColor(15,15,15);
-  d.text(name||'Unknown', M+16, y+40);
-  d.setFont('courier','normal'); d.setFontSize(10); d.setTextColor(40,40,40);
-  d.text(formatDate(new Date()), M+300, y+19);
-  // word count: green if >=250, amber otherwise (still readable in greyscale)
-  if(words>=250) d.setTextColor(20,140,80); else d.setTextColor(180,130,20);
-  d.setFont('helvetica','bold'); d.text(String(words), M+300, y+43);
+  // document title + green accent underline
+  d.setFont('helvetica','bold'); d.setFontSize(21); d.setTextColor(17,17,17);
+  d.text('IELTS Writing Response', M, y);
+  y+=11;
+  d.setDrawColor(4,120,87); d.setLineWidth(2.6); d.line(M, y, M+48, y);
+  y+=26;
 
-  // essay heading
-  y+=80;
-  d.setFont('courier','bold'); d.setFontSize(9); d.setTextColor(4,120,87);
-  d.text('// ESSAY', M, y);
-  d.setDrawColor(230,230,230); d.setLineWidth(0.6); d.line(M+58, y-3, PW-M, y-3);
+  // meta strip
+  const cardH=54, cols=[M+18, M+210, M+330, M+436];
+  d.setFillColor(249,249,248); d.setDrawColor(230,230,228); d.setLineWidth(0.8);
+  d.roundedRect(M, y, PW-2*M, cardH, 6, 6, 'FD');
+  d.setFillColor(4,120,87); d.rect(M, y, 3, cardH, 'F');
+  d.setFont('helvetica','normal'); d.setFontSize(7.5); d.setTextColor(152,152,152); cs(0.6);
+  ['CANDIDATE','TASK','DATE','WORDS'].forEach((lb,i)=>d.text(lb, cols[i], y+19)); cs(0);
+  d.setFont('helvetica','bold'); d.setFontSize(12.5); d.setTextColor(22,22,22);
+  d.text((name||'Unknown').slice(0,24), cols[0], y+39);
+  d.setFontSize(11); d.text(taskName, cols[1], y+39);
+  d.setFont('helvetica','normal'); d.setFontSize(10.5); d.setTextColor(60,60,60);
+  d.text(String(formatDate(new Date())), cols[2], y+39);
+  if(words>=target) d.setTextColor(20,140,80); else d.setTextColor(184,131,20);
+  d.setFont('helvetica','bold'); d.setFontSize(12.5); d.text(String(words), cols[3], y+39);
+  d.setFont('helvetica','normal'); d.setFontSize(8.5); d.setTextColor(155,155,155);
+  d.text('/ '+target, cols[3]+d.getTextWidth(String(words))+4, y+39);
+  y+=cardH+30;
 
-  // essay body with pagination
-  y+=20;
-  d.setFont('helvetica','normal'); d.setFontSize(11); d.setTextColor(25,25,25);
-  const lines=d.splitTextToSize(clean,PW-2*M);
-  const lh=16; let pageNo=1;
+  // essay section
+  d.setFont('helvetica','bold'); d.setFontSize(9.5); d.setTextColor(4,120,87); cs(1);
+  d.text('ESSAY', M, y); cs(0);
+  d.setDrawColor(233,233,233); d.setLineWidth(0.6); d.line(M+44, y-3, PW-M, y-3);
+  y+=19;
+  d.setFont('helvetica','normal'); d.setFontSize(11); d.setTextColor(28,28,28);
+  const lines=d.splitTextToSize(clean, PW-2*M);
+  const lh=16.5; let pageNo=1;
   for(let i=0;i<lines.length;i++){
-    if(y>PH-70){ footer(pageNo); d.addPage(); pageNo++; header(); y=100; d.setFont('helvetica','normal'); d.setFontSize(11); d.setTextColor(25,25,25); }
+    if(y>PH-62){ footer(pageNo); d.addPage(); pageNo++; header(); y=96; d.setFont('helvetica','normal'); d.setFontSize(11); d.setTextColor(28,28,28); }
     d.text(lines[i], M, y); y+=lh;
   }
 
-  // optional teacher feedback block
+  // teacher feedback callout
   const fb=(feedback||'').trim();
   if(fb){
-    y+=14;
-    if(y>PH-120){ footer(pageNo); d.addPage(); pageNo++; header(); y=100; }
-    d.setFont('courier','bold'); d.setFontSize(9); d.setTextColor(20,140,80);
-    d.text('// TEACHER FEEDBACK', M, y); y+=8;
-    const fbLines=d.splitTextToSize(fb,PW-2*M-16);
-    const boxH=fbLines.length*14+20;
-    d.setFillColor(247,250,248); d.setDrawColor(210,230,218); d.setLineWidth(0.8);
-    d.roundedRect(M, y, PW-2*M, boxH, 4, 4, 'FD');
+    y+=16;
+    if(y>PH-150){ footer(pageNo); d.addPage(); pageNo++; header(); y=96; }
+    d.setFont('helvetica','bold'); d.setFontSize(9.5); d.setTextColor(20,140,80); cs(1);
+    d.text('TEACHER FEEDBACK', M, y); cs(0); y+=10;
+    const fbLines=d.splitTextToSize(fb, PW-2*M-30);
+    const boxH=fbLines.length*14+22;
+    d.setFillColor(244,250,247); d.setDrawColor(205,228,216); d.setLineWidth(0.8);
+    d.roundedRect(M, y, PW-2*M, boxH, 6, 6, 'FD');
     d.setFillColor(20,140,80); d.rect(M, y, 3, boxH, 'F');
-    d.setFont('helvetica','normal'); d.setFontSize(10.5); d.setTextColor(40,40,40);
-    let fy=y+18; fbLines.forEach(l=>{ d.text(l, M+14, fy); fy+=14; });
+    d.setFont('helvetica','normal'); d.setFontSize(10.5); d.setTextColor(45,45,45);
+    let fy=y+20; fbLines.forEach(l=>{ d.text(l, M+16, fy); fy+=14; });
     y+=boxH;
+  }
+
+  // brand closer card (CTA + QR) — the brand-awareness surface
+  y+=24;
+  const closerH=94;
+  if(y>PH-closerH-52){ footer(pageNo); d.addPage(); pageNo++; header(); y=96; }
+  d.setFillColor(6,74,54); d.roundedRect(M, y, PW-2*M, closerH, 9, 9, 'F');
+  d.setFont('helvetica','bold'); d.setFontSize(15); d.setTextColor(255,255,255);
+  d.text('Keep practising — free.', M+22, y+35);
+  d.setFont('helvetica','normal'); d.setFontSize(10); d.setTextColor(200,230,218);
+  d.text('100+ IELTS tests · band calculator · progress tracking', M+22, y+54);
+  d.setFont('helvetica','bold'); d.setFontSize(12); d.setTextColor(130,235,190);
+  d.text('pangea8.com', M+22, y+76);
+  const urlW=d.getTextWidth('pangea8.com');   // measure while bold-12 is active
+  d.setFont('helvetica','normal'); d.setFontSize(9.5); d.setTextColor(180,212,200);
+  d.text('Telegram @pangea8', M+22+urlW+18, y+75.5);
+  if(qr){
+    const qs=62, qx=PW-M-qs-18, qy=y+(closerH-qs)/2;
+    d.setFillColor(255,255,255); d.roundedRect(qx-6, qy-6, qs+12, qs+12, 5, 5, 'F');
+    drawQR(d, qr, qx, qy, qs);
   }
 
   footer(pageNo);
@@ -1249,9 +1308,13 @@ function makePDF(name,essay,feedback){
 async function downloadPDF(){
   let name=$('name').value.trim(), essay=$('essay').value.trim();
   if(!essay){ toast('Nothing to export yet.'); return; }
-  makePDF(name,essay).save((name||'essay')+'-pangeya.pdf');
+  const qr=await buildQR('https://pangea8.com/ielts-hub/');
+  makePDF(name,essay,undefined,curTaskLabel(),qr).save((name||'essay')+'-pangea8.pdf');
 }
-async function downloadEssayPDF(data){ makePDF(data.name,data.essay,data.feedback).save((data.name||'essay')+'-pangeya.pdf'); }
+async function downloadEssayPDF(data){
+  const qr=await buildQR('https://pangea8.com/ielts-hub/');
+  makePDF(data.name,data.essay,data.feedback,data.task,qr).save((data.name||'essay')+'-pangea8.pdf');
+}
 
 /* ---------- teacher ---------- */
 function toggleTeacherPanel(){ $('teacherPanel').classList.toggle('show'); }
