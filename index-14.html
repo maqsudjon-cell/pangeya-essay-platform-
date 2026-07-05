@@ -17,6 +17,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js" defer></script>
 <style>
 /* ============================================================
    pangea8 · IELTS WRITING LAB
@@ -1163,22 +1164,12 @@ function drawWordmark(d, x, y, size){
   const w=d.getTextWidth('pangea');
   d.setTextColor(4,120,87); d.text('8', x+w, y);
 }
-// Lazy QR (scan → pangea8.com) for brand awareness. Fails soft → null.
-let _qrLibP=null;
-function ensureQRLib(){
-  if(window.qrcode) return Promise.resolve(window.qrcode);
-  if(_qrLibP) return _qrLibP;
-  _qrLibP=new Promise(function(res){
-    const s=document.createElement('script');
-    s.src='https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js';
-    s.onload=function(){ res(window.qrcode||null); };
-    s.onerror=function(){ res(null); };
-    document.head.appendChild(s);
-  });
-  return _qrLibP;
-}
-async function buildQR(text){
-  try{ const q=await ensureQRLib(); if(!q) return null; const qr=q(0,'M'); qr.addData(text); qr.make(); return qr; }
+// QR (scan → pangea8.com) for brand awareness. SYNCHRONOUS on purpose: the
+// generator is preloaded in <head>, so building it needs no await — the PDF
+// download then stays inside the user's tap gesture (iOS Safari blocks any
+// download/open triggered after an await). Fails soft → null (PDF without QR).
+function buildQR(text){
+  try{ if(!window.qrcode) return null; const qr=window.qrcode(0,'M'); qr.addData(text); qr.make(); return qr; }
   catch(e){ return null; }
 }
 function drawQR(d, qr, x, y, size){
@@ -1305,15 +1296,32 @@ function makePDF(name,essay,feedback,taskLabel,qr){
   footer(pageNo);
   return d;
 }
-async function downloadPDF(){
-  let name=$('name').value.trim(), essay=$('essay').value.trim();
-  if(!essay){ toast('Nothing to export yet.'); return; }
-  const qr=await buildQR('https://pangea8.com/ielts-hub/');
-  makePDF(name,essay,undefined,curTaskLabel(),qr).save((name||'essay')+'-pangea8.pdf');
+// iOS Safari ignores the <a download> attribute, so .save() there does nothing
+// useful. On iOS we open the PDF in a new tab instead — the student then taps
+// Share → Save to Files (or Print). Everything here is synchronous so it runs
+// inside the tap gesture.
+function savePDF(doc, filename){
+  var ua=navigator.userAgent||'';
+  var isIOS=/iPad|iPhone|iPod/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1);
+  if(isIOS){
+    try{
+      var url=doc.output('bloburl');
+      var w=window.open(url,'_blank');     // opens the PDF viewer (Share → Save to Files)
+      if(!w) location.href=url;            // popup blocked → open in the current tab
+      return;
+    }catch(e){ /* fall through to save() */ }
+  }
+  doc.save(filename);
 }
-async function downloadEssayPDF(data){
-  const qr=await buildQR('https://pangea8.com/ielts-hub/');
-  makePDF(data.name,data.essay,data.feedback,data.task,qr).save((data.name||'essay')+'-pangea8.pdf');
+function downloadPDF(){
+  var name=$('name').value.trim(), essay=$('essay').value.trim();
+  if(!essay){ toast('Nothing to export yet.'); return; }
+  var qr=buildQR('https://pangea8.com/ielts-hub/');
+  savePDF(makePDF(name,essay,undefined,curTaskLabel(),qr), (name||'essay')+'-pangea8.pdf');
+}
+function downloadEssayPDF(data){
+  var qr=buildQR('https://pangea8.com/ielts-hub/');
+  savePDF(makePDF(data.name,data.essay,data.feedback,data.task,qr), (data.name||'essay')+'-pangea8.pdf');
 }
 
 /* ---------- teacher ---------- */
