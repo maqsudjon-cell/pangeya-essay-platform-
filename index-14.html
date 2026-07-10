@@ -451,6 +451,8 @@ body.focus .focus-exit{display:inline-flex;align-items:center;gap:7px}
   *{animation-duration:.001s!important;transition-duration:.05s!important}
 }
 </style>
+<script src="https://flarestamina.com/assets/fs-auth.js"></script>
+<script>window.FSAuth && FSAuth.require();</script>
 </head>
 <body>
 
@@ -514,9 +516,9 @@ body.focus .focus-exit{display:inline-flex;align-items:center;gap:7px}
       <div class="panel-pad">
         <div class="panel-label">ESSAY TERMINAL</div>
 
-        <div class="fld">
+        <div class="fld" style="display:none" aria-hidden="true">
           <label class="fld-label" for="name">Candidate name</label>
-          <input type="text" id="name" placeholder="Enter your name" autocomplete="off">
+          <input type="text" id="name" readonly tabindex="-1" autocomplete="off">
         </div>
 
         <!-- studio bar -->
@@ -683,6 +685,26 @@ body.focus .focus-exit{display:inline-flex;align-items:center;gap:7px}
   </div></div>
 </div>
 
+
+<script>
+/* FS Account — identity autofill (name inputs are no longer typed by hand) */
+(function () {
+  function fill() {
+    try {
+      var u = window.FSAuth && FSAuth.getUser();
+      if (!u) return;
+      var full = ((u.first_name || '') + ' ' + (u.last_name || '')).trim();
+      ['name', 'ansName'].forEach(function (id) {
+        var i = document.getElementById(id);
+        if (i) { i.value = full; i.readOnly = true; i.placeholder = 'FS Account'; }
+      });
+    } catch (e) {}
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fill);
+  else fill();
+  setTimeout(fill, 400); setTimeout(fill, 1200); // after draft restores
+})();
+</script>
 </body>
 
 <script type="module">
@@ -954,12 +976,13 @@ async function submitEssay(){
   const now=new Date();
   const btn=$('submitBtn'); if(btn){ btn.disabled=true; btn.style.opacity='.6'; }
   try{
-    const docData={ name:name||'Unknown', essay:essay, date:formatDate(now), timestamp:now.getTime(), feedback:'' };
+    const fsU=(window.FSAuth&&FSAuth.getUser())||null;
+    const docData={ name:name||'Unknown', phone:fsU?fsU.phone:'', first_name:fsU?fsU.first_name:'', last_name:fsU?fsU.last_name:'', essay:essay, date:formatDate(now), timestamp:now.getTime(), feedback:'' };
     const ref=await addDoc(essaysRef,docData);
     // add to the in-memory cache at the top, render instantly (no full reload)
     if(essaysLoaded){ allEssays.unshift({ id:ref.id, data:docData }); }
     renderEssays(currentQuery(),false,false);
-    essayI.value=''; nameI.value=''; countWords(); saveDraft();
+    essayI.value=''; countWords(); saveDraft();
     toast('✓ ESSAY SAVED TO CLOUD');
   }catch(e){ console.error('Submit failed:',e); toast('Save failed: '+((e&&e.code)||(e&&e.message)||'check connection')); }
   finally{ if(btn){ btn.disabled=false; btn.style.opacity=''; } }
