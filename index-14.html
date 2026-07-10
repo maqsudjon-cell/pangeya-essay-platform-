@@ -1181,21 +1181,22 @@ function clearChat(){ chatHistory=[]; renderChat(); }
 /* ---------- PDF (premium branded report) ---------- */
 // Flarestamina brand mark — vector so it prints crisp in colour AND greyscale.
 function drawLogo(d, x, y, r){
-  d.setDrawColor(10,10,10); d.setLineWidth(r*0.13);
-  d.circle(x, y, r, 'S');
-  d.setFillColor(4,120,87);
-  d.circle(x, y, r*0.34, 'F');
-  d.setFillColor(10,10,10);
-  const p=r*0.085;
-  d.circle(x, y-r, p, 'F'); d.circle(x, y+r, p, 'F');
-  d.circle(x-r, y, p, 'F'); d.circle(x+r, y, p, 'F');
+  // FLARESTAMINA flare mark — 4 asymmetric rays, top ray longer, round caps
+  const k=r/11;
+  d.setDrawColor(255,90,31); d.setLineWidth(2.6*k);
+  if(d.setLineCap) d.setLineCap('round');
+  d.line(x, y-2.5*k, x, y-10.5*k);   // up (long)
+  d.line(x+2.5*k, y, x+9.5*k, y);    // right
+  d.line(x, y+2.5*k, x, y+7*k);      // down
+  d.line(x-2.5*k, y, x-8*k, y);      // left
+  if(d.setLineCap) d.setLineCap('butt');
 }
-// Wordmark: "pangea" in ink + "8" in brand green.
+// Wordmark: "FLARE" in flare orange + "STAMINA" in ink.
 function drawWordmark(d, x, y, size){
   d.setFont('helvetica','bold'); d.setFontSize(size);
-  d.setTextColor(17,17,17); d.text('pangea', x, y);
-  const w=d.getTextWidth('pangea');
-  d.setTextColor(4,120,87); d.text('8', x+w, y);
+  d.setTextColor(255,90,31); d.text('FLARE', x, y);
+  const w=d.getTextWidth('FLARE');
+  d.setTextColor(17,17,17); d.text('STAMINA', x+w, y);
 }
 // QR (scan → flarestamina.com) for brand awareness. SYNCHRONOUS on purpose: the
 // generator is preloaded in <head>, so building it needs no await — the PDF
@@ -1233,9 +1234,9 @@ function makePDF(name,essay,feedback,taskLabel,qr){
     drawWordmark(d, M+26, 51, 15);
     d.setFont('helvetica','normal'); d.setFontSize(8.5); d.setTextColor(125,125,125);
     d.text('IELTS WRITING LAB', PW-M, 43, {align:'right'});
-    d.setFont('helvetica','bold'); d.setFontSize(9); d.setTextColor(4,120,87);
+    d.setFont('helvetica','bold'); d.setFontSize(9); d.setTextColor(255,90,31);
     d.text('flarestamina.com', PW-M, 55, {align:'right'});
-    d.setDrawColor(4,120,87); d.setLineWidth(1.6); d.line(M, 66, PW-M, 66);
+    d.setDrawColor(255,90,31); d.setLineWidth(1.6); d.line(M, 66, PW-M, 66);
     d.setDrawColor(226,226,226); d.setLineWidth(0.6); d.line(M, 69.4, PW-M, 69.4);
   }
   function footer(pageNo){
@@ -1243,7 +1244,7 @@ function makePDF(name,essay,feedback,taskLabel,qr){
     d.line(M, PH-40, PW-M, PH-40);
     drawLogo(d, M+6, PH-24.5, 6);
     d.setFont('helvetica','normal'); d.setFontSize(8); d.setTextColor(120,120,120);
-    d.text('Free IELTS practice — 100+ tests · flarestamina.com · Telegram @Flarestamina', M+18, PH-22);
+    d.text('Free IELTS practice — 100+ tests · flarestamina.com', M+18, PH-22);
     d.setTextColor(150,150,150);
     d.text('Page '+pageNo, PW-M, PH-22, {align:'right'});
   }
@@ -1255,14 +1256,14 @@ function makePDF(name,essay,feedback,taskLabel,qr){
   d.setFont('helvetica','bold'); d.setFontSize(21); d.setTextColor(17,17,17);
   d.text('IELTS Writing Response', M, y);
   y+=11;
-  d.setDrawColor(4,120,87); d.setLineWidth(2.6); d.line(M, y, M+48, y);
+  d.setDrawColor(255,90,31); d.setLineWidth(2.6); d.line(M, y, M+48, y);
   y+=26;
 
   // meta strip
   const cardH=54, cols=[M+18, M+210, M+330, M+436];
   d.setFillColor(249,249,248); d.setDrawColor(230,230,228); d.setLineWidth(0.8);
   d.roundedRect(M, y, PW-2*M, cardH, 6, 6, 'FD');
-  d.setFillColor(4,120,87); d.rect(M, y, 3, cardH, 'F');
+  d.setFillColor(255,90,31); d.rect(M, y, 3, cardH, 'F');
   d.setFont('helvetica','normal'); d.setFontSize(7.5); d.setTextColor(152,152,152); cs(0.6);
   ['CANDIDATE','TASK','DATE','WORDS'].forEach((lb,i)=>d.text(lb, cols[i], y+19)); cs(0);
   d.setFont('helvetica','bold'); d.setFontSize(12.5); d.setTextColor(22,22,22);
@@ -1277,7 +1278,7 @@ function makePDF(name,essay,feedback,taskLabel,qr){
   y+=cardH+30;
 
   // essay section
-  d.setFont('helvetica','bold'); d.setFontSize(9.5); d.setTextColor(4,120,87); cs(1);
+  d.setFont('helvetica','bold'); d.setFontSize(9.5); d.setTextColor(255,90,31); cs(1);
   d.text('ESSAY', M, y); cs(0);
   d.setDrawColor(233,233,233); d.setLineWidth(0.6); d.line(M+44, y-3, PW-M, y-3);
   y+=19;
@@ -1294,35 +1295,35 @@ function makePDF(name,essay,feedback,taskLabel,qr){
   if(fb){
     y+=16;
     if(y>PH-150){ footer(pageNo); d.addPage(); pageNo++; header(); y=96; }
-    d.setFont('helvetica','bold'); d.setFontSize(9.5); d.setTextColor(20,140,80); cs(1);
+    d.setFont('helvetica','bold'); d.setFontSize(9.5); d.setTextColor(255,90,31); cs(1);
     d.text('TEACHER FEEDBACK', M, y); cs(0); y+=10;
     const fbLines=d.splitTextToSize(fb, PW-2*M-30);
     const boxH=fbLines.length*14+22;
-    d.setFillColor(244,250,247); d.setDrawColor(205,228,216); d.setLineWidth(0.8);
+    d.setFillColor(253,250,248); d.setDrawColor(238,228,222); d.setLineWidth(0.8);
     d.roundedRect(M, y, PW-2*M, boxH, 6, 6, 'FD');
-    d.setFillColor(20,140,80); d.rect(M, y, 3, boxH, 'F');
+    d.setFillColor(255,90,31); d.rect(M, y, 3, boxH, 'F');
     d.setFont('helvetica','normal'); d.setFontSize(10.5); d.setTextColor(45,45,45);
     let fy=y+20; fbLines.forEach(l=>{ d.text(l, M+16, fy); fy+=14; });
     y+=boxH;
   }
 
-  // brand closer card (CTA + QR) — the brand-awareness surface
+  // brand closer — slim, letterhead-style strip (quiet marketing, compact QR)
   y+=24;
-  const closerH=94;
+  const closerH=58;
   if(y>PH-closerH-52){ footer(pageNo); d.addPage(); pageNo++; header(); y=96; }
-  d.setFillColor(6,74,54); d.roundedRect(M, y, PW-2*M, closerH, 9, 9, 'F');
-  d.setFont('helvetica','bold'); d.setFontSize(15); d.setTextColor(255,255,255);
-  d.text('Keep practising — free.', M+22, y+35);
-  d.setFont('helvetica','normal'); d.setFontSize(10); d.setTextColor(200,230,218);
-  d.text('100+ IELTS tests · band calculator · progress tracking', M+22, y+54);
-  d.setFont('helvetica','bold'); d.setFontSize(12); d.setTextColor(130,235,190);
-  d.text('flarestamina.com', M+22, y+76);
-  const urlW=d.getTextWidth('flarestamina.com');   // measure while bold-12 is active
-  d.setFont('helvetica','normal'); d.setFontSize(9.5); d.setTextColor(180,212,200);
-  d.text('Telegram @Flarestamina', M+22+urlW+18, y+75.5);
+  d.setFillColor(252,250,249); d.setDrawColor(232,228,225); d.setLineWidth(0.8);
+  d.roundedRect(M, y, PW-2*M, closerH, 8, 8, 'FD');
+  d.setFillColor(255,90,31); d.rect(M, y, 3, closerH, 'F');
+  drawLogo(d, M+26, y+closerH/2, 9);
+  d.setFont('helvetica','bold'); d.setFontSize(10.5); d.setTextColor(22,22,22);
+  d.text('Keep practising — free.', M+46, y+22);
+  d.setFont('helvetica','normal'); d.setFontSize(8.5); d.setTextColor(120,120,120);
+  d.text('100+ IELTS tests · full mocks · band calculator · progress tracking', M+46, y+35.5);
+  d.setFont('helvetica','bold'); d.setFontSize(9.5); d.setTextColor(255,90,31);
+  d.text('flarestamina.com', M+46, y+48.5);
   if(qr){
-    const qs=62, qx=PW-M-qs-18, qy=y+(closerH-qs)/2;
-    d.setFillColor(255,255,255); d.roundedRect(qx-6, qy-6, qs+12, qs+12, 5, 5, 'F');
+    const qs=42, qx=PW-M-qs-9, qy=y+(closerH-qs)/2;
+    d.setFillColor(255,255,255); d.rect(qx-4, qy-4, qs+8, qs+8, 'F');
     drawQR(d, qr, qx, qy, qs);
   }
 
@@ -1349,11 +1350,11 @@ function savePDF(doc, filename){
 function downloadPDF(){
   var name=$('name').value.trim(), essay=$('essay').value.trim();
   if(!essay){ toast('Nothing to export yet.'); return; }
-  var qr=buildQR('https://flarestamina.com/ielts-hub/');
+  var qr=buildQR('https://flarestamina.com');
   savePDF(makePDF(name,essay,undefined,curTaskLabel(),qr), (name||'essay')+'-Flarestamina.pdf');
 }
 function downloadEssayPDF(data){
-  var qr=buildQR('https://flarestamina.com/ielts-hub/');
+  var qr=buildQR('https://flarestamina.com');
   savePDF(makePDF(data.name,data.essay,data.feedback,data.task,qr), (data.name||'essay')+'-Flarestamina.pdf');
 }
 
