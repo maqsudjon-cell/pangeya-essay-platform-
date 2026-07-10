@@ -2,7 +2,7 @@
 
 A focused, single-file IELTS writing workspace with a Nothing-inspired interface — monochrome, dot-matrix type, a red accent, and subtle hi-tech motion. Write timed essays, save them to the cloud, get teacher feedback and on-demand AI scoring, and export clean branded PDFs.
 
-**Live:** https://maqsudjon-cell.github.io/pangeya-essay-platform-/index-14.html
+**Live:** https://flarestamina.com/pangeya-essay-platform-/index-14.html
 
 ---
 
@@ -34,4 +34,4 @@ index.html        # the entire app (HTML + CSS + JS)
 
 ## Brand
 
-Part of the **pangea8** ecosystem. Tashkent.
+Part of the **Flarestamina** ecosystem. Tashkent.
