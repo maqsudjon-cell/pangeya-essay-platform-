@@ -692,7 +692,17 @@ body.focus .focus-exit{display:inline-flex;align-items:center;gap:7px}
   function fill() {
     try {
       var u = window.FSAuth && FSAuth.getUser();
-      if (!u) return;
+      if (!u) {
+        // transition mode: no FS session — let students type their name as before
+        var fld = document.getElementById('name');
+        if (fld) {
+          fld.readOnly = false;
+          fld.placeholder = 'Enter your name';
+          var wrap = fld.closest('.fld');
+          if (wrap) { wrap.style.display = ''; wrap.removeAttribute('aria-hidden'); }
+        }
+        return;
+      }
       var full = ((u.first_name || '') + ' ' + (u.last_name || '')).trim();
       ['name', 'ansName'].forEach(function (id) {
         var i = document.getElementById(id);
