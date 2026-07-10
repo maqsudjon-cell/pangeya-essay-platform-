@@ -6,11 +6,11 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#FAFAF9">
 <script>
-  /* Theme bootstrap — shares the 'theme' key with the rest of pangea8.com so
+  /* Theme bootstrap — shares the 'theme' key with the rest of flarestamina.com so
      the light/dark choice carries across the hub, calculator and this lab. */
   (function(){try{var s=localStorage.getItem('theme');var t=s||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();
 </script>
-<title>pangea8 — IELTS Writing Lab</title>
+<title>Flarestamina — IELTS Writing Lab</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000000'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23ffffff' stroke-width='2.4'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23D71921'/%3E%3Ccircle cx='32' cy='7.5' r='1.7' fill='%23ffffff'/%3E%3Ccircle cx='56.5' cy='32' r='1.7' fill='%23ffffff'/%3E%3Ccircle cx='32' cy='56.5' r='1.7' fill='%23ffffff'/%3E%3Ccircle cx='7.5' cy='32' r='1.7' fill='%23ffffff'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000000'/%3E%3Ccircle cx='32' cy='32' r='20' fill='none' stroke='%23ffffff' stroke-width='2.4'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23D71921'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,12 +20,12 @@
 <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js" defer></script>
 <style>
 /* ============================================================
-   pangea8 · IELTS WRITING LAB
-   pangea8 site theme — stone / green · Inter + Space Grotesk
+   Flarestamina · IELTS WRITING LAB
+   Flarestamina site theme — stone / green · Inter + Space Grotesk
    ============================================================ */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  /* Dark theme (pangea8 palette) */
+  /* Dark theme (Flarestamina palette) */
   --bg:#0A0A0A;
   --bg-1:#111111;
   --bg-2:#161616;
@@ -51,7 +51,7 @@
   --shadow-card-hover:0 10px 30px -8px rgba(0,0,0,.55);
 }
 html[data-theme="light"]{
-  /* Light theme (pangea8 stone / green) */
+  /* Light theme (Flarestamina stone / green) */
   --bg:#FAFAF9;
   --bg-1:#FFFFFF;
   --bg-2:#FAFAF9;
@@ -85,7 +85,7 @@ body{
   -webkit-font-smoothing:antialiased;
   position:relative;
 }
-/* film grain (matches the pangea8 hub) */
+/* film grain (matches the Flarestamina hub) */
 body::before{
   content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
   opacity:.02;mix-blend-mode:overlay;
@@ -457,7 +457,7 @@ body.focus .focus-exit{display:inline-flex;align-items:center;gap:7px}
 <!-- loader -->
 <div id="loader"><div class="load-wrap">
   <div class="load-grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-  <div class="load-dots">pangea8 · LOADING</div>
+  <div class="load-dots">Flarestamina · LOADING</div>
 </div></div>
 
 <canvas id="fx"></canvas>
@@ -469,7 +469,7 @@ body.focus .focus-exit{display:inline-flex;align-items:center;gap:7px}
   <div class="topbar">
     <div class="brand">
       <div class="brand-mark"></div>
-      <div class="brand-name">pangea8<b>/</b>LAB</div>
+      <div class="brand-name">Flarestamina<b>/</b>LAB</div>
     </div>
     <div class="topbar-right">
       <span class="tb-clock" id="clock">--:--:--</span>
@@ -490,7 +490,7 @@ body.focus .focus-exit{display:inline-flex;align-items:center;gap:7px}
     <div class="hero-coords">
       <span><span class="on">●</span> SYSTEM ONLINE</span>
       <span>IELTS WRITING</span>
-      <span>EST. PANGEA8</span>
+      <span>EST. FLARESTAMINA</span>
     </div>
     <h1>Writing<br>Lab<span class="cur"></span></h1>
     <p class="hero-sub">Write, time, and refine your IELTS essays. Get teacher feedback and on-demand AI scoring — all in one focused workspace.</p>
@@ -585,14 +585,14 @@ body.focus .focus-exit{display:inline-flex;align-items:center;gap:7px}
 
   <!-- footer -->
   <div class="foot">
-    <div class="foot-word">pangea8</div>
-    <div class="foot-meta">PANGEA8 · IELTS WRITING LAB · TASHKENT</div>
+    <div class="foot-word">Flarestamina</div>
+    <div class="foot-meta">FLARESTAMINA · IELTS WRITING LAB · TASHKENT</div>
   </div>
 
 </div><!-- /shell -->
 
 <!-- FLOATING AI: button + panel (accessible from anywhere) -->
-<button class="ai-fab" id="aiFab" aria-label="Open pangea8 AI">
+<button class="ai-fab" id="aiFab" aria-label="Open Flarestamina AI">
   <span class="ai-fab-ic">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8A8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5Z"/></svg>
   </span>
@@ -606,7 +606,7 @@ body.focus .focus-exit{display:inline-flex;align-items:center;gap:7px}
   <div class="chat-head" id="chatHead">
     <div class="chat-avatar"></div>
     <div class="chat-id">
-      <h4>pangea8 AI</h4>
+      <h4>Flarestamina AI</h4>
       <p><span class="live">●</span> IELTS WRITING EXAMINER</p>
     </div>
     <button class="ai-panel-close" id="aiPanelClose" aria-label="Close">✕</button>
@@ -678,7 +678,7 @@ body.focus .focus-exit{display:inline-flex;align-items:center;gap:7px}
       <p style="margin-bottom:12px"><b style="color:var(--text);font-family:var(--mono);font-size:12px">03 ·</b> Use <b>⊡ Focus</b> for a distraction-free exam view (Esc exits). Tap <b>▤ Structure</b> for a quick template.</p>
       <p style="margin-bottom:12px"><b style="color:var(--text);font-family:var(--mono);font-size:12px">04 ·</b> <b>Submit to cloud</b> to save your essay to the Archive. You'll need the writing passcode the first time.</p>
       <p style="margin-bottom:12px"><b style="color:var(--text);font-family:var(--mono);font-size:12px">05 ·</b> In the Archive, open any essay to request <b>AI feedback</b> and an estimated band score, or download it as a PDF.</p>
-      <p><b style="color:var(--text);font-family:var(--mono);font-size:12px">06 ·</b> Ask <b>pangea8 AI</b> anything about IELTS writing — structure, vocabulary, sample answers.</p>
+      <p><b style="color:var(--text);font-family:var(--mono);font-size:12px">06 ·</b> Ask <b>Flarestamina AI</b> anything about IELTS writing — structure, vocabulary, sample answers.</p>
     </div>
   </div></div>
 </div>
@@ -712,7 +712,7 @@ const ACCESS_KEY = 'pangeya_write_unlocked';
 const CHAT_ENDPOINT = 'https://pangeya-ai.vercel.app/api/chat';
 const FEEDBACK_ENDPOINT = 'https://pangeya-ai.vercel.app/api/essay-feedback';
 
-const SYSTEM_PROMPT = `You are pangea8 AI, a professional AI assistant designed specifically to help users prepare for the IELTS Academic and General Training Writing exams.
+const SYSTEM_PROMPT = `You are Flarestamina AI, a professional AI assistant designed specifically to help users prepare for the IELTS Academic and General Training Writing exams.
 
 Your primary responsibility is to assist users with IELTS Writing Task 1 and Task 2 by producing high-quality, band 7.0–9.0 level essays that strictly follow the official IELTS Band Descriptors:
 • Task Response / Task Achievement
@@ -742,7 +742,7 @@ Additional Capabilities
 • Rewrite or improve essays to a higher band level
 
 Brand Identity
-You represent pangea8 AI, the intelligent core of a modern and reliable IELTS preparation platform. Every response must be accurate, structured, exam-oriented, and designed to help users achieve the highest possible IELTS score.`;
+You represent Flarestamina AI, the intelligent core of a modern and reliable IELTS preparation platform. Every response must be accurate, structured, exam-oriented, and designed to help users achieve the highest possible IELTS score.`;
 
 /* ---------- state ---------- */
 let teacherMode = false;
@@ -1146,7 +1146,7 @@ async function sendChatMessage(){
 function clearChat(){ chatHistory=[]; renderChat(); }
 
 /* ---------- PDF (premium branded report) ---------- */
-// pangea8 brand mark — vector so it prints crisp in colour AND greyscale.
+// Flarestamina brand mark — vector so it prints crisp in colour AND greyscale.
 function drawLogo(d, x, y, r){
   d.setDrawColor(10,10,10); d.setLineWidth(r*0.13);
   d.circle(x, y, r, 'S');
@@ -1164,7 +1164,7 @@ function drawWordmark(d, x, y, size){
   const w=d.getTextWidth('pangea');
   d.setTextColor(4,120,87); d.text('8', x+w, y);
 }
-// QR (scan → pangea8.com) for brand awareness. SYNCHRONOUS on purpose: the
+// QR (scan → flarestamina.com) for brand awareness. SYNCHRONOUS on purpose: the
 // generator is preloaded in <head>, so building it needs no await — the PDF
 // download then stays inside the user's tap gesture (iOS Safari blocks any
 // download/open triggered after an await). Fails soft → null (PDF without QR).
@@ -1201,7 +1201,7 @@ function makePDF(name,essay,feedback,taskLabel,qr){
     d.setFont('helvetica','normal'); d.setFontSize(8.5); d.setTextColor(125,125,125);
     d.text('IELTS WRITING LAB', PW-M, 43, {align:'right'});
     d.setFont('helvetica','bold'); d.setFontSize(9); d.setTextColor(4,120,87);
-    d.text('pangea8.com', PW-M, 55, {align:'right'});
+    d.text('flarestamina.com', PW-M, 55, {align:'right'});
     d.setDrawColor(4,120,87); d.setLineWidth(1.6); d.line(M, 66, PW-M, 66);
     d.setDrawColor(226,226,226); d.setLineWidth(0.6); d.line(M, 69.4, PW-M, 69.4);
   }
@@ -1210,7 +1210,7 @@ function makePDF(name,essay,feedback,taskLabel,qr){
     d.line(M, PH-40, PW-M, PH-40);
     drawLogo(d, M+6, PH-24.5, 6);
     d.setFont('helvetica','normal'); d.setFontSize(8); d.setTextColor(120,120,120);
-    d.text('Free IELTS practice — 100+ tests · pangea8.com · Telegram @pangea8', M+18, PH-22);
+    d.text('Free IELTS practice — 100+ tests · flarestamina.com · Telegram @Flarestamina', M+18, PH-22);
     d.setTextColor(150,150,150);
     d.text('Page '+pageNo, PW-M, PH-22, {align:'right'});
   }
@@ -1283,10 +1283,10 @@ function makePDF(name,essay,feedback,taskLabel,qr){
   d.setFont('helvetica','normal'); d.setFontSize(10); d.setTextColor(200,230,218);
   d.text('100+ IELTS tests · band calculator · progress tracking', M+22, y+54);
   d.setFont('helvetica','bold'); d.setFontSize(12); d.setTextColor(130,235,190);
-  d.text('pangea8.com', M+22, y+76);
-  const urlW=d.getTextWidth('pangea8.com');   // measure while bold-12 is active
+  d.text('flarestamina.com', M+22, y+76);
+  const urlW=d.getTextWidth('flarestamina.com');   // measure while bold-12 is active
   d.setFont('helvetica','normal'); d.setFontSize(9.5); d.setTextColor(180,212,200);
-  d.text('Telegram @pangea8', M+22+urlW+18, y+75.5);
+  d.text('Telegram @Flarestamina', M+22+urlW+18, y+75.5);
   if(qr){
     const qs=62, qx=PW-M-qs-18, qy=y+(closerH-qs)/2;
     d.setFillColor(255,255,255); d.roundedRect(qx-6, qy-6, qs+12, qs+12, 5, 5, 'F');
@@ -1316,12 +1316,12 @@ function savePDF(doc, filename){
 function downloadPDF(){
   var name=$('name').value.trim(), essay=$('essay').value.trim();
   if(!essay){ toast('Nothing to export yet.'); return; }
-  var qr=buildQR('https://pangea8.com/ielts-hub/');
-  savePDF(makePDF(name,essay,undefined,curTaskLabel(),qr), (name||'essay')+'-pangea8.pdf');
+  var qr=buildQR('https://flarestamina.com/ielts-hub/');
+  savePDF(makePDF(name,essay,undefined,curTaskLabel(),qr), (name||'essay')+'-Flarestamina.pdf');
 }
 function downloadEssayPDF(data){
-  var qr=buildQR('https://pangea8.com/ielts-hub/');
-  savePDF(makePDF(data.name,data.essay,data.feedback,data.task,qr), (data.name||'essay')+'-pangea8.pdf');
+  var qr=buildQR('https://flarestamina.com/ielts-hub/');
+  savePDF(makePDF(data.name,data.essay,data.feedback,data.task,qr), (data.name||'essay')+'-Flarestamina.pdf');
 }
 
 /* ---------- teacher ---------- */
